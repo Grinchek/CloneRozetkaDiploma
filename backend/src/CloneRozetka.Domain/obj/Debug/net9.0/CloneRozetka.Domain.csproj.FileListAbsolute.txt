@@ -1,0 +1,12 @@
+D:\DiplomProject\backend\src\CloneRozetka.Domain\bin\Debug\net9.0\CloneRozetka.Domain.deps.json
+D:\DiplomProject\backend\src\CloneRozetka.Domain\bin\Debug\net9.0\CloneRozetka.Domain.dll
+D:\DiplomProject\backend\src\CloneRozetka.Domain\bin\Debug\net9.0\CloneRozetka.Domain.pdb
+D:\DiplomProject\backend\src\CloneRozetka.Domain\obj\Debug\net9.0\CloneRozetka.Domain.GeneratedMSBuildEditorConfig.editorconfig
+D:\DiplomProject\backend\src\CloneRozetka.Domain\obj\Debug\net9.0\CloneRozetka.Domain.AssemblyInfoInputs.cache
+D:\DiplomProject\backend\src\CloneRozetka.Domain\obj\Debug\net9.0\CloneRozetka.Domain.AssemblyInfo.cs
+D:\DiplomProject\backend\src\CloneRozetka.Domain\obj\Debug\net9.0\CloneRozetka.Domain.csproj.CoreCompileInputs.cache
+D:\DiplomProject\backend\src\CloneRozetka.Domain\obj\Debug\net9.0\CloneRozetka.Domain.sourcelink.json
+D:\DiplomProject\backend\src\CloneRozetka.Domain\obj\Debug\net9.0\CloneRozetka.Domain.dll
+D:\DiplomProject\backend\src\CloneRozetka.Domain\obj\Debug\net9.0\refint\CloneRozetka.Domain.dll
+D:\DiplomProject\backend\src\CloneRozetka.Domain\obj\Debug\net9.0\CloneRozetka.Domain.pdb
+D:\DiplomProject\backend\src\CloneRozetka.Domain\obj\Debug\net9.0\ref\CloneRozetka.Domain.dll
