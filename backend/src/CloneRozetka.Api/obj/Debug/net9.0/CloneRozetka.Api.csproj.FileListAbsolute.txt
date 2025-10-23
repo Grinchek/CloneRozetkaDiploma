@@ -37,10 +37,6 @@ D:\DiplomProject\backend\src\CloneRozetka.Api\bin\Debug\net9.0\Microsoft.Extensi
 D:\DiplomProject\backend\src\CloneRozetka.Api\bin\Debug\net9.0\Microsoft.Extensions.Logging.Abstractions.dll
 D:\DiplomProject\backend\src\CloneRozetka.Api\bin\Debug\net9.0\Microsoft.Extensions.Options.dll
 D:\DiplomProject\backend\src\CloneRozetka.Api\bin\Debug\net9.0\Microsoft.Extensions.Primitives.dll
-D:\DiplomProject\backend\src\CloneRozetka.Api\bin\Debug\net9.0\Microsoft.IdentityModel.Abstractions.dll
-D:\DiplomProject\backend\src\CloneRozetka.Api\bin\Debug\net9.0\Microsoft.IdentityModel.JsonWebTokens.dll
-D:\DiplomProject\backend\src\CloneRozetka.Api\bin\Debug\net9.0\Microsoft.IdentityModel.Logging.dll
-D:\DiplomProject\backend\src\CloneRozetka.Api\bin\Debug\net9.0\Microsoft.IdentityModel.Tokens.dll
 D:\DiplomProject\backend\src\CloneRozetka.Api\bin\Debug\net9.0\Microsoft.OpenApi.dll
 D:\DiplomProject\backend\src\CloneRozetka.Api\bin\Debug\net9.0\Mono.TextTemplating.dll
 D:\DiplomProject\backend\src\CloneRozetka.Api\bin\Debug\net9.0\Npgsql.dll

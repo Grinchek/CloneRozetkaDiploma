@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CloneRozetka.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2fad29045554840f44274f08536f6a4aa73d24f2")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ad6b428320b23b49dbaa4a497246329c9a9959f6")]
 [assembly: System.Reflection.AssemblyProductAttribute("CloneRozetka.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CloneRozetka.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
