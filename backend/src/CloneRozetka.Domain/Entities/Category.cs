@@ -16,7 +16,7 @@ public class Category
     public string? Image { get; set; }
     public bool IsDeleted { get; set; }
     [ForeignKey(nameof(Parent))]
-    public long? ParentId { get; set; }
+    public int? ParentId { get; set; }
     public Category? Parent { get; set; }
     public ICollection<Category>? Children { get; set; }
 }

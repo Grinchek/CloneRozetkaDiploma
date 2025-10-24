@@ -1,4 +1,6 @@
-﻿namespace CloneRozetka.Application.Categories;
+﻿using CloneRozetka.Application.Categories.DTOs;
+
+namespace CloneRozetka.Application.Categories.Interfaces;
 
 public interface ICategoryService
 {

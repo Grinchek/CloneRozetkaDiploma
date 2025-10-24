@@ -1,6 +1,7 @@
-﻿using FluentValidation;
+﻿using CloneRozetka.Application.Categories.DTOs;
+using FluentValidation;
 
-namespace CloneRozetka.Application.Categories;
+namespace CloneRozetka.Application.Categories.Validators;
 
 public class CategoryCreateValidator : AbstractValidator<CategoryCreateRequest>
 {

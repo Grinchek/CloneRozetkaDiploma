@@ -11,8 +11,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CloneRozetka.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251023135220_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20251024143353_Edditing category entity")]
+    partial class Edditingcategoryentity
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -46,9 +46,36 @@ namespace CloneRozetka.Infrastructure.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("character varying(255)");
 
+                    b.Property<int?>("ParentId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Priority")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("UrlSlug")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
+
                     b.HasKey("Id");
 
+                    b.HasIndex("ParentId");
+
                     b.ToTable("tblCategories", (string)null);
+                });
+
+            modelBuilder.Entity("CloneRozetka.Domain.Entities.Category", b =>
+                {
+                    b.HasOne("CloneRozetka.Domain.Entities.Category", "Parent")
+                        .WithMany("Children")
+                        .HasForeignKey("ParentId");
+
+                    b.Navigation("Parent");
+                });
+
+            modelBuilder.Entity("CloneRozetka.Domain.Entities.Category", b =>
+                {
+                    b.Navigation("Children");
                 });
 #pragma warning restore 612, 618
         }

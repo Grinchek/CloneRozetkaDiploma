@@ -1,6 +1,9 @@
 using AutoMapper;
 using CloneRozetka.Application.Abstractions;
-using CloneRozetka.Application.Categories;
+using CloneRozetka.Application.Categories.Interfaces;
+using CloneRozetka.Application.Categories.Mappers;
+using CloneRozetka.Application.Categories.Services;
+using CloneRozetka.Application.Categories.Validators;
 using CloneRozetka.Infrastructure.Files;
 using CloneRozetka.Infrastructure.Persistence;
 using CloneRozetka.Infrastructure.Repositories;

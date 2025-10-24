@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
+using CloneRozetka.Application.Categories.DTOs;
 using CloneRozetka.Domain.Entities;
 
-namespace CloneRozetka.Application.Categories;
+namespace CloneRozetka.Application.Categories.Mappers;
 
 public class CategoryProfile : Profile
 {
