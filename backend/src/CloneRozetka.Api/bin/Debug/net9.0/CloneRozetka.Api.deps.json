@@ -8,7 +8,6 @@
     ".NETCoreApp,Version=v9.0": {
       "CloneRozetka.Api/1.0.0": {
         "dependencies": {
-          "CloneRozetka.Application": "1.0.0",
           "CloneRozetka.Infrastructure": "1.0.0",
           "Microsoft.AspNetCore.OpenApi": "9.0.10",
           "Microsoft.EntityFrameworkCore.Design": "9.0.10",

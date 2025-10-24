@@ -3,8 +3,12 @@
   "WorkspaceRootPath": "D:\\DiplomProject\\backend\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{CA1C370D-0E17-4AA3-BD33-A4FAF61CE851}|src\\CloneRozetka.Api\\CloneRozetka.Api.csproj|d:\\diplomproject\\backend\\src\\clonerozetka.api\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{CA1C370D-0E17-4AA3-BD33-A4FAF61CE851}|src\\CloneRozetka.Api\\CloneRozetka.Api.csproj|solutionrelative:src\\clonerozetka.api\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+      "AbsoluteMoniker": "D:0:0:{CA1C370D-0E17-4AA3-BD33-A4FAF61CE851}|src\\CloneRozetka.Api\\CloneRozetka.Api.csproj|d:\\diplomproject\\backend\\src\\clonerozetka.api\\clonerozetka.api.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{CA1C370D-0E17-4AA3-BD33-A4FAF61CE851}|src\\CloneRozetka.Api\\CloneRozetka.Api.csproj|solutionrelative:src\\clonerozetka.api\\clonerozetka.api.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{824942B9-9D28-4C79-9C82-8D5E06C29627}|src\\CloneRozetka.Infrastructure\\CloneRozetka.Infrastructure.csproj|d:\\diplomproject\\backend\\src\\clonerozetka.infrastructure\\files\\imageservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{824942B9-9D28-4C79-9C82-8D5E06C29627}|src\\CloneRozetka.Infrastructure\\CloneRozetka.Infrastructure.csproj|solutionrelative:src\\clonerozetka.infrastructure\\files\\imageservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{CA1C370D-0E17-4AA3-BD33-A4FAF61CE851}|src\\CloneRozetka.Api\\CloneRozetka.Api.csproj|d:\\diplomproject\\backend\\src\\clonerozetka.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -39,19 +43,32 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "launchSettings.json",
-              "DocumentMoniker": "D:\\DiplomProject\\backend\\src\\CloneRozetka.Api\\Properties\\launchSettings.json",
-              "RelativeDocumentMoniker": "src\\CloneRozetka.Api\\Properties\\launchSettings.json",
-              "ToolTip": "D:\\DiplomProject\\backend\\src\\CloneRozetka.Api\\Properties\\launchSettings.json",
-              "RelativeToolTip": "src\\CloneRozetka.Api\\Properties\\launchSettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAOAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-10-23T17:54:26.52Z",
+              "Title": "CloneRozetka.Api",
+              "DocumentMoniker": "D:\\DiplomProject\\backend\\src\\CloneRozetka.Api\\CloneRozetka.Api.csproj",
+              "RelativeDocumentMoniker": "src\\CloneRozetka.Api\\CloneRozetka.Api.csproj",
+              "ToolTip": "D:\\DiplomProject\\backend\\src\\CloneRozetka.Api\\CloneRozetka.Api.csproj",
+              "RelativeToolTip": "src\\CloneRozetka.Api\\CloneRozetka.Api.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-10-24T12:58:56.044Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
+              "Title": "ImageService.cs",
+              "DocumentMoniker": "D:\\DiplomProject\\backend\\src\\CloneRozetka.Infrastructure\\Files\\ImageService.cs",
+              "RelativeDocumentMoniker": "src\\CloneRozetka.Infrastructure\\Files\\ImageService.cs",
+              "ToolTip": "D:\\DiplomProject\\backend\\src\\CloneRozetka.Infrastructure\\Files\\ImageService.cs",
+              "RelativeToolTip": "src\\CloneRozetka.Infrastructure\\Files\\ImageService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-24T12:58:15.55Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
               "Title": "Program.cs",
               "DocumentMoniker": "D:\\DiplomProject\\backend\\src\\CloneRozetka.Api\\Program.cs",
               "RelativeDocumentMoniker": "src\\CloneRozetka.Api\\Program.cs",
@@ -59,8 +76,7 @@
               "RelativeToolTip": "src\\CloneRozetka.Api\\Program.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAACIAAAAaAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-23T13:33:31.126Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-23T13:33:31.126Z"
             }
           ]
         }

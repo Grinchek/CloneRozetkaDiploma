@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CloneRozetka.Domain")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ad6b428320b23b49dbaa4a497246329c9a9959f6")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+26bfe8a6ba42d57fbaddddf1755ec3280a38784d")]
 [assembly: System.Reflection.AssemblyProductAttribute("CloneRozetka.Domain")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CloneRozetka.Domain")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

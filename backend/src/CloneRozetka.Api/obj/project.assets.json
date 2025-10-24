@@ -3873,7 +3873,6 @@
   },
   "projectFileDependencyGroups": {
     "net9.0": [
-      "CloneRozetka.Application >= 1.0.0",
       "CloneRozetka.Infrastructure >= 1.0.0",
       "Microsoft.AspNetCore.OpenApi >= 9.0.10",
       "Microsoft.EntityFrameworkCore.Design >= 9.0.10",
@@ -3912,9 +3911,6 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "projectReferences": {
-            "D:\\DiplomProject\\backend\\src\\CloneRozetka.Application\\CloneRozetka.Application.csproj": {
-              "projectPath": "D:\\DiplomProject\\backend\\src\\CloneRozetka.Application\\CloneRozetka.Application.csproj"
-            },
             "D:\\DiplomProject\\backend\\src\\CloneRozetka.Infrastructure\\CloneRozetka.Infrastructure.csproj": {
               "projectPath": "D:\\DiplomProject\\backend\\src\\CloneRozetka.Infrastructure\\CloneRozetka.Infrastructure.csproj"
             }

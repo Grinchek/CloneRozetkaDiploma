@@ -144,3 +144,4 @@ D:\DiplomProject\backend\src\CloneRozetka.Api\obj\Debug\net9.0\refint\CloneRozet
 D:\DiplomProject\backend\src\CloneRozetka.Api\obj\Debug\net9.0\CloneRozetka.Api.pdb
 D:\DiplomProject\backend\src\CloneRozetka.Api\obj\Debug\net9.0\CloneRozetka.Api.genruntimeconfig.cache
 D:\DiplomProject\backend\src\CloneRozetka.Api\obj\Debug\net9.0\ref\CloneRozetka.Api.dll
+D:\DiplomProject\backend\src\CloneRozetka.Api\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt

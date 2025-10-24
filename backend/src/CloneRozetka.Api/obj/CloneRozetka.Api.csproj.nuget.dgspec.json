@@ -32,9 +32,6 @@
           "net9.0": {
             "targetAlias": "net9.0",
             "projectReferences": {
-              "D:\\DiplomProject\\backend\\src\\CloneRozetka.Application\\CloneRozetka.Application.csproj": {
-                "projectPath": "D:\\DiplomProject\\backend\\src\\CloneRozetka.Application\\CloneRozetka.Application.csproj"
-              },
               "D:\\DiplomProject\\backend\\src\\CloneRozetka.Infrastructure\\CloneRozetka.Infrastructure.csproj": {
                 "projectPath": "D:\\DiplomProject\\backend\\src\\CloneRozetka.Infrastructure\\CloneRozetka.Infrastructure.csproj"
               }

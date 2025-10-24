@@ -16,7 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CloneRozetka.Application\CloneRozetka.Application.csproj" />
     <ProjectReference Include="..\CloneRozetka.Infrastructure\CloneRozetka.Infrastructure.csproj" />
   </ItemGroup>
 
