@@ -13,7 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 
-// DB (Postgres)
+//// DB (Postgres)
 builder.Services.AddDbContext<AppDbContext>(opt =>
     opt.UseNpgsql(builder.Configuration.GetConnectionString("Default")));
 
