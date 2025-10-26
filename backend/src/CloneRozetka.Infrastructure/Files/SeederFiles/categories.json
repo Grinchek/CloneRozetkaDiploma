@@ -1,0 +1,786 @@
+[
+  {
+    "name": "Електроніка",
+    "priority": 1,
+    "urlSlug": "electronics",
+    "parentSlug": null,
+    "image": null
+  },
+  {
+    "name": "Побутова техніка",
+    "priority": 2,
+    "urlSlug": "appliances",
+    "parentSlug": null,
+    "image": null
+  },
+  {
+    "name": "Комп’ютери та ноутбуки",
+    "priority": 3,
+    "urlSlug": "computers-laptops",
+    "parentSlug": null,
+    "image": null
+  },
+  {
+    "name": "Телефони та аксесуари",
+    "priority": 4,
+    "urlSlug": "phones-accessories",
+    "parentSlug": null,
+    "image": null
+  },
+  {
+    "name": "ТВ, аудіо, відео",
+    "priority": 5,
+    "urlSlug": "tv-audio-video",
+    "parentSlug": null,
+    "image": null
+  },
+  {
+    "name": "Ігри та розваги",
+    "priority": 6,
+    "urlSlug": "gaming",
+    "parentSlug": null,
+    "image": null
+  },
+  {
+    "name": "Дім та сад",
+    "priority": 7,
+    "urlSlug": "home-garden",
+    "parentSlug": null,
+    "image": null
+  },
+  {
+    "name": "Інструменти та ремонт",
+    "priority": 8,
+    "urlSlug": "tools-diy",
+    "parentSlug": null,
+    "image": null
+  },
+  {
+    "name": "Автотовари",
+    "priority": 9,
+    "urlSlug": "auto-products",
+    "parentSlug": null,
+    "image": null
+  },
+  {
+    "name": "Спорт і хобі",
+    "priority": 10,
+    "urlSlug": "sport-hobby",
+    "parentSlug": null,
+    "image": null
+  },
+  {
+    "name": "Мода",
+    "priority": 11,
+    "urlSlug": "fashion",
+    "parentSlug": null,
+    "image": null
+  },
+  {
+    "name": "Дитячі товари",
+    "priority": 12,
+    "urlSlug": "kids",
+    "parentSlug": null,
+    "image": null
+  },
+  {
+    "name": "Краса та здоров’я",
+    "priority": 13,
+    "urlSlug": "beauty-health",
+    "parentSlug": null,
+    "image": null
+  },
+  {
+    "name": "Зоотовари",
+    "priority": 14,
+    "urlSlug": "pets",
+    "parentSlug": null,
+    "image": null
+  },
+  {
+    "name": "Офіс та канцелярія",
+    "priority": 15,
+    "urlSlug": "office-stationery",
+    "parentSlug": null,
+    "image": null
+  },
+  {
+    "name": "Будівництво та ремонт",
+    "priority": 16,
+    "urlSlug": "building-repair",
+    "parentSlug": null,
+    "image": null
+  },
+  {
+    "name": "Продукти харчування та напої",
+    "priority": 17,
+    "urlSlug": "food-drinks",
+    "parentSlug": null,
+    "image": null
+  },
+  {
+    "name": "Смартфони",
+    "priority": 1,
+    "urlSlug": "smartphones",
+    "parentSlug": "electronics",
+    "image": null
+  },
+  {
+    "name": "Планшети",
+    "priority": 2,
+    "urlSlug": "tablets",
+    "parentSlug": "electronics",
+    "image": null
+  },
+  {
+    "name": "Електронні книги",
+    "priority": 3,
+    "urlSlug": "e-book-readers",
+    "parentSlug": "electronics",
+    "image": null
+  },
+  {
+    "name": "Фото та відео",
+    "priority": 4,
+    "urlSlug": "photo-video",
+    "parentSlug": "electronics",
+    "image": null
+  },
+  {
+    "name": "Екшн-камери та дрони",
+    "priority": 5,
+    "urlSlug": "action-cameras-drones",
+    "parentSlug": "electronics",
+    "image": null
+  },
+  {
+    "name": "Розумні годинники та браслети",
+    "priority": 6,
+    "urlSlug": "wearables",
+    "parentSlug": "electronics",
+    "image": null
+  },
+  {
+    "name": "Навушники",
+    "priority": 7,
+    "urlSlug": "headphones",
+    "parentSlug": "electronics",
+    "image": null
+  },
+  {
+    "name": "Колонки та портативний звук",
+    "priority": 8,
+    "urlSlug": "portable-audio",
+    "parentSlug": "electronics",
+    "image": null
+  },
+  {
+    "name": "Зовнішні акумулятори",
+    "priority": 9,
+    "urlSlug": "power-banks",
+    "parentSlug": "electronics",
+    "image": null
+  },
+  {
+    "name": "Кабелі та перехідники",
+    "priority": 10,
+    "urlSlug": "cables-adapters",
+    "parentSlug": "electronics",
+    "image": null
+  },
+  {
+    "name": "Мобільні телефони",
+    "priority": 1,
+    "urlSlug": "mobile-phones",
+    "parentSlug": "phones-accessories",
+    "image": null
+  },
+  {
+    "name": "Чохли",
+    "priority": 2,
+    "urlSlug": "phone-cases",
+    "parentSlug": "phones-accessories",
+    "image": null
+  },
+  {
+    "name": "Зарядні пристрої",
+    "priority": 3,
+    "urlSlug": "chargers",
+    "parentSlug": "phones-accessories",
+    "image": null
+  },
+  {
+    "name": "Захисні стекла та плівки",
+    "priority": 4,
+    "urlSlug": "screen-protectors",
+    "parentSlug": "phones-accessories",
+    "image": null
+  },
+  {
+    "name": "Кабелі",
+    "priority": 5,
+    "urlSlug": "phone-cables",
+    "parentSlug": "phones-accessories",
+    "image": null
+  },
+  {
+    "name": "Телевізори",
+    "priority": 1,
+    "urlSlug": "tvs",
+    "parentSlug": "tv-audio-video",
+    "image": null
+  },
+  {
+    "name": "Саундбари та домашні кінотеатри",
+    "priority": 2,
+    "urlSlug": "soundbars-home-theater",
+    "parentSlug": "tv-audio-video",
+    "image": null
+  },
+  {
+    "name": "ТБ-приставки",
+    "priority": 3,
+    "urlSlug": "tv-boxes",
+    "parentSlug": "tv-audio-video",
+    "image": null
+  },
+  {
+    "name": "Проєктори",
+    "priority": 4,
+    "urlSlug": "projectors",
+    "parentSlug": "tv-audio-video",
+    "image": null
+  },
+  {
+    "name": "Антени та кронштейни",
+    "priority": 5,
+    "urlSlug": "antennas-mounts",
+    "parentSlug": "tv-audio-video",
+    "image": null
+  },
+  {
+    "name": "Ноутбуки",
+    "priority": 1,
+    "urlSlug": "laptops",
+    "parentSlug": "computers-laptops",
+    "image": null
+  },
+  {
+    "name": "Настільні ПК",
+    "priority": 2,
+    "urlSlug": "desktops",
+    "parentSlug": "computers-laptops",
+    "image": null
+  },
+  {
+    "name": "Монітори",
+    "priority": 3,
+    "urlSlug": "monitors",
+    "parentSlug": "computers-laptops",
+    "image": null
+  },
+  {
+    "name": "Відеокарти",
+    "priority": 4,
+    "urlSlug": "gpus",
+    "parentSlug": "computers-laptops",
+    "image": null
+  },
+  {
+    "name": "Процесори",
+    "priority": 5,
+    "urlSlug": "cpus",
+    "parentSlug": "computers-laptops",
+    "image": null
+  },
+  {
+    "name": "Материнські плати",
+    "priority": 6,
+    "urlSlug": "motherboards",
+    "parentSlug": "computers-laptops",
+    "image": null
+  },
+  {
+    "name": "ОЗП",
+    "priority": 7,
+    "urlSlug": "ram",
+    "parentSlug": "computers-laptops",
+    "image": null
+  },
+  {
+    "name": "SSD та HDD",
+    "priority": 8,
+    "urlSlug": "storage",
+    "parentSlug": "computers-laptops",
+    "image": null
+  },
+  {
+    "name": "Клавіатури та миші",
+    "priority": 9,
+    "urlSlug": "keyboards-mice",
+    "parentSlug": "computers-laptops",
+    "image": null
+  },
+  {
+    "name": "Принтери та МФУ",
+    "priority": 10,
+    "urlSlug": "printers-mfp",
+    "parentSlug": "computers-laptops",
+    "image": null
+  },
+  {
+    "name": "Холодильники",
+    "priority": 1,
+    "urlSlug": "refrigerators",
+    "parentSlug": "appliances",
+    "image": null
+  },
+  {
+    "name": "Пральні машини",
+    "priority": 2,
+    "urlSlug": "washing-machines",
+    "parentSlug": "appliances",
+    "image": null
+  },
+  {
+    "name": "Посудомийні машини",
+    "priority": 3,
+    "urlSlug": "dishwashers",
+    "parentSlug": "appliances",
+    "image": null
+  },
+  {
+    "name": "Плити та варильні поверхні",
+    "priority": 4,
+    "urlSlug": "cookers-hobs",
+    "parentSlug": "appliances",
+    "image": null
+  },
+  {
+    "name": "Пилососи",
+    "priority": 5,
+    "urlSlug": "vacuum-cleaners",
+    "parentSlug": "appliances",
+    "image": null
+  },
+  {
+    "name": "Мікрохвильові печі",
+    "priority": 6,
+    "urlSlug": "microwaves",
+    "parentSlug": "appliances",
+    "image": null
+  },
+  {
+    "name": "Блендери та міксери",
+    "priority": 7,
+    "urlSlug": "blenders-mixers",
+    "parentSlug": "appliances",
+    "image": null
+  },
+  {
+    "name": "Мультиварки",
+    "priority": 8,
+    "urlSlug": "multicookers",
+    "parentSlug": "appliances",
+    "image": null
+  },
+  {
+    "name": "Праски",
+    "priority": 9,
+    "urlSlug": "irons",
+    "parentSlug": "appliances",
+    "image": null
+  },
+  {
+    "name": "Кавомашини",
+    "priority": 10,
+    "urlSlug": "coffee-machines",
+    "parentSlug": "appliances",
+    "image": null
+  },
+  {
+    "name": "Ігрові приставки",
+    "priority": 1,
+    "urlSlug": "consoles",
+    "parentSlug": "gaming",
+    "image": null
+  },
+  {
+    "name": "Ігри",
+    "priority": 2,
+    "urlSlug": "games",
+    "parentSlug": "gaming",
+    "image": null
+  },
+  {
+    "name": "Геймерські аксесуари",
+    "priority": 3,
+    "urlSlug": "gaming-accessories",
+    "parentSlug": "gaming",
+    "image": null
+  },
+  {
+    "name": "Геймерські крісла",
+    "priority": 4,
+    "urlSlug": "gaming-chairs",
+    "parentSlug": "gaming",
+    "image": null
+  },
+  {
+    "name": "Меблі",
+    "priority": 1,
+    "urlSlug": "furniture",
+    "parentSlug": "home-garden",
+    "image": null
+  },
+  {
+    "name": "Освітлення",
+    "priority": 2,
+    "urlSlug": "lighting",
+    "parentSlug": "home-garden",
+    "image": null
+  },
+  {
+    "name": "Декор",
+    "priority": 3,
+    "urlSlug": "decor",
+    "parentSlug": "home-garden",
+    "image": null
+  },
+  {
+    "name": "Посуд та кухонне приладдя",
+    "priority": 4,
+    "urlSlug": "kitchenware",
+    "parentSlug": "home-garden",
+    "image": null
+  },
+  {
+    "name": "Садові інструменти",
+    "priority": 5,
+    "urlSlug": "garden-tools",
+    "parentSlug": "home-garden",
+    "image": null
+  },
+  {
+    "name": "Теплиці та грядки",
+    "priority": 6,
+    "urlSlug": "greenhouses-beds",
+    "parentSlug": "home-garden",
+    "image": null
+  },
+  {
+    "name": "Електроінструмент",
+    "priority": 1,
+    "urlSlug": "power-tools",
+    "parentSlug": "tools-diy",
+    "image": null
+  },
+  {
+    "name": "Ручний інструмент",
+    "priority": 2,
+    "urlSlug": "hand-tools",
+    "parentSlug": "tools-diy",
+    "image": null
+  },
+  {
+    "name": "Зварювальне обладнання",
+    "priority": 3,
+    "urlSlug": "welding",
+    "parentSlug": "tools-diy",
+    "image": null
+  },
+  {
+    "name": "Вимірювальні прилади",
+    "priority": 4,
+    "urlSlug": "measuring-tools",
+    "parentSlug": "tools-diy",
+    "image": null
+  },
+  {
+    "name": "Кріплення та фурнітура",
+    "priority": 5,
+    "urlSlug": "fasteners",
+    "parentSlug": "tools-diy",
+    "image": null
+  },
+  {
+    "name": "Шини та диски",
+    "priority": 1,
+    "urlSlug": "tires-wheels",
+    "parentSlug": "auto-products",
+    "image": null
+  },
+  {
+    "name": "Автоелектроніка",
+    "priority": 2,
+    "urlSlug": "car-electronics",
+    "parentSlug": "auto-products",
+    "image": null
+  },
+  {
+    "name": "Автохімія та догляд",
+    "priority": 3,
+    "urlSlug": "car-care",
+    "parentSlug": "auto-products",
+    "image": null
+  },
+  {
+    "name": "Аксесуари для авто",
+    "priority": 4,
+    "urlSlug": "car-accessories",
+    "parentSlug": "auto-products",
+    "image": null
+  },
+  {
+    "name": "Масла та рідини",
+    "priority": 5,
+    "urlSlug": "oils-fluids",
+    "parentSlug": "auto-products",
+    "image": null
+  },
+  {
+    "name": "Фітнес та тренажери",
+    "priority": 1,
+    "urlSlug": "fitness",
+    "parentSlug": "sport-hobby",
+    "image": null
+  },
+  {
+    "name": "Велосипеди",
+    "priority": 2,
+    "urlSlug": "bicycles",
+    "parentSlug": "sport-hobby",
+    "image": null
+  },
+  {
+    "name": "Самокати та гіроборди",
+    "priority": 3,
+    "urlSlug": "scooters-gyros",
+    "parentSlug": "sport-hobby",
+    "image": null
+  },
+  {
+    "name": "Туризм і кемпінг",
+    "priority": 4,
+    "urlSlug": "camping",
+    "parentSlug": "sport-hobby",
+    "image": null
+  },
+  {
+    "name": "Риболовля",
+    "priority": 5,
+    "urlSlug": "fishing",
+    "parentSlug": "sport-hobby",
+    "image": null
+  },
+  {
+    "name": "Жіночий одяг",
+    "priority": 1,
+    "urlSlug": "womens-clothing",
+    "parentSlug": "fashion",
+    "image": null
+  },
+  {
+    "name": "Чоловічий одяг",
+    "priority": 2,
+    "urlSlug": "mens-clothing",
+    "parentSlug": "fashion",
+    "image": null
+  },
+  {
+    "name": "Взуття",
+    "priority": 3,
+    "urlSlug": "shoes",
+    "parentSlug": "fashion",
+    "image": null
+  },
+  {
+    "name": "Сумки та аксесуари",
+    "priority": 4,
+    "urlSlug": "bags-accessories",
+    "parentSlug": "fashion",
+    "image": null
+  },
+  {
+    "name": "Іграшки",
+    "priority": 1,
+    "urlSlug": "toys",
+    "parentSlug": "kids",
+    "image": null
+  },
+  {
+    "name": "Дитячий транспорт",
+    "priority": 2,
+    "urlSlug": "kids-transport",
+    "parentSlug": "kids",
+    "image": null
+  },
+  {
+    "name": "Дитячі коляски та автокрісла",
+    "priority": 3,
+    "urlSlug": "strollers-car-seats",
+    "parentSlug": "kids",
+    "image": null
+  },
+  {
+    "name": "Догляд за немовлятами",
+    "priority": 4,
+    "urlSlug": "baby-care",
+    "parentSlug": "kids",
+    "image": null
+  },
+  {
+    "name": "Шкільні товари",
+    "priority": 5,
+    "urlSlug": "school-supplies",
+    "parentSlug": "kids",
+    "image": null
+  },
+  {
+    "name": "Косметика",
+    "priority": 1,
+    "urlSlug": "cosmetics",
+    "parentSlug": "beauty-health",
+    "image": null
+  },
+  {
+    "name": "Парфуми",
+    "priority": 2,
+    "urlSlug": "perfumery",
+    "parentSlug": "beauty-health",
+    "image": null
+  },
+  {
+    "name": "Догляд за волоссям",
+    "priority": 3,
+    "urlSlug": "haircare",
+    "parentSlug": "beauty-health",
+    "image": null
+  },
+  {
+    "name": "Техніка для краси",
+    "priority": 4,
+    "urlSlug": "beauty-tech",
+    "parentSlug": "beauty-health",
+    "image": null
+  },
+  {
+    "name": "Медтехніка",
+    "priority": 5,
+    "urlSlug": "medical-devices",
+    "parentSlug": "beauty-health",
+    "image": null
+  },
+  {
+    "name": "Для собак",
+    "priority": 1,
+    "urlSlug": "dogs",
+    "parentSlug": "pets",
+    "image": null
+  },
+  {
+    "name": "Для котів",
+    "priority": 2,
+    "urlSlug": "cats",
+    "parentSlug": "pets",
+    "image": null
+  },
+  {
+    "name": "Акваріумістика",
+    "priority": 3,
+    "urlSlug": "aquariums",
+    "parentSlug": "pets",
+    "image": null
+  },
+  {
+    "name": "Для птахів",
+    "priority": 4,
+    "urlSlug": "birds",
+    "parentSlug": "pets",
+    "image": null
+  },
+  {
+    "name": "Папір та бланки",
+    "priority": 1,
+    "urlSlug": "paper",
+    "parentSlug": "office-stationery",
+    "image": null
+  },
+  {
+    "name": "Письмове приладдя",
+    "priority": 2,
+    "urlSlug": "writing",
+    "parentSlug": "office-stationery",
+    "image": null
+  },
+  {
+    "name": "Організація робочого місця",
+    "priority": 3,
+    "urlSlug": "desk-organization",
+    "parentSlug": "office-stationery",
+    "image": null
+  },
+  {
+    "name": "Офісні меблі",
+    "priority": 4,
+    "urlSlug": "office-furniture",
+    "parentSlug": "office-stationery",
+    "image": null
+  },
+  {
+    "name": "Будматеріали",
+    "priority": 1,
+    "urlSlug": "building-materials",
+    "parentSlug": "building-repair",
+    "image": null
+  },
+  {
+    "name": "Електрика",
+    "priority": 2,
+    "urlSlug": "electrics",
+    "parentSlug": "building-repair",
+    "image": null
+  },
+  {
+    "name": "Сантехніка",
+    "priority": 3,
+    "urlSlug": "plumbing",
+    "parentSlug": "building-repair",
+    "image": null
+  },
+  {
+    "name": "Опалення та кондиціювання",
+    "priority": 4,
+    "urlSlug": "heating-ac",
+    "parentSlug": "building-repair",
+    "image": null
+  },
+  {
+    "name": "Напої",
+    "priority": 1,
+    "urlSlug": "beverages",
+    "parentSlug": "food-drinks",
+    "image": null
+  },
+  {
+    "name": "Бакалія",
+    "priority": 2,
+    "urlSlug": "groceries",
+    "parentSlug": "food-drinks",
+    "image": null
+  },
+  {
+    "name": "Снеки та солодощі",
+    "priority": 3,
+    "urlSlug": "snacks-sweets",
+    "parentSlug": "food-drinks",
+    "image": null
+  },
+  {
+    "name": "Кава та чай",
+    "priority": 4,
+    "urlSlug": "coffee-tea",
+    "parentSlug": "food-drinks",
+    "image": null
+  }
+]

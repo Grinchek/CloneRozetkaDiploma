@@ -2,4 +2,10 @@
 
 namespace CloneRozetka.Application.Categories.DTOs;
 
-public record CategoryCreateRequest(string Name, IFormFile Image);
+public record CategoryCreateRequest(
+    string Name,
+    int Priority,
+    string UrlSlug,
+    int? ParentId,
+    IFormFile? Image
+);

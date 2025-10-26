@@ -1,11 +1,10 @@
-using AutoMapper;
 using CloneRozetka.Application.Abstractions;
 using CloneRozetka.Application.Categories.Interfaces;
 using CloneRozetka.Application.Categories.Mappers;
-using CloneRozetka.Application.Categories.Services;
 using CloneRozetka.Application.Categories.Validators;
 using CloneRozetka.Infrastructure.Files;
 using CloneRozetka.Infrastructure.Persistence;
+using CloneRozetka.Infrastructure.Persistence.Seed;
 using CloneRozetka.Infrastructure.Repositories;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
@@ -36,6 +35,11 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+// Seeder
+using (var scope = app.Services.CreateScope())
+{
+    await app.Services.SeedCategoriesAsync(Path.Combine("Files", "SeederFiles", "categories.json"));
+}
 app.UseSwagger();
 app.UseSwaggerUI();
 

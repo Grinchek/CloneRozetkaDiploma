@@ -6,8 +6,6 @@ using CloneRozetka.Application.Categories.Interfaces;
 using CloneRozetka.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace CloneRozetka.Application.Categories.Services;
-
 public class CategoryService(
     IRepository<Category> repo,
     IImageService images,
@@ -27,28 +25,45 @@ public class CategoryService(
 
     public async Task<int> CreateAsync(CategoryCreateRequest req, CancellationToken ct = default)
     {
-        var entity = new Category { Name = req.Name };
-        entity.Image = await images.SaveImageAsync(req.Image, ct);
+        var entity = new Category
+        {
+            Name = req.Name,
+            Priority = req.Priority,
+            UrlSlug = req.UrlSlug,
+            ParentId = req.ParentId
+        };
+
+        if (req.Image is not null)
+            entity.Image = await images.SaveImageAsync(req.Image, ct);
+
         await repo.AddAsync(entity, ct);
         return entity.Id;
     }
 
     public async Task UpdateAsync(CategoryUpdateRequest req, CancellationToken ct = default)
     {
-        var entity = await repo.GetByIdAsync(req.Id, ct) ?? throw new KeyNotFoundException("Category not found");
+        var entity = await repo.GetByIdAsync(req.Id, ct)
+                     ?? throw new KeyNotFoundException("Category not found");
+
         entity.Name = req.Name;
+        entity.Priority = req.Priority;
+        entity.UrlSlug = req.UrlSlug;
+        entity.ParentId = req.ParentId;
+
         if (req.Image is not null)
         {
             if (!string.IsNullOrWhiteSpace(entity.Image))
                 await images.DeleteImageAsync(entity.Image);
             entity.Image = await images.SaveImageAsync(req.Image, ct);
         }
+
         await repo.UpdateAsync(entity, ct);
     }
 
     public async Task DeleteAsync(int id, CancellationToken ct = default)
     {
-        var entity = await repo.GetByIdAsync(id, ct) ?? throw new KeyNotFoundException("Category not found");
+        var entity = await repo.GetByIdAsync(id, ct)
+                     ?? throw new KeyNotFoundException("Category not found");
         entity.IsDeleted = true;
         await repo.UpdateAsync(entity, ct);
     }

@@ -8,12 +8,20 @@ public class CategoryProfile : Profile
 {
     public CategoryProfile()
     {
+        // Category -> CategoryDto
         CreateMap<Category, CategoryDto>();
 
+        // CategoryCreateRequest -> Category
         CreateMap<CategoryCreateRequest, Category>()
             .ForMember(d => d.Image, o => o.Ignore())
-            .ForMember(d => d.IsDeleted, o => o.Ignore());
+            .ForMember(d => d.IsDeleted, o => o.Ignore())
+            .ForMember(d => d.Children, o => o.Ignore())
+            .ForMember(d => d.Parent, o => o.Ignore());
+
+        // CategoryUpdateRequest -> Category
         CreateMap<CategoryUpdateRequest, Category>()
-            .ForMember(d => d.Image, o => o.Ignore());
+            .ForMember(d => d.Image, o => o.Ignore())
+            .ForMember(d => d.Children, o => o.Ignore())
+            .ForMember(d => d.Parent, o => o.Ignore());
     }
 }
