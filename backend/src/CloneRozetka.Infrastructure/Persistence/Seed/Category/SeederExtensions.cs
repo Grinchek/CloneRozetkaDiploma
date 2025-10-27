@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
@@ -13,6 +14,7 @@ public static class SeederExtensions
         var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
         var logger = scope.ServiceProvider.GetRequiredService<ILoggerFactory>().CreateLogger("CategorySeeder");
 
+        db.Database.Migrate();
         var defaultPath = Path.Combine(AppContext.BaseDirectory, "categories.json");
 
         var path = jsonRelativePath is null ? defaultPath : Path.Combine(AppContext.BaseDirectory, jsonRelativePath);

@@ -2,7 +2,6 @@
 using AutoMapper.QueryableExtensions;
 using CloneRozetka.Application.Abstractions;
 using CloneRozetka.Application.Categories.DTOs;
-using CloneRozetka.Application.Categories.Interfaces;
 using CloneRozetka.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 

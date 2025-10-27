@@ -1,6 +1,6 @@
 ﻿using CloneRozetka.Application.Categories.DTOs;
 
-namespace CloneRozetka.Application.Categories.Interfaces;
+namespace CloneRozetka.Application.Abstractions;
 
 public interface ICategoryService
 {

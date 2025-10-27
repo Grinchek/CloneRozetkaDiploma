@@ -1,8 +1,8 @@
 using CloneRozetka.Application.Abstractions;
-using CloneRozetka.Application.Categories.Interfaces;
+using CloneRozetka.Domain;
 using CloneRozetka.Application.Categories.Mappers;
 using CloneRozetka.Application.Categories.Validators;
-using CloneRozetka.Infrastructure.Files;
+using CloneRozetka.Infrastructure.Services;
 using CloneRozetka.Infrastructure.Persistence;
 using CloneRozetka.Infrastructure.Persistence.Seed;
 using CloneRozetka.Infrastructure.Repositories;
@@ -26,8 +26,7 @@ builder.Services.AddScoped<ICategoryService, CategoryService>();
 
 // Infrastructure
 builder.Services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
-var imagesPath = Path.Combine(builder.Environment.ContentRootPath, "Images");
-builder.Services.AddScoped<IImageService>(_ => new ImageService(imagesPath));
+builder.Services.AddScoped<IImageService, ImageService>();
 
 
 builder.Services.AddControllers();
