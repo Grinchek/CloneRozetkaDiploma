@@ -3,24 +3,39 @@ using AutoMapper.QueryableExtensions;
 using CloneRozetka.Application.Abstractions;
 using CloneRozetka.Application.Categories.DTOs;
 using CloneRozetka.Domain.Entities;
-using Microsoft.EntityFrameworkCore;
 
-public class CategoryService(
-    IRepository<Category> repo,
-    IImageService images,
-    IMapper mapper) : ICategoryService
+namespace CloneRozetka.Application.Categories;
+
+// Реалізація повністю відповідає ICategoryService
+public class CategoryService : ICategoryService
 {
-    public async Task<IReadOnlyList<CategoryDto>> ListAsync(CancellationToken ct = default) =>
-        await repo.Query().AsNoTracking()
-                  .Where(x => !x.IsDeleted)
-                  .ProjectTo<CategoryDto>(mapper.ConfigurationProvider)
-                  .ToListAsync(ct);
+    private readonly IRepository<Category> _repo;
+    private readonly IImageService _images;
+    private readonly IMapper _mapper;
 
-    public async Task<CategoryDto?> GetAsync(int id, CancellationToken ct = default) =>
-        await repo.Query().AsNoTracking()
-                  .Where(x => x.Id == id && !x.IsDeleted)
-                  .ProjectTo<CategoryDto>(mapper.ConfigurationProvider)
-                  .FirstOrDefaultAsync(ct);
+    public CategoryService(
+        IRepository<Category> repo,
+        IImageService images,
+        IMapper mapper)
+    {
+        _repo = repo;
+        _images = images;
+        _mapper = mapper;
+    }
+
+    public async Task<IReadOnlyList<CategoryDto>> ListAsync(CancellationToken ct = default)
+        => await _repo.ToListAsync(
+            _repo.Query(asNoTracking: true)
+                 .Where(x => !x.IsDeleted)
+                 .ProjectTo<CategoryDto>(_mapper.ConfigurationProvider),
+            ct);
+
+    public async Task<CategoryDto?> GetAsync(int id, CancellationToken ct = default)
+        => await _repo.FirstOrDefaultAsync(
+            _repo.Query(asNoTracking: true)
+                 .Where(x => x.Id == id && !x.IsDeleted)
+                 .ProjectTo<CategoryDto>(_mapper.ConfigurationProvider),
+            ct);
 
     public async Task<int> CreateAsync(CategoryCreateRequest req, CancellationToken ct = default)
     {
@@ -33,15 +48,14 @@ public class CategoryService(
         };
 
         if (req.Image is not null)
-            entity.Image = await images.SaveImageAsync(req.Image, ct);
-
-        await repo.AddAsync(entity, ct);
+            entity.Image = await _images.SaveImageAsync(req.Image);
+        await _repo.AddAsync(entity, ct);
         return entity.Id;
     }
 
     public async Task UpdateAsync(CategoryUpdateRequest req, CancellationToken ct = default)
     {
-        var entity = await repo.GetByIdAsync(req.Id, ct)
+        var entity = await _repo.GetByIdAsync(req.Id, ct)
                      ?? throw new KeyNotFoundException("Category not found");
 
         entity.Name = req.Name;
@@ -52,18 +66,20 @@ public class CategoryService(
         if (req.Image is not null)
         {
             if (!string.IsNullOrWhiteSpace(entity.Image))
-                await images.DeleteImageAsync(entity.Image);
-            entity.Image = await images.SaveImageAsync(req.Image, ct);
+                await _images.DeleteImageAsync(entity.Image);
+
+            entity.Image = await _images.SaveImageAsync(req.Image);
         }
 
-        await repo.UpdateAsync(entity, ct);
+        await _repo.UpdateAsync(entity, ct);
     }
 
     public async Task DeleteAsync(int id, CancellationToken ct = default)
     {
-        var entity = await repo.GetByIdAsync(id, ct)
+        var entity = await _repo.GetByIdAsync(id, ct)
                      ?? throw new KeyNotFoundException("Category not found");
+
         entity.IsDeleted = true;
-        await repo.UpdateAsync(entity, ct);
+        await _repo.UpdateAsync(entity, ct);
     }
 }

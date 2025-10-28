@@ -1,5 +1,5 @@
 using CloneRozetka.Application.Abstractions;
-using CloneRozetka.Domain;
+using CloneRozetka.Application.Categories; 
 using CloneRozetka.Application.Categories.Mappers;
 using CloneRozetka.Application.Categories.Validators;
 using CloneRozetka.Infrastructure.Services;
@@ -32,6 +32,7 @@ builder.Services.AddScoped<IImageService, ImageService>();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
 
 var app = builder.Build();
 // Seeder

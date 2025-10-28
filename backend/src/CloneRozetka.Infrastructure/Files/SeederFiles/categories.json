@@ -4,413 +4,413 @@
     "priority": 1,
     "urlSlug": "electronics",
     "parentSlug": null,
-    "image": null
+    "image": "https://cdn-icons-png.flaticon.com/512/1555/1555484.png"
   },
   {
     "name": "Побутова техніка",
     "priority": 2,
     "urlSlug": "appliances",
     "parentSlug": null,
-    "image": null
+    "image": "https://w7.pngwing.com/pngs/894/208/png-transparent-washing-machines-laundry-home-appliance-combo-washer-dryer-washing-machine-top-text-smiley-clothes-dryer-thumbnail.png"
   },
   {
     "name": "Комп’ютери та ноутбуки",
     "priority": 3,
     "urlSlug": "computers-laptops",
     "parentSlug": null,
-    "image": null
+    "image": "https://w7.pngwing.com/pngs/363/425/png-transparent-lack-laptop-computer-laptop-macbook-pro-computer-icons-handheld-devices-laptop-icon-electronics-text-rectangle-thumbnail.png"
   },
   {
     "name": "Телефони та аксесуари",
     "priority": 4,
     "urlSlug": "phones-accessories",
     "parentSlug": null,
-    "image": null
+    "image": "https://w7.pngwing.com/pngs/356/426/png-transparent-mobile-phone-accessories-near-field-communication-computer-icons-iphone-mobile-payment-50-gadget-electronics-logo.png"
   },
   {
     "name": "ТВ, аудіо, відео",
     "priority": 5,
     "urlSlug": "tv-audio-video",
     "parentSlug": null,
-    "image": null
+    "image": "https://cdn.imgbin.com/19/20/19/audio-and-video-icon-4k-icon-q2j1r84y.jpg"
   },
   {
     "name": "Ігри та розваги",
     "priority": 6,
     "urlSlug": "gaming",
     "parentSlug": null,
-    "image": null
+    "image": "https://st2.depositphotos.com/6628792/10110/v/450/depositphotos_101101444-stock-illustration-game-controller-icon.jpg"
   },
   {
     "name": "Дім та сад",
     "priority": 7,
     "urlSlug": "home-garden",
     "parentSlug": null,
-    "image": null
+    "image": "https://www.loopmarket.com.ua/wp-content/uploads/2025/10/ChatGPT-Image-3-%D0%B6%D0%BE%D0%B2%D1%82.-2025-%D1%80.-22_22_19.png"
   },
   {
     "name": "Інструменти та ремонт",
     "priority": 8,
     "urlSlug": "tools-diy",
     "parentSlug": null,
-    "image": null
+    "image": "https://e7.pngegg.com/pngimages/556/629/png-clipart-spanners-computer-icons-tool-repair-miscellaneous-logo-thumbnail.png"
   },
   {
     "name": "Автотовари",
     "priority": 9,
     "urlSlug": "auto-products",
     "parentSlug": null,
-    "image": null
+    "image": "https://e7.pngegg.com/pngimages/678/580/png-clipart-car-computer-icons-motor-vehicle-service-auto-parts-text-logo.png"
   },
   {
     "name": "Спорт і хобі",
     "priority": 10,
     "urlSlug": "sport-hobby",
     "parentSlug": null,
-    "image": null
+    "image": "https://w7.pngwing.com/pngs/53/589/png-transparent-computer-icons-sport-football-sports-personal-text-sport-logo.png"
   },
   {
     "name": "Мода",
     "priority": 11,
     "urlSlug": "fashion",
     "parentSlug": null,
-    "image": null
+    "image": "https://e7.pngegg.com/pngimages/552/336/png-clipart-computer-icons-clothes-hanger-encapsulated-postscript-icon-moda-angle-text.png"
   },
   {
     "name": "Дитячі товари",
     "priority": 12,
     "urlSlug": "kids",
     "parentSlug": null,
-    "image": null
+    "image": "https://cdn-icons-png.flaticon.com/512/3081/3081993.png"
   },
   {
     "name": "Краса та здоров’я",
     "priority": 13,
     "urlSlug": "beauty-health",
     "parentSlug": null,
-    "image": null
+    "image": "https://cdn-icons-png.flaticon.com/512/2303/2303211.png"
   },
   {
     "name": "Зоотовари",
     "priority": 14,
     "urlSlug": "pets",
     "parentSlug": null,
-    "image": null
+    "image": "https://cdn-icons-png.flaticon.com/512/884/884188.png"
   },
   {
     "name": "Офіс та канцелярія",
     "priority": 15,
     "urlSlug": "office-stationery",
     "parentSlug": null,
-    "image": null
+    "image": "https://w7.pngwing.com/pngs/924/534/png-transparent-computer-icons-office-supplies-material-%E5%8A%9E%E5%85%AC-white-text-office.png"
   },
   {
     "name": "Будівництво та ремонт",
     "priority": 16,
     "urlSlug": "building-repair",
     "parentSlug": null,
-    "image": null
+    "image": "https://cdn-icons-png.freepik.com/256/12868/12868064.png?semt=ais_white_label"
   },
   {
     "name": "Продукти харчування та напої",
     "priority": 17,
     "urlSlug": "food-drinks",
     "parentSlug": null,
-    "image": null
+    "image": "https://balenko.com/wp-content/uploads/2021/11/ecology-marks-non-toxic.jpeg"
   },
   {
     "name": "Смартфони",
     "priority": 1,
     "urlSlug": "smartphones",
     "parentSlug": "electronics",
-    "image": null
+    "image": "https://cdn-icons-png.flaticon.com/512/864/864343.png"
   },
   {
     "name": "Планшети",
     "priority": 2,
     "urlSlug": "tablets",
     "parentSlug": "electronics",
-    "image": null
+    "image": "https://e7.pngegg.com/pngimages/580/758/png-clipart-computer-icons-smartphone-tablet-computers-iphone-tablet-angle-electronics.png"
   },
   {
     "name": "Електронні книги",
     "priority": 3,
     "urlSlug": "e-book-readers",
     "parentSlug": "electronics",
-    "image": null
+    "image": "https://cdn-icons-png.flaticon.com/512/1006/1006419.png"
   },
   {
     "name": "Фото та відео",
     "priority": 4,
     "urlSlug": "photo-video",
     "parentSlug": "electronics",
-    "image": null
+    "image": "https://img.freepik.com/free-psd/camera-outline-logo-design_23-2151263981.jpg?semt=ais_hybrid&w=740&q=80"
   },
   {
     "name": "Екшн-камери та дрони",
     "priority": 5,
     "urlSlug": "action-cameras-drones",
     "parentSlug": "electronics",
-    "image": null
+    "image": "https://cdn-icons-png.flaticon.com/256/2628/2628223.png"
   },
   {
     "name": "Розумні годинники та браслети",
     "priority": 6,
     "urlSlug": "wearables",
     "parentSlug": "electronics",
-    "image": null
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQyvKpFd1wKrhR_RCbl1uslGGzw-ZFgP8nAzA&s"
   },
   {
     "name": "Навушники",
     "priority": 7,
     "urlSlug": "headphones",
     "parentSlug": "electronics",
-    "image": null
+    "image": "https://cdn-icons-png.flaticon.com/512/88/88197.png"
   },
   {
     "name": "Колонки та портативний звук",
     "priority": 8,
     "urlSlug": "portable-audio",
     "parentSlug": "electronics",
-    "image": null
+    "image": "https://w7.pngwing.com/pngs/84/151/png-transparent-symbol-computer-icons-loudspeaker-audio-electronics-speakers-miscellaneous-rectangle-mobile-phone-case.png"
   },
   {
     "name": "Зовнішні акумулятори",
     "priority": 9,
     "urlSlug": "power-banks",
     "parentSlug": "electronics",
-    "image": null
+    "image": "https://cdn-icons-png.flaticon.com/512/2088/2088666.png"
   },
   {
     "name": "Кабелі та перехідники",
     "priority": 10,
     "urlSlug": "cables-adapters",
     "parentSlug": "electronics",
-    "image": null
+    "image": "https://cdn-icons-png.flaticon.com/512/640/640354.png"
   },
   {
     "name": "Мобільні телефони",
     "priority": 1,
     "urlSlug": "mobile-phones",
     "parentSlug": "phones-accessories",
-    "image": null
+    "image": "https://cdn-icons-png.flaticon.com/512/1437/1437047.png"
   },
   {
     "name": "Чохли",
     "priority": 2,
     "urlSlug": "phone-cases",
     "parentSlug": "phones-accessories",
-    "image": null
+    "image": "https://cdn-icons-png.flaticon.com/512/644/644521.png"
   },
   {
     "name": "Зарядні пристрої",
     "priority": 3,
     "urlSlug": "chargers",
     "parentSlug": "phones-accessories",
-    "image": null
+    "image": "https://cdn-icons-png.flaticon.com/512/2224/2224412.png"
   },
   {
     "name": "Захисні стекла та плівки",
     "priority": 4,
     "urlSlug": "screen-protectors",
     "parentSlug": "phones-accessories",
-    "image": null
+    "image": "https://img.freepik.com/premium-vector/security-protective-glass-icon-simple-illustration-security-protective-glass-vector-icon-web-design-isolated-white-background_98396-31340.jpg"
   },
   {
     "name": "Кабелі",
     "priority": 5,
     "urlSlug": "phone-cables",
     "parentSlug": "phones-accessories",
-    "image": null
+    "image": "https://c0.klipartz.com/pngpicture/895/210/gratis-png-cables-de-red-cables-electricos-y-cables-electricos-iconos-de-computadora-thumbnail.png"
   },
   {
     "name": "Телевізори",
     "priority": 1,
     "urlSlug": "tvs",
     "parentSlug": "tv-audio-video",
-    "image": null
+    "image": "https://cdn-icons-png.flaticon.com/512/60/60416.png"
   },
   {
     "name": "Саундбари та домашні кінотеатри",
     "priority": 2,
     "urlSlug": "soundbars-home-theater",
     "parentSlug": "tv-audio-video",
-    "image": null
+    "image": "https://cdn-icons-png.flaticon.com/512/2917/2917672.png"
   },
   {
     "name": "ТБ-приставки",
     "priority": 3,
     "urlSlug": "tv-boxes",
     "parentSlug": "tv-audio-video",
-    "image": null
+    "image": "https://cdn-icons-png.flaticon.com/512/1563/1563382.png"
   },
   {
     "name": "Проєктори",
     "priority": 4,
     "urlSlug": "projectors",
     "parentSlug": "tv-audio-video",
-    "image": null
+    "image": "https://cdn-icons-png.flaticon.com/512/1670/1670665.png"
   },
   {
     "name": "Антени та кронштейни",
     "priority": 5,
     "urlSlug": "antennas-mounts",
     "parentSlug": "tv-audio-video",
-    "image": null
+    "image": "https://w7.pngwing.com/pngs/408/746/png-transparent-satellite-dish-illustration-computer-icons-satellite-dish-aerials-satellite-dish-icon-miscellaneous-text-logo-thumbnail.png"
   },
   {
     "name": "Ноутбуки",
     "priority": 1,
     "urlSlug": "laptops",
     "parentSlug": "computers-laptops",
-    "image": null
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCrTgpQJBEUT9LqMi4IdcNrYo6AxLilauYYQ&s"
   },
   {
     "name": "Настільні ПК",
     "priority": 2,
     "urlSlug": "desktops",
     "parentSlug": "computers-laptops",
-    "image": null
+    "image": "https://cdn-icons-png.flaticon.com/512/2292/2292112.png"
   },
   {
     "name": "Монітори",
     "priority": 3,
     "urlSlug": "monitors",
     "parentSlug": "computers-laptops",
-    "image": null
+    "image": "https://cdn-icons-png.flaticon.com/512/3474/3474360.png"
   },
   {
     "name": "Відеокарти",
     "priority": 4,
     "urlSlug": "gpus",
     "parentSlug": "computers-laptops",
-    "image": null
+    "image": "https://cdn-icons-png.flaticon.com/512/2000/2000524.png"
   },
   {
     "name": "Процесори",
     "priority": 5,
     "urlSlug": "cpus",
     "parentSlug": "computers-laptops",
-    "image": null
+    "image": "https://cdn-icons-png.flaticon.com/512/1250/1250593.png"
   },
   {
     "name": "Материнські плати",
     "priority": 6,
     "urlSlug": "motherboards",
     "parentSlug": "computers-laptops",
-    "image": null
+    "image": "https://cdn-icons-png.flaticon.com/512/1404/1404708.png"
   },
   {
     "name": "ОЗП",
     "priority": 7,
     "urlSlug": "ram",
     "parentSlug": "computers-laptops",
-    "image": null
+    "image": "https://cdn-icons-png.flaticon.com/512/3716/3716952.png"
   },
   {
     "name": "SSD та HDD",
     "priority": 8,
     "urlSlug": "storage",
     "parentSlug": "computers-laptops",
-    "image": null
+    "image": "https://www.shutterstock.com/image-vector/hard-disk-drive-hdd-solid-260nw-2258380473.jpg"
   },
   {
     "name": "Клавіатури та миші",
     "priority": 9,
     "urlSlug": "keyboards-mice",
     "parentSlug": "computers-laptops",
-    "image": null
+    "image": "https://st5.depositphotos.com/79200730/74179/v/450/depositphotos_741792152-stock-illustration-isolated-outline-simple-icon-compact.jpg"
   },
   {
     "name": "Принтери та МФУ",
     "priority": 10,
     "urlSlug": "printers-mfp",
     "parentSlug": "computers-laptops",
-    "image": null
+    "image": "https://cdn-icons-png.flaticon.com/512/77/77480.png"
   },
   {
     "name": "Холодильники",
     "priority": 1,
     "urlSlug": "refrigerators",
     "parentSlug": "appliances",
-    "image": null
+    "image": "https://cdn-icons-png.flaticon.com/512/1414/1414444.png"
   },
   {
     "name": "Пральні машини",
     "priority": 2,
     "urlSlug": "washing-machines",
     "parentSlug": "appliances",
-    "image": null
+    "image": "https://cdn-icons-png.flaticon.com/512/114/114730.png"
   },
   {
     "name": "Посудомийні машини",
     "priority": 3,
     "urlSlug": "dishwashers",
     "parentSlug": "appliances",
-    "image": null
+    "image": "https://cdn-icons-png.flaticon.com/512/3946/3946945.png"
   },
   {
     "name": "Плити та варильні поверхні",
     "priority": 4,
     "urlSlug": "cookers-hobs",
     "parentSlug": "appliances",
-    "image": null
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRfdjtnBEMWUgG1GLPUa8iLEgUPfG3kO0Z_DA&s"
   },
   {
     "name": "Пилососи",
     "priority": 5,
     "urlSlug": "vacuum-cleaners",
     "parentSlug": "appliances",
-    "image": null
+    "image": "https://cdn-icons-png.flaticon.com/512/114/114645.png"
   },
   {
     "name": "Мікрохвильові печі",
     "priority": 6,
     "urlSlug": "microwaves",
     "parentSlug": "appliances",
-    "image": null
+    "image": "https://w7.pngwing.com/pngs/120/390/png-transparent-computer-icons-microwave-ovens-cooking-ranges-7-miscellaneous-kitchen-food-thumbnail.png"
   },
   {
     "name": "Блендери та міксери",
     "priority": 7,
     "urlSlug": "blenders-mixers",
     "parentSlug": "appliances",
-    "image": null
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdLSw3O_Hp3AFnxZsblT-44Y1shuZNq4sdGQ&s"
   },
   {
     "name": "Мультиварки",
     "priority": 8,
     "urlSlug": "multicookers",
     "parentSlug": "appliances",
-    "image": null
+    "image": "https://cdn-icons-png.flaticon.com/512/1554/1554191.png"
   },
   {
     "name": "Праски",
     "priority": 9,
     "urlSlug": "irons",
     "parentSlug": "appliances",
-    "image": null
+    "image": "https://cdn-icons-png.flaticon.com/512/435/435527.png"
   },
   {
     "name": "Кавомашини",
     "priority": 10,
     "urlSlug": "coffee-machines",
     "parentSlug": "appliances",
-    "image": null
+    "image": "https://cdn-icons-png.flaticon.com/512/809/809550.png"
   },
   {
     "name": "Ігрові приставки",
     "priority": 1,
     "urlSlug": "consoles",
     "parentSlug": "gaming",
-    "image": null
+    "image": "https://cdn-icons-png.flaticon.com/512/453/453158.png"
   },
   {
     "name": "Ігри",
     "priority": 2,
     "urlSlug": "games",
     "parentSlug": "gaming",
-    "image": null
+    "image": "https://w7.pngwing.com/pngs/548/332/png-transparent-computer-icons-others-miscellaneous-game-video-game.png"
   },
   {
     "name": "Геймерські аксесуари",
@@ -431,356 +431,356 @@
     "priority": 1,
     "urlSlug": "furniture",
     "parentSlug": "home-garden",
-    "image": null
+    "image": "https://cdn-icons-png.flaticon.com/512/1198/1198419.png"
   },
   {
     "name": "Освітлення",
     "priority": 2,
     "urlSlug": "lighting",
     "parentSlug": "home-garden",
-    "image": null
+    "image": "https://cdn-icons-png.flaticon.com/512/1758/1758460.png"
   },
   {
     "name": "Декор",
     "priority": 3,
     "urlSlug": "decor",
     "parentSlug": "home-garden",
-    "image": null
+    "image": "https://cdn-icons-png.flaticon.com/512/1198/1198418.png"
   },
   {
     "name": "Посуд та кухонне приладдя",
     "priority": 4,
     "urlSlug": "kitchenware",
     "parentSlug": "home-garden",
-    "image": null
+    "image": "https://cdn-icons-png.flaticon.com/512/1249/1249630.png"
   },
   {
     "name": "Садові інструменти",
     "priority": 5,
     "urlSlug": "garden-tools",
     "parentSlug": "home-garden",
-    "image": null
+    "image": "https://w7.pngwing.com/pngs/764/193/png-transparent-spade-computer-icons-garden-tool-gardening-forks-shovel-shovel-thumbnail.png"
   },
   {
     "name": "Теплиці та грядки",
     "priority": 6,
     "urlSlug": "greenhouses-beds",
     "parentSlug": "home-garden",
-    "image": null
+    "image": "https://cdn-icons-png.flaticon.com/512/15/15812.png"
   },
   {
     "name": "Електроінструмент",
     "priority": 1,
     "urlSlug": "power-tools",
     "parentSlug": "tools-diy",
-    "image": null
+    "image": "https://cdn-icons-png.flaticon.com/512/644/644219.png"
   },
   {
     "name": "Ручний інструмент",
     "priority": 2,
     "urlSlug": "hand-tools",
     "parentSlug": "tools-diy",
-    "image": null
+    "image": "https://cdn-icons-png.flaticon.com/512/972/972997.png"
   },
   {
     "name": "Зварювальне обладнання",
     "priority": 3,
     "urlSlug": "welding",
     "parentSlug": "tools-diy",
-    "image": null
+    "image": "https://media.istockphoto.com/id/1715230779/uk/%D0%B2%D0%B5%D0%BA%D1%82%D0%BE%D1%80%D0%BD%D1%96-%D0%B7%D0%BE%D0%B1%D1%80%D0%B0%D0%B6%D0%B5%D0%BD%D0%BD%D1%8F/%D0%B7%D0%BD%D0%B0%D1%87%D0%BE%D0%BA-%D0%B7%D0%B2%D0%B0%D1%80%D1%8E%D0%B2%D0%B0%D0%BB%D1%8C%D0%BD%D0%B8%D0%BA%D0%B0-%D0%B7%D0%B2%D0%B0%D1%80%D1%8E%D0%B2%D0%B0%D0%BD%D0%BD%D1%8F.jpg?s=612x612&w=0&k=20&c=ZGDAX55D8gvk3Bno3JF7CFI2nvAA4UPi_Zumbev9_Uw="
   },
   {
     "name": "Вимірювальні прилади",
     "priority": 4,
     "urlSlug": "measuring-tools",
     "parentSlug": "tools-diy",
-    "image": null
+    "image": "https://cdn-icons-png.flaticon.com/512/1084/1084993.png"
   },
   {
     "name": "Кріплення та фурнітура",
     "priority": 5,
     "urlSlug": "fasteners",
     "parentSlug": "tools-diy",
-    "image": null
+    "image": "https://cdn-icons-png.flaticon.com/512/289/289741.png"
   },
   {
     "name": "Шини та диски",
     "priority": 1,
     "urlSlug": "tires-wheels",
     "parentSlug": "auto-products",
-    "image": null
+    "image": "https://img.freepik.com/premium-vector/tire-icon-vector-design-template-white-background_731715-4402.jpg"
   },
   {
     "name": "Автоелектроніка",
     "priority": 2,
     "urlSlug": "car-electronics",
     "parentSlug": "auto-products",
-    "image": null
+    "image": "https://cdn-icons-png.flaticon.com/512/3902/3902923.png"
   },
   {
     "name": "Автохімія та догляд",
     "priority": 3,
     "urlSlug": "car-care",
     "parentSlug": "auto-products",
-    "image": null
+    "image": "https://cdn.vectorstock.com/i/1000v/22/75/car-care-icon-in-line-design-maintenance-vector-54412275.jpg"
   },
   {
     "name": "Аксесуари для авто",
     "priority": 4,
     "urlSlug": "car-accessories",
     "parentSlug": "auto-products",
-    "image": null
+    "image": "https://png.pngtree.com/png-vector/20221201/ourmid/pngtree-auto-parts-icon-for-repair-services-and-ecommerce-vector-png-image_42950250.jpg"
   },
   {
     "name": "Масла та рідини",
     "priority": 5,
     "urlSlug": "oils-fluids",
     "parentSlug": "auto-products",
-    "image": null
+    "image": "https://www.shutterstock.com/image-vector/lubricant-oil-drop-gear-icon-600nw-2212630847.jpg"
   },
   {
     "name": "Фітнес та тренажери",
     "priority": 1,
     "urlSlug": "fitness",
     "parentSlug": "sport-hobby",
-    "image": null
+    "image": "https://cdn-icons-png.flaticon.com/512/69/69966.png"
   },
   {
     "name": "Велосипеди",
     "priority": 2,
     "urlSlug": "bicycles",
     "parentSlug": "sport-hobby",
-    "image": null
+    "image": "https://www.iconpacks.net/icons/1/free-bicycle-icon-1054-thumb.png"
   },
   {
     "name": "Самокати та гіроборди",
     "priority": 3,
     "urlSlug": "scooters-gyros",
     "parentSlug": "sport-hobby",
-    "image": null
+    "image": "https://previews.123rf.com/images/bsd555/bsd5551802/bsd555180200217/94994165-gyroscooter-glyph-icon-silhouette-symbol-hoverboard-negative-space-vector-isolated-illustration.jpg"
   },
   {
     "name": "Туризм і кемпінг",
     "priority": 4,
     "urlSlug": "camping",
     "parentSlug": "sport-hobby",
-    "image": null
+    "image": "https://cdn-icons-png.flaticon.com/512/1133/1133546.png"
   },
   {
     "name": "Риболовля",
     "priority": 5,
     "urlSlug": "fishing",
     "parentSlug": "sport-hobby",
-    "image": null
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyt_3pUYA6aKXe7ZtuV_SxA2YueA2vok185g&s"
   },
   {
     "name": "Жіночий одяг",
     "priority": 1,
     "urlSlug": "womens-clothing",
     "parentSlug": "fashion",
-    "image": null
+    "image": "https://cdn-icons-png.flaticon.com/512/4273/4273296.png"
   },
   {
     "name": "Чоловічий одяг",
     "priority": 2,
     "urlSlug": "mens-clothing",
     "parentSlug": "fashion",
-    "image": null
+    "image": "https://cdn-icons-png.flaticon.com/512/3531/3531744.png"
   },
   {
     "name": "Взуття",
     "priority": 3,
     "urlSlug": "shoes",
     "parentSlug": "fashion",
-    "image": null
+    "image": "https://png.pngtree.com/png-vector/20191027/ourmid/pngtree-shoes-line-icon-vector-png-image_1879748.jpg"
   },
   {
     "name": "Сумки та аксесуари",
     "priority": 4,
     "urlSlug": "bags-accessories",
     "parentSlug": "fashion",
-    "image": null
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtIqWDzSozzlUfbsxOQei5UKNnCNPXlXrh1A&s"
   },
   {
     "name": "Іграшки",
     "priority": 1,
     "urlSlug": "toys",
     "parentSlug": "kids",
-    "image": null
+    "image": "https://cdn-icons-png.flaticon.com/512/3819/3819362.png"
   },
   {
     "name": "Дитячий транспорт",
     "priority": 2,
     "urlSlug": "kids-transport",
     "parentSlug": "kids",
-    "image": null
+    "image": "https://thumbs.dreamstime.com/b/black-silhouette-toy-train-isolated-white-background-graphic-illustration-concept-transportation-kids-play-childhood-icon-395159063.jpg"
   },
   {
     "name": "Дитячі коляски та автокрісла",
     "priority": 3,
     "urlSlug": "strollers-car-seats",
     "parentSlug": "kids",
-    "image": null
+    "image": "https://st3.depositphotos.com/14846838/18709/v/1600/depositphotos_187096340-stock-illustration-stroller-vector-icon.jpg"
   },
   {
     "name": "Догляд за немовлятами",
     "priority": 4,
     "urlSlug": "baby-care",
     "parentSlug": "kids",
-    "image": null
+    "image": "https://i.pinimg.com/564x/68/76/87/68768726db76d694cba1e2bf6f6ef42d.jpg"
   },
   {
     "name": "Шкільні товари",
     "priority": 5,
     "urlSlug": "school-supplies",
     "parentSlug": "kids",
-    "image": null
+    "image": "https://cdn-icons-png.flaticon.com/512/120/120128.png"
   },
   {
     "name": "Косметика",
     "priority": 1,
     "urlSlug": "cosmetics",
     "parentSlug": "beauty-health",
-    "image": null
+    "image": "https://cdn-icons-png.flaticon.com/512/130/130298.png"
   },
   {
     "name": "Парфуми",
     "priority": 2,
     "urlSlug": "perfumery",
     "parentSlug": "beauty-health",
-    "image": null
+    "image": "https://cdn-icons-png.flaticon.com/512/1957/1957709.png"
   },
   {
     "name": "Догляд за волоссям",
     "priority": 3,
     "urlSlug": "haircare",
     "parentSlug": "beauty-health",
-    "image": null
+    "image": "https://cdn-icons-png.flaticon.com/512/3296/3296818.png"
   },
   {
     "name": "Техніка для краси",
     "priority": 4,
     "urlSlug": "beauty-tech",
     "parentSlug": "beauty-health",
-    "image": null
+    "image": "https://cdn-icons-png.flaticon.com/512/2892/2892387.png"
   },
   {
     "name": "Медтехніка",
     "priority": 5,
     "urlSlug": "medical-devices",
     "parentSlug": "beauty-health",
-    "image": null
+    "image": "https://img.freepik.com/premium-vector/vector-design-medical-device-icon-style_822882-232172.jpg"
   },
   {
     "name": "Для собак",
     "priority": 1,
     "urlSlug": "dogs",
     "parentSlug": "pets",
-    "image": null
+    "image": "https://cdn-icons-png.flaticon.com/512/620/620851.png"
   },
   {
     "name": "Для котів",
     "priority": 2,
     "urlSlug": "cats",
     "parentSlug": "pets",
-    "image": null
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8lA3mySQvJi9lz1_tw4VIwLCk8ePeePCtwQ&s"
   },
   {
     "name": "Акваріумістика",
     "priority": 3,
     "urlSlug": "aquariums",
     "parentSlug": "pets",
-    "image": null
+    "image": "https://png.pngtree.com/png-vector/20230407/ourmid/pngtree-aquarium-line-icon-vector-png-image_6684695.png"
   },
   {
     "name": "Для птахів",
     "priority": 4,
     "urlSlug": "birds",
     "parentSlug": "pets",
-    "image": null
+    "image": "https://www.shutterstock.com/image-vector/simple-bird-logo-vector-icon-600nw-2485802675.jpg"
   },
   {
     "name": "Папір та бланки",
     "priority": 1,
     "urlSlug": "paper",
     "parentSlug": "office-stationery",
-    "image": null
+    "image": "https://png.pngtree.com/png-clipart/20190903/original/pngtree-paper-icon-png-image_4422781.jpg"
   },
   {
     "name": "Письмове приладдя",
     "priority": 2,
     "urlSlug": "writing",
     "parentSlug": "office-stationery",
-    "image": null
+    "image": "https://cdn-icons-png.flaticon.com/512/2554/2554339.png"
   },
   {
     "name": "Організація робочого місця",
     "priority": 3,
     "urlSlug": "desk-organization",
     "parentSlug": "office-stationery",
-    "image": null
+    "image": "https://www.shutterstock.com/image-vector/office-desk-icon-empty-no-600nw-1727561023.jpg"
   },
   {
     "name": "Офісні меблі",
     "priority": 4,
     "urlSlug": "office-furniture",
     "parentSlug": "office-stationery",
-    "image": null
+    "image": "https://static.thenounproject.com/png/3929587-200.png"
   },
   {
     "name": "Будматеріали",
     "priority": 1,
     "urlSlug": "building-materials",
     "parentSlug": "building-repair",
-    "image": null
+    "image": "https://previews.123rf.com/images/hedgehogvector/hedgehogvector1601/hedgehogvector160102336/50295445-building-materials-icon.jpg"
   },
   {
     "name": "Електрика",
     "priority": 2,
     "urlSlug": "electrics",
     "parentSlug": "building-repair",
-    "image": null
+    "image": "https://media.istockphoto.com/id/1144423759/vector/electric-plug-icon-with-cord-stock-vector.jpg?s=612x612&w=0&k=20&c=gaL7s6huiB6tCI-wybq1Q1ui1zH4yoDB1cxUg8Z4aLw="
   },
   {
     "name": "Сантехніка",
     "priority": 3,
     "urlSlug": "plumbing",
     "parentSlug": "building-repair",
-    "image": null
+    "image": "https://static.vecteezy.com/system/resources/previews/026/455/570/non_2x/plumbing-icon-isolated-on-white-background-vector.jpg"
   },
   {
     "name": "Опалення та кондиціювання",
     "priority": 4,
     "urlSlug": "heating-ac",
     "parentSlug": "building-repair",
-    "image": null
+    "image": "https://w7.pngwing.com/pngs/6/832/png-transparent-snowflake-x-sun-logo-cold-humidity-icon-hvac-s-graphics-logo-cartoon-air-conditioning.png"
   },
   {
     "name": "Напої",
     "priority": 1,
     "urlSlug": "beverages",
     "parentSlug": "food-drinks",
-    "image": null
+    "image": "https://cdn-icons-png.flaticon.com/512/175/175782.png"
   },
   {
     "name": "Бакалія",
     "priority": 2,
     "urlSlug": "groceries",
     "parentSlug": "food-drinks",
-    "image": null
+    "image": "https://cdn-icons-png.flaticon.com/512/3724/3724720.png"
   },
   {
     "name": "Снеки та солодощі",
     "priority": 3,
     "urlSlug": "snacks-sweets",
     "parentSlug": "food-drinks",
-    "image": null
+    "image": "https://cdn-icons-png.flaticon.com/512/3081/3081792.png"
   },
   {
     "name": "Кава та чай",
     "priority": 4,
     "urlSlug": "coffee-tea",
     "parentSlug": "food-drinks",
-    "image": null
+    "image": "https://as1.ftcdn.net/jpg/03/03/75/02/1000_F_303750280_SopZ4PEpoDDm7mCJOUoQM7w5gN14hzHz.jpg"
   }
 ]

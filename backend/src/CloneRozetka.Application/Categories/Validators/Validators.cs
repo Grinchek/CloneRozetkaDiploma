@@ -3,7 +3,6 @@ using CloneRozetka.Application.Categories.DTOs;
 using CloneRozetka.Domain.Entities;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
 
 namespace CloneRozetka.Application.Categories.Validators;
 
@@ -22,19 +21,27 @@ public class CategoryCreateValidator : AbstractValidator<CategoryCreateRequest>
             .Matches("^[a-z0-9]+(?:[-_][a-z0-9]+)*$")
             .WithMessage("UrlSlug may contain lowercase letters, digits, '-' or '_'")
             .MustAsync(async (slug, ct) =>
-                !await repo.Query().AnyAsync(c => !c.IsDeleted && c.UrlSlug == slug, ct))
+                !await repo.ExistsAsync(
+                    repo.Query(asNoTracking: true)
+                        .Where(c => !c.IsDeleted && c.UrlSlug == slug),
+                    ct))
             .WithMessage("UrlSlug must be unique.");
 
         RuleFor(x => x.ParentId)
             .MustAsync(async (parentId, ct) =>
-                parentId == null ||
-                await repo.Query().AnyAsync(c => c.Id == parentId && !c.IsDeleted, ct))
+            {
+                if (parentId is null) return true;
+                return await repo.ExistsAsync(
+                    repo.Query(asNoTracking: true)
+                        .Where(c => c.Id == parentId && !c.IsDeleted),
+                    ct);
+            })
             .WithMessage("Parent category not found.");
 
         When(x => x.Image is not null, () =>
         {
             RuleFor(x => x.Image!)
-                .Must(f => IsAllowedContentType(f))
+                .Must(IsAllowedContentType)
                 .WithMessage("Image must be png/jpg/jpeg/webp.");
         });
     }
@@ -60,20 +67,29 @@ public class CategoryUpdateValidator : AbstractValidator<CategoryUpdateRequest>
             .Matches("^[a-z0-9]+(?:[-_][a-z0-9]+)*$")
             .WithMessage("UrlSlug may contain lowercase letters, digits, '-' or '_'")
             .MustAsync(async (model, slug, ct) =>
-                !await repo.Query().AnyAsync(c => !c.IsDeleted && c.UrlSlug == slug && c.Id != model.Id, ct))
+                !await repo.ExistsAsync(
+                    repo.Query(asNoTracking: true)
+                        .Where(c => !c.IsDeleted && c.UrlSlug == slug && c.Id != model.Id),
+                    ct))
             .WithMessage("UrlSlug must be unique.");
 
         RuleFor(x => x.ParentId)
             .MustAsync(async (model, parentId, ct) =>
-                parentId == null ||
-                (parentId != model.Id &&
-                 await repo.Query().AnyAsync(c => c.Id == parentId && !c.IsDeleted, ct)))
+            {
+                if (parentId is null) return true;
+                if (parentId == model.Id) return false;
+
+                return await repo.ExistsAsync(
+                    repo.Query(asNoTracking: true)
+                        .Where(c => c.Id == parentId && !c.IsDeleted),
+                    ct);
+            })
             .WithMessage("Parent category not found or invalid.");
 
         When(x => x.Image is not null, () =>
         {
             RuleFor(x => x.Image!)
-                .Must(f => IsAllowedContentType(f))
+                .Must(IsAllowedContentType)
                 .WithMessage("Image must be png/jpg/jpeg/webp.");
         });
     }
