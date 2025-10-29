@@ -1,5 +1,5 @@
 using CloneRozetka.Application.Abstractions;
-using CloneRozetka.Application.Categories; 
+using CloneRozetka.Application.Categories;
 using CloneRozetka.Application.Categories.Mappers;
 using CloneRozetka.Application.Categories.Validators;
 using CloneRozetka.Infrastructure.Persistence;
@@ -35,10 +35,10 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowVite5173", policy =>
     {
         policy
-            .WithOrigins("http://localhost:5173") 
+            .WithOrigins("http://localhost:5173")
             .AllowAnyHeader()
             .AllowAnyMethod();
-       
+
     });
 });
 builder.Services.AddControllers();

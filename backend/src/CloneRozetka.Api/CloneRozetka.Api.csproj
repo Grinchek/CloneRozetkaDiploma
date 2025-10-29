@@ -4,6 +4,9 @@
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
 	</PropertyGroup>
+	<ItemGroup>
+	  <Content Remove="Files\SeederFiles\categories.json" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\CloneRozetka.Application\CloneRozetka.Application.csproj" />
@@ -21,9 +24,10 @@
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="9.0.6" />
 	</ItemGroup>
 	<ItemGroup>
-		<Content Include="..\CloneRozetka.Infrastructure\Files\SeederFiles\categories.json"
-				 Link="Files\SeederFiles\categories.json">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>
+	  <Folder Include="Images\" />
+	  <Folder Include="wwwroot\" />
+	</ItemGroup>
+	<ItemGroup>
+	  <None Include="Files\SeederFiles\categories.json" />
 	</ItemGroup>
 </Project>

@@ -1,4 +1,4 @@
-import type { CategoryDto } from "../features/categories/types/types";
+import type { CategoryDto } from "../types/types";
 
 export type CategoryNode = CategoryDto & { children: CategoryNode[] };
 
