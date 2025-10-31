@@ -15,12 +15,8 @@ namespace CloneRozetka.Infrastructure.Extensions
 {
     public static class StartupExtensions
     {
-        /// <summary>
-        /// Застосовує всі наявні міграції для БД. Викликається на старті з IHost.
-        /// </summary>
-        public static async Task ApplyMigrationsAsync(this IHost host, CancellationToken ct = default)
+        public static async Task ApplyMigrationsAsync(this IServiceScope scope, CancellationToken ct = default)
         {
-            using var scope = host.Services.CreateScope();
             var services = scope.ServiceProvider;
 
             var logger = services

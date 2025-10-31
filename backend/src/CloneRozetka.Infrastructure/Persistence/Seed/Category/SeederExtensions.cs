@@ -9,11 +9,10 @@ namespace CloneRozetka.Infrastructure.Persistence.Seed;
 public static class SeederExtensions
 {
     public static async Task SeedCategoriesAsync(
-        this IServiceProvider services,
+        this IServiceScope scope,
         string jsonRelativePath,
         CancellationToken ct = default)
     {
-        using var scope = services.CreateScope();
 
         var env = scope.ServiceProvider.GetRequiredService<IHostEnvironment>();
         var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
