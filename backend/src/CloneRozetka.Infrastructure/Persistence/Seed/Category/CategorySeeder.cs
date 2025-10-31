@@ -1,8 +1,9 @@
-﻿using System.Text.Json;
-using CloneRozetka.Application.Abstractions;
+﻿using CloneRozetka.Application.Abstractions;
 using CloneRozetka.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Quartz.Logging;
+using System.Text.Json;
 
 namespace CloneRozetka.Infrastructure.Persistence.Seed;
 
@@ -11,29 +12,17 @@ public static class CategorySeeder
     public static async Task SeedAsync(
         AppDbContext db,
         IImageService images,
-        ILogger logger,
-        string jsonPath,
-        CancellationToken ct = default)
+        string jsonPath)
     {
-        if (!File.Exists(jsonPath))
-        {
-            logger.LogWarning("Seed file not found: {Path}", jsonPath);
-            return;
-        }
 
-        var json = await File.ReadAllTextAsync(jsonPath, ct);
+        var json = await File.ReadAllTextAsync(jsonPath);
         var items = JsonSerializer.Deserialize<List<CategorySeedModel>>(json,
             new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? [];
 
-        if (items.Count == 0)
-        {
-            logger.LogInformation("No categories to seed.");
-            return;
-        }
 
         // Існуючі за slug
         var existing = await db.Categories.AsNoTracking()
-            .ToDictionaryAsync(c => c.UrlSlug, c => c, ct);
+            .ToDictionaryAsync(c => c.UrlSlug);
 
         var toAdd = new List<Category>();
 
@@ -47,21 +36,7 @@ public static class CategorySeeder
 
             if (!string.IsNullOrWhiteSpace(m.Image))
             {
-                if (!Uri.IsWellFormedUriString(m.Image, UriKind.Absolute))
-                {
-                    logger.LogWarning("Invalid image URL for slug '{Slug}': {Url}", m.UrlSlug, m.Image);
-                }
-                else
-                {
-                    try
-                    {
-                        savedImage = await images.SaveImageFromUrlAsync(m.Image);
-                    }
-                    catch (Exception ex)
-                    {
-                        logger.LogWarning(ex, "Failed to save image for slug '{Slug}' from {Url}", m.UrlSlug, m.Image);
-                    }
-                }
+                savedImage = await images.SaveImageFromUrlAsync(m.Image);
             }
 
             toAdd.Add(new Category
@@ -77,12 +52,12 @@ public static class CategorySeeder
 
         if (toAdd.Count > 0)
         {
-            await db.Categories.AddRangeAsync(toAdd, ct);
-            await db.SaveChangesAsync(ct);
+            await db.Categories.AddRangeAsync(toAdd);
+            await db.SaveChangesAsync();
 
             // оновлюємо кеш
             existing = await db.Categories.AsNoTracking()
-                .ToDictionaryAsync(c => c.UrlSlug, c => c, ct);
+                .ToDictionaryAsync(c => c.UrlSlug);
         }
 
         // 2) Прив’язуємо ParentId і, за потреби, дозберігаємо Image для вже існуючих
@@ -91,7 +66,7 @@ public static class CategorySeeder
             if (!existing.TryGetValue(m.UrlSlug, out var snapshot))
                 continue;
 
-            var tracked = await db.Categories.FirstAsync(c => c.Id == snapshot.Id, ct);
+            var tracked = await db.Categories.FirstAsync(c => c.Id == snapshot.Id);
 
             // ParentId
             if (!string.IsNullOrWhiteSpace(m.ParentSlug) &&
@@ -100,29 +75,9 @@ public static class CategorySeeder
                 if (tracked.ParentId != parent.Id)
                     tracked.ParentId = parent.Id;
             }
-
-            // Якщо в БД немає картинки, але в JSON є URL — докачуємо й зберігаємо
-            if (string.IsNullOrWhiteSpace(tracked.Image) && !string.IsNullOrWhiteSpace(m.Image))
-            {
-                if (Uri.IsWellFormedUriString(m.Image, UriKind.Absolute))
-                {
-                    try
-                    {
-                        tracked.Image = await images.SaveImageFromUrlAsync(m.Image);
-                    }
-                    catch (Exception ex)
-                    {
-                        logger.LogWarning(ex, "Failed to save image for existing slug '{Slug}' from {Url}", m.UrlSlug, m.Image);
-                    }
-                }
-                else
-                {
-                    logger.LogWarning("Invalid image URL for existing slug '{Slug}': {Url}", m.UrlSlug, m.Image);
-                }
-            }
         }
 
-        await db.SaveChangesAsync(ct);
-        logger.LogInformation("Category seed finished. Items: {All}, Added: {Added}", items.Count, toAdd.Count);
+        await db.SaveChangesAsync();
+
     }
 }

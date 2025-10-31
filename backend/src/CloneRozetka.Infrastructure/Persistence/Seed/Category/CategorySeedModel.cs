@@ -7,4 +7,6 @@ public sealed class CategorySeedModel
     public string UrlSlug { get; set; } = default!;
     public string? ParentSlug { get; set; }
     public string? Image { get; set; }
+
+    public List<CategorySeedModel>? Children { get; set; }
 }

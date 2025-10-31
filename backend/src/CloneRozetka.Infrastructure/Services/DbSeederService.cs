@@ -1,6 +1,7 @@
 ﻿using CloneRozetka.Application.Abstractions;
-using CloneRozetka.Infrastructure.Extensions;
+using CloneRozetka.Infrastructure.Persistence;
 using CloneRozetka.Infrastructure.Persistence.Seed;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CloneRozetka.Infrastructure.Services;
@@ -11,8 +12,12 @@ public class DbSeederService(IServiceProvider serviceProvider) : IDbSeederServic
     {
         using var scope = serviceProvider.CreateScope();
 
-        await scope.ApplyMigrationsAsync();
+        var db = serviceProvider.GetRequiredService<AppDbContext>();
+        var imageService = scope.ServiceProvider.GetRequiredService<IImageService>();
 
-        await scope.SeedCategoriesAsync(Path.Combine("Files", "SeederFiles", "categories.json"));
-    }
+        await db.Database.MigrateAsync();
+
+        string path = Path.Combine(Directory.GetCurrentDirectory(), "Files", "SeederFiles", "categories.json");
+
+        await CategorySeeder.SeedAsync(db, imageService, path);    }
 }
