@@ -21,7 +21,7 @@ public static class SeederExtensions
                                           .CreateLogger("CategorySeeder");
         var images = scope.ServiceProvider.GetRequiredService<IImageService>();
 
-        await db.Database.MigrateAsync(ct);
+        
 
         // 1) Першою спробою — від кореня проєкту Api (ContentRootPath)
         string path = Path.IsPathRooted(jsonRelativePath)

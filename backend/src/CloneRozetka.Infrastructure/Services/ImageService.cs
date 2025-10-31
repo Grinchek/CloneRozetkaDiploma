@@ -77,23 +77,35 @@ public class ImageService(IConfiguration configuration) : IImageService
 
     private async Task SaveOneSizeAsync(byte[] bytes, string name, int size)
     {
-        var path = Path.Combine(
-            Directory.GetCurrentDirectory(),
-            configuration["ImagesDir"]!,
-            $"{size}_{name}");
+        if (bytes is null || bytes.Length == 0)
+            throw new ArgumentException("Порожні або відсутні байти зображення.", nameof(bytes));
+
+        var imagesDirSetting = configuration["ImagesDir"];
+        if (string.IsNullOrWhiteSpace(imagesDirSetting))
+            throw new InvalidOperationException("Не налаштовано 'ImagesDir' у конфігурації.");
+
+        var dirPath = Path.Combine(Directory.GetCurrentDirectory(), imagesDirSetting);
+        Directory.CreateDirectory(dirPath); 
+
+        var invalid = Path.GetInvalidFileNameChars();
+        var safeName = string.Join("_", name.Split(invalid, StringSplitOptions.RemoveEmptyEntries));
+        if (string.IsNullOrWhiteSpace(safeName))
+            safeName = "image";
+
+        var filePath = Path.Combine(dirPath, $"{size}_{safeName}");
 
         using var image = Image.Load(bytes);
 
-        // ВАЖЛИВО: Mutate — синхронний, без async усередині
         image.Mutate(img =>
         {
             img.Resize(new ResizeOptions
             {
                 Size = new Size(size, size),
-                Mode = ResizeMode.Max
+                Mode = ResizeMode.Max 
             });
         });
 
-        await image.SaveAsync(path, new WebpEncoder());
+        await using var fs = File.Create(filePath);
+        await image.SaveAsync(fs, new WebpEncoder());
     }
 }

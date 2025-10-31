@@ -6,6 +6,7 @@ using CloneRozetka.Infrastructure.Persistence;
 using CloneRozetka.Infrastructure.Persistence.Seed;
 using CloneRozetka.Infrastructure.Repositories;
 using CloneRozetka.Infrastructure.Services;
+using CloneRozetka.Infrastructure.Extensions;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
@@ -14,6 +15,7 @@ using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 var imagesPath = Path.Combine(Directory.GetCurrentDirectory(), "Images");
+Directory.CreateDirectory(imagesPath);
 
 
 
@@ -47,11 +49,11 @@ builder.Services.AddSwaggerGen();
 
 
 var app = builder.Build();
+// Apply Migrations
+await app.ApplyMigrationsAsync();
 // Seeder
-using (var scope = app.Services.CreateScope())
-{
-    await app.Services.SeedCategoriesAsync(Path.Combine("Files", "SeederFiles", "categories.json"));
-}
+await app.Services.SeedCategoriesAsync(Path.Combine("Files", "SeederFiles", "categories.json"));
+
 app.UseSwagger();
 app.UseSwaggerUI();
 app.UseCors("AllowVite5173");
