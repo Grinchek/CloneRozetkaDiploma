@@ -6,7 +6,6 @@ using CloneRozetka.Domain.Entities;
 
 namespace CloneRozetka.Application.Categories;
 
-// Реалізація повністю відповідає ICategoryService
 public class CategoryService : ICategoryService
 {
     private readonly IRepository<Category> _repo;
