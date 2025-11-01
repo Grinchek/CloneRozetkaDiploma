@@ -6,10 +6,11 @@ using CloneRozetka.Infrastructure.Persistence;
 using CloneRozetka.Infrastructure.Persistence.Seed;
 using CloneRozetka.Infrastructure.Repositories;
 using CloneRozetka.Infrastructure.Services;
-using CloneRozetka.Infrastructure.Extensions;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
+using Quartz;
+using CloneRozetka.Infrastructure.Jobs;
 
 
 
@@ -32,6 +33,25 @@ builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
 builder.Services.AddScoped<IImageService, ImageService>();
 
+builder.Services.AddScoped<IDbSeederService, DbSeederService>();
+
+
+builder.Services.AddQuartz(q => {
+    var jobKey = new JobKey(nameof(DbSeedJob));
+    q.AddJob<DbSeedJob>(opts => opts.WithIdentity(jobKey));
+
+    q.AddTrigger(opts => opts
+        .ForJob(jobKey)
+        .WithIdentity($"{nameof(DbSeedJob)}-trigger")
+        .StartNow());
+});
+
+builder.Services.AddQuartzHostedService(opt =>
+{
+    opt.WaitForJobsToComplete = true;
+});
+
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowVite5173", policy =>
@@ -50,9 +70,9 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 // Apply Migrations
-await app.ApplyMigrationsAsync();
+//await app.ApplyMigrationsAsync();
 // Seeder
-await app.Services.SeedCategoriesAsync(Path.Combine("Files", "SeederFiles", "categories.json"));
+//await app.Services.SeedCategoriesAsync(Path.Combine("Files", "SeederFiles", "categories.json"));
 
 app.UseSwagger();
 app.UseSwaggerUI();
