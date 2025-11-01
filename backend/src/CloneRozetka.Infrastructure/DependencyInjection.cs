@@ -17,7 +17,14 @@ public static class DependencyInjection
         Action<DbContextOptionsBuilder> dbOptions)
     {
         services.AddDbContext<AppDbContext>(dbOptions);
-        services.AddDataProtection();
+
+        // Data Protection 
+        services.AddDataProtection()
+            .PersistKeysToFileSystem(new DirectoryInfo(
+                Path.Combine(AppContext.BaseDirectory, "dpkeys")))
+            .SetApplicationName("CloneRozetka");
+
+
         services
             .AddIdentityCore<AppUser>(opt =>
             {
@@ -25,20 +32,19 @@ public static class DependencyInjection
                 opt.Password.RequireDigit = false;
                 opt.Password.RequireUppercase = false;
                 opt.Password.RequireNonAlphanumeric = false;
-
-                
                 opt.User.RequireUniqueEmail = true;
-                opt.SignIn.RequireConfirmedEmail = false; 
+                opt.SignIn.RequireConfirmedEmail = false;
             })
             .AddRoles<AppRole>()
-            .AddEntityFrameworkStores<AppDbContext>()  
-            .AddSignInManager<SignInManager<AppUser>>() 
+            .AddEntityFrameworkStores<AppDbContext>()
+            .AddSignInManager()        
             .AddDefaultTokenProviders();
+
 
         services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
         services.AddScoped<IImageService, ImageService>();
+        services.AddScoped<IDbSeederService, DbSeederService>(); // ⬅️ додали сюди
 
         return services;
     }
-
 }
