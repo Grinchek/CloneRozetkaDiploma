@@ -1,20 +1,39 @@
 ﻿using CloneRozetka.Application.Abstractions;
+using CloneRozetka.Infrastructure.Identity;
 using CloneRozetka.Infrastructure.Persistence;
 using CloneRozetka.Infrastructure.Repositories;
 using CloneRozetka.Infrastructure.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.DataProtection;
 
 namespace CloneRozetka.Infrastructure;
 
 public static class DependencyInjection
 {
-    // Варіант А: передаємо конфігуратор провайдера напряму (гнучко)
     public static IServiceCollection AddInfrastructure(
         this IServiceCollection services,
         Action<DbContextOptionsBuilder> dbOptions)
     {
         services.AddDbContext<AppDbContext>(dbOptions);
+        services.AddDataProtection();
+        services
+            .AddIdentityCore<AppUser>(opt =>
+            {
+                opt.Password.RequiredLength = 6;
+                opt.Password.RequireDigit = false;
+                opt.Password.RequireUppercase = false;
+                opt.Password.RequireNonAlphanumeric = false;
+
+                
+                opt.User.RequireUniqueEmail = true;
+                opt.SignIn.RequireConfirmedEmail = false; 
+            })
+            .AddRoles<AppRole>()
+            .AddEntityFrameworkStores<AppDbContext>()  
+            .AddSignInManager<SignInManager<AppUser>>() 
+            .AddDefaultTokenProviders();
 
         services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
         services.AddScoped<IImageService, ImageService>();
@@ -22,12 +41,4 @@ public static class DependencyInjection
         return services;
     }
 
-    // Варіант B: connectionString + обраний провайдер (SqlServer/Npgsql)
-    //public static IServiceCollection AddInfrastructureSqlServer(
-    //    this IServiceCollection services, string connectionString)
-    //    => services.AddInfrastructure(opt => opt.UseSqlServer(connectionString));
-
-    public static IServiceCollection AddInfrastructureNpgsql(
-        this IServiceCollection services, string connectionString)
-        => services.AddInfrastructure(opt => opt.UseNpgsql(connectionString));
 }

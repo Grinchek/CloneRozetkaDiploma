@@ -1,14 +1,18 @@
 ﻿using CloneRozetka.Domain.Entities;
+using CloneRozetka.Infrastructure.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace CloneRozetka.Infrastructure.Persistence;
 
-public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
+public class AppDbContext : IdentityDbContext<AppUser, AppRole, int>
 {
+    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
     public DbSet<Category> Categories => Set<Category>();
 
     protected override void OnModelCreating(ModelBuilder b)
     {
+        base.OnModelCreating(b);
         b.Entity<Category>(e =>
         {
             e.ToTable("tblCategories");

@@ -3,7 +3,6 @@ using CloneRozetka.Application.Categories;
 using CloneRozetka.Application.Categories.Mappers;
 using CloneRozetka.Application.Categories.Validators;
 using CloneRozetka.Infrastructure.Persistence;
-using CloneRozetka.Infrastructure.Persistence.Seed;
 using CloneRozetka.Infrastructure.Repositories;
 using CloneRozetka.Infrastructure.Services;
 using FluentValidation;
@@ -12,6 +11,8 @@ using Microsoft.Extensions.FileProviders;
 using Quartz;
 using CloneRozetka.Infrastructure.Jobs;
 using CloneRozetka.Application.Categories.Interfaces;
+using CloneRozetka.Infrastructure;
+
 
 
 
@@ -20,10 +21,10 @@ var imagesPath = Path.Combine(Directory.GetCurrentDirectory(), "Images");
 Directory.CreateDirectory(imagesPath);
 
 
-
-//// DB (Postgres)
-builder.Services.AddDbContext<AppDbContext>(opt =>
+// DI extensions
+builder.Services.AddInfrastructure(opt =>
     opt.UseNpgsql(builder.Configuration.GetConnectionString("Default")));
+
 
 // Application
 builder.Services.AddAutoMapper(typeof(CategoryProfile).Assembly);
@@ -70,10 +71,6 @@ builder.Services.AddSwaggerGen();
 
 
 var app = builder.Build();
-// Apply Migrations
-//await app.ApplyMigrationsAsync();
-// Seeder
-//await app.Services.SeedCategoriesAsync(Path.Combine("Files", "SeederFiles", "categories.json"));
 
 app.UseSwagger();
 app.UseSwaggerUI();
