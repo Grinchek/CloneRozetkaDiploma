@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using Quartz;
 using CloneRozetka.Infrastructure.Jobs;
+using CloneRozetka.Application.Categories.Interfaces;
 
 
 

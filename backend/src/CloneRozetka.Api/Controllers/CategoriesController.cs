@@ -1,5 +1,5 @@
-﻿using CloneRozetka.Application.Abstractions;
-using CloneRozetka.Application.Categories.DTOs;
+﻿using CloneRozetka.Application.Categories.DTOs;
+using CloneRozetka.Application.Categories.Interfaces;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 
