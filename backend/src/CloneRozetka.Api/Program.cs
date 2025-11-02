@@ -15,8 +15,9 @@ var imagesPath = Path.Combine(Directory.GetCurrentDirectory(), "Images");
 Directory.CreateDirectory(imagesPath);
 
 // Infrastructure
-builder.Services.AddInfrastructure(opt =>
-    opt.UseNpgsql(builder.Configuration.GetConnectionString("Default")));
+builder.Services.AddInfrastructure(
+    opt => opt.UseNpgsql(builder.Configuration.GetConnectionString("Default")),
+    builder.Configuration);
 
 // Application
 builder.Services.AddAutoMapper(typeof(CategoryProfile).Assembly);
@@ -58,8 +59,8 @@ app.UseSwaggerUI();
 app.UseCors("AllowVite5173");
 
 
-// app.UseAuthentication();
-// app.UseAuthorization();
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.UseHttpsRedirection();
 
