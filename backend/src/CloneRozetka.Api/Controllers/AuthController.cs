@@ -1,27 +1,33 @@
-﻿using CloneRozetka.Application.Users.DTOs;
+﻿using CloneRozetka.Application.Users.Interfaces;
+using CloneRozetka.Application.Users.DTOs;
 using CloneRozetka.Infrastructure.Identity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CloneRozetka.Api.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     public class AuthController : ControllerBase
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signIn;
+        private readonly IJwtTokenService _jwt;
+        private readonly IAccountService accountService;
 
-        public AuthController(UserManager<AppUser> userManager, SignInManager<AppUser> signIn)
+        public AuthController(UserManager<AppUser> userManager, SignInManager<AppUser> signIn, IJwtTokenService jwt, IAccountService accountService )
         {
             _userManager = userManager;
             _signIn = signIn;
+            _jwt = jwt;
+            this.accountService = accountService;
         }
 
-        [HttpPost("register")]
+        [HttpPost]
         public async Task<IActionResult> Register([FromBody] RegisterDto dto)
         {
-            // Перевірка унікального email (у тебе вже opt.User.RequireUniqueEmail = true)
+
             var user = new AppUser
             {
                 UserName = dto.UserName,
@@ -33,19 +39,17 @@ namespace CloneRozetka.Api.Controllers
             if (!result.Succeeded)
                 return BadRequest(new { errors = result.Errors.Select(e => e.Description) });
 
-            return Ok(new
-            {
-                message = "User created",
-                userId = user.Id,
-                user.UserName,
-                user.Email
-            });
+
+            var roles = await _userManager.GetRolesAsync(user);
+            var token = _jwt.CreateToken(user.Id, user.UserName!, user.Email, roles); 
+
+            return Ok(token);
         }
 
-        [HttpPost("login")]
+        [HttpPost]
         public async Task<IActionResult> Login([FromBody] LoginDto dto)
         {
-            // Знаходимо користувача або по UserName, або по Email
+
             AppUser? user = await _userManager.FindByNameAsync(dto.UserNameOrEmail)
                              ?? await _userManager.FindByEmailAsync(dto.UserNameOrEmail);
 
@@ -58,20 +62,15 @@ namespace CloneRozetka.Api.Controllers
             if (!check.Succeeded)
                 return Unauthorized(new { error = "Invalid credentials" });
 
-            // Поки без JWT/кукі — просто підтвердження
-            return Ok(new
-            {
-                message = "Login OK",
-                userId = user.Id,
-                user.UserName,
-                user.Email
-            });
+            var roles = await _userManager.GetRolesAsync(user);
+            var token = _jwt.CreateToken(user.Id, user.UserName!, user.Email, roles);
+            return Ok(token);
         }
 
-        [HttpGet("me")]
+        [HttpGet]
         public IActionResult Me()
         {
-            // Без JWT це завжди анонім — додамо [Authorize] і токени пізніше
+           
             return Ok(new
             {
                 IsAuthenticated = User?.Identity?.IsAuthenticated ?? false,
@@ -79,5 +78,26 @@ namespace CloneRozetka.Api.Controllers
                 Claims = User?.Claims.Select(c => new { c.Type, c.Value }) ?? Enumerable.Empty<object>()
             });
         }
+
+
+        [HttpPost]
+        public async Task<IActionResult> GoogleLogin([FromBody] GoogleLoginRequestModel model)
+        {
+            string result = await accountService.LoginByGoogle(model.Token);
+            if (string.IsNullOrEmpty(result))
+            {
+                return BadRequest(new
+                {
+                    Status = 400,
+                    IsValid = false,
+                    Errors = new { Email = "Помилка реєстрації" }
+                });
+            }
+            return Ok(new
+            {
+                Token = result
+            });
+        }
+
     }
 }

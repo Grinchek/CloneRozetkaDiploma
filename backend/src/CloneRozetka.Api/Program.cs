@@ -4,12 +4,21 @@ using CloneRozetka.Application.Categories.Mappers;
 using CloneRozetka.Application.Categories.Validators;
 using CloneRozetka.Infrastructure;
 using CloneRozetka.Infrastructure.Jobs;
+using dotenv.net;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using Quartz;
 
+
+// Load .env file
+DotEnv.Load();
 var builder = WebApplication.CreateBuilder(args);
+builder.Logging.AddFilter("Microsoft.AspNetCore.Authentication", LogLevel.Debug);
+builder.Logging.AddFilter("Microsoft.AspNetCore.Cookies", LogLevel.Debug);
+builder.Logging.AddFilter("Microsoft.AspNetCore.Authentication", LogLevel.Trace);
+builder.Logging.AddFilter("Microsoft.AspNetCore.Cookies", LogLevel.Trace);
+
 
 var imagesPath = Path.Combine(Directory.GetCurrentDirectory(), "Images");
 Directory.CreateDirectory(imagesPath);
@@ -42,14 +51,16 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowVite5173", policy =>
     {
         policy
-            .WithOrigins("http://localhost:5173")
+            .WithOrigins("https://localhost:5173")
             .AllowAnyHeader()
-            .AllowAnyMethod();
+            .AllowAnyMethod()
+            .AllowCredentials();
     });
 });
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddHttpClient();
 
 var app = builder.Build();
 
@@ -58,11 +69,20 @@ app.UseSwaggerUI();
 
 app.UseCors("AllowVite5173");
 
+app.UseCookiePolicy(new CookiePolicyOptions
+{
+    MinimumSameSitePolicy = SameSiteMode.None,
+    Secure = CookieSecurePolicy.Always 
+});
+
+
+
+app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseHttpsRedirection();
+
 
 // Static files (Images)
 app.UseStaticFiles(new StaticFileOptions
