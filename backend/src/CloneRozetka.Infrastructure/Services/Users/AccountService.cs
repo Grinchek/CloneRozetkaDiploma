@@ -3,7 +3,7 @@ using AutoMapper;
 using CloneRozetka.Application.Abstractions;
 using CloneRozetka.Application.Users.DTOs;
 using CloneRozetka.Application.Users.Interfaces;
-using CloneRozetka.Infrastructure.Identity;
+using CloneRozetka.Domain.Entities.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using System.Net.Http.Headers;
@@ -36,7 +36,7 @@ public class AccountService(IJwtTokenService tokenService,
 
         var googleUser = JsonSerializer.Deserialize<GoogleAccountModel>(json);
 
-        /*
+        
         var existingUser = await userManager.FindByEmailAsync(googleUser!.Email);
         if (existingUser != null)
         {
@@ -51,11 +51,11 @@ public class AccountService(IJwtTokenService tokenService,
         }
         else
         {
-            var user = mapper.Map<UserEntity>(googleUser);
+            var user = mapper.Map<AppUser>(googleUser);
 
             if (!String.IsNullOrEmpty(googleUser.Picture))
             {
-                user.Image = await imageService.SaveImageFromUrlAsync(googleUser.Picture);
+                user.AvatarUrl = await imageService.SaveImageFromUrlAsync(googleUser.Picture);
             }
 
             var result = await userManager.CreateAsync(user);
@@ -68,13 +68,13 @@ public class AccountService(IJwtTokenService tokenService,
                     displayName: "Google"
                 ));
 
-                await userManager.AddToRoleAsync(user, "User");
+                //await userManager.AddToRoleAsync(user, "User");
                 var jwtToken = await tokenService.CreateTokenAsync(user);
                 return jwtToken;
             }
         }
 
-        */
+        
         return string.Empty;
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 using CloneRozetka.Application.Users.Interfaces;
-using CloneRozetka.Infrastructure.Identity;
+using CloneRozetka.Domain.Entities.Identity;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authorization;
@@ -119,8 +119,7 @@ public class AccountController : ControllerBase
         }
 
         // Видати JWT
-        var roles = await _userManager.GetRolesAsync(user);
-        var token = _jwt.CreateToken(user.Id, user.UserName!, user.Email!, roles);
+        var token = _jwt.CreateTokenAsync(user);
 
         // Повернутися на фронт
         var ret =
@@ -133,9 +132,9 @@ public class AccountController : ControllerBase
 
         if (!string.IsNullOrWhiteSpace(ret))
         {
-            var exp = Uri.EscapeDataString(token.ExpiresAt.ToUniversalTime().ToString("o"));
-            var url = $"{ret}#token={Uri.EscapeDataString(token.Token)}&exp={exp}";
-            return Redirect(url);
+            //var exp = Uri.EscapeDataString(token.ExpiresAt.ToUniversalTime().ToString("o"));
+            //var url = $"{ret}#token={Uri.EscapeDataString(token.Token)}&exp={exp}";
+            return Redirect("duplo");
         }
 
         // Фолбек для Postman/мобільних клієнтів

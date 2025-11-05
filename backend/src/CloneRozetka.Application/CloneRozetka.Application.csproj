@@ -18,7 +18,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Users\Mappers\" />
 	  <Folder Include="Users\Validators\" />
 	</ItemGroup>
 </Project>

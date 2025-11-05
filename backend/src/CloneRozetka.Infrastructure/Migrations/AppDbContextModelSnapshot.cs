@@ -62,7 +62,7 @@ namespace CloneRozetka.Infrastructure.Migrations
                     b.ToTable("tblCategories", (string)null);
                 });
 
-            modelBuilder.Entity("CloneRozetka.Infrastructure.Identity.AppRole", b =>
+            modelBuilder.Entity("CloneRozetka.Domain.Entities.Identity.AppRole", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -94,7 +94,7 @@ namespace CloneRozetka.Infrastructure.Migrations
                     b.ToTable("AspNetRoles", (string)null);
                 });
 
-            modelBuilder.Entity("CloneRozetka.Infrastructure.Identity.AppUser", b =>
+            modelBuilder.Entity("CloneRozetka.Domain.Entities.Identity.AppUser", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -182,7 +182,7 @@ namespace CloneRozetka.Infrastructure.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("CloneRozetka.Infrastructure.Identity.AppUserLogin", b =>
+            modelBuilder.Entity("CloneRozetka.Domain.Entities.Identity.AppUserLogin", b =>
                 {
                     b.Property<string>("LoginProvider")
                         .HasColumnType("text");
@@ -203,7 +203,7 @@ namespace CloneRozetka.Infrastructure.Migrations
                     b.ToTable("AspNetUserLogins", (string)null);
                 });
 
-            modelBuilder.Entity("CloneRozetka.Infrastructure.Identity.AppUserRole", b =>
+            modelBuilder.Entity("CloneRozetka.Domain.Entities.Identity.AppUserRole", b =>
                 {
                     b.Property<int>("UserId")
                         .HasColumnType("integer");
@@ -294,9 +294,9 @@ namespace CloneRozetka.Infrastructure.Migrations
                     b.Navigation("Parent");
                 });
 
-            modelBuilder.Entity("CloneRozetka.Infrastructure.Identity.AppUserLogin", b =>
+            modelBuilder.Entity("CloneRozetka.Domain.Entities.Identity.AppUserLogin", b =>
                 {
-                    b.HasOne("CloneRozetka.Infrastructure.Identity.AppUser", "User")
+                    b.HasOne("CloneRozetka.Domain.Entities.Identity.AppUser", "User")
                         .WithMany("UserLogins")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -305,15 +305,15 @@ namespace CloneRozetka.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("CloneRozetka.Infrastructure.Identity.AppUserRole", b =>
+            modelBuilder.Entity("CloneRozetka.Domain.Entities.Identity.AppUserRole", b =>
                 {
-                    b.HasOne("CloneRozetka.Infrastructure.Identity.AppRole", "Role")
+                    b.HasOne("CloneRozetka.Domain.Entities.Identity.AppRole", "Role")
                         .WithMany("UserRoles")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CloneRozetka.Infrastructure.Identity.AppUser", "User")
+                    b.HasOne("CloneRozetka.Domain.Entities.Identity.AppUser", "User")
                         .WithMany("UserRoles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -326,7 +326,7 @@ namespace CloneRozetka.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
-                    b.HasOne("CloneRozetka.Infrastructure.Identity.AppRole", null)
+                    b.HasOne("CloneRozetka.Domain.Entities.Identity.AppRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -335,7 +335,7 @@ namespace CloneRozetka.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
                 {
-                    b.HasOne("CloneRozetka.Infrastructure.Identity.AppUser", null)
+                    b.HasOne("CloneRozetka.Domain.Entities.Identity.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -344,19 +344,19 @@ namespace CloneRozetka.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
                 {
-                    b.HasOne("CloneRozetka.Infrastructure.Identity.AppUser", null)
+                    b.HasOne("CloneRozetka.Domain.Entities.Identity.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("CloneRozetka.Infrastructure.Identity.AppRole", b =>
+            modelBuilder.Entity("CloneRozetka.Domain.Entities.Identity.AppRole", b =>
                 {
                     b.Navigation("UserRoles");
                 });
 
-            modelBuilder.Entity("CloneRozetka.Infrastructure.Identity.AppUser", b =>
+            modelBuilder.Entity("CloneRozetka.Domain.Entities.Identity.AppUser", b =>
                 {
                     b.Navigation("UserLogins");
 
