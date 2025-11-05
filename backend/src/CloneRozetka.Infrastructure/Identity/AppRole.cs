@@ -6,5 +6,7 @@ namespace CloneRozetka.Infrastructure.Identity
     public class AppRole: IdentityRole<int>
     {
         public string? Description { get; set; }
+
+        public virtual ICollection<AppUserRole>? UserRoles { get; set; }
     }
 }

@@ -18,6 +18,7 @@ namespace CloneRozetka.Infrastructure.Identity
 
         public bool IsBlocked { get; set; } = false;
 
-
+        public virtual ICollection<AppUserRole>? UserRoles { get; set; }
+        public virtual ICollection<AppUserLogin>? UserLogins { get; set; }
     }
 }
