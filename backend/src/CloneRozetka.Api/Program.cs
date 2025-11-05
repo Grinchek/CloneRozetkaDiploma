@@ -1,84 +1,90 @@
-using CloneRozetka.Application.Abstractions;
 using CloneRozetka.Application.Categories;
+using CloneRozetka.Application.Categories.Interfaces;
 using CloneRozetka.Application.Categories.Mappers;
 using CloneRozetka.Application.Categories.Validators;
-using CloneRozetka.Infrastructure.Persistence;
-using CloneRozetka.Infrastructure.Persistence.Seed;
-using CloneRozetka.Infrastructure.Repositories;
-using CloneRozetka.Infrastructure.Services;
+using CloneRozetka.Infrastructure;
+using CloneRozetka.Infrastructure.Jobs;
+using dotenv.net;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using Quartz;
-using CloneRozetka.Infrastructure.Jobs;
 
 
-
+// Load .env file
+DotEnv.Load();
 var builder = WebApplication.CreateBuilder(args);
+builder.Logging.AddFilter("Microsoft.AspNetCore.Authentication", LogLevel.Debug);
+builder.Logging.AddFilter("Microsoft.AspNetCore.Cookies", LogLevel.Debug);
+builder.Logging.AddFilter("Microsoft.AspNetCore.Authentication", LogLevel.Trace);
+builder.Logging.AddFilter("Microsoft.AspNetCore.Cookies", LogLevel.Trace);
+
+
 var imagesPath = Path.Combine(Directory.GetCurrentDirectory(), "Images");
 Directory.CreateDirectory(imagesPath);
 
-
-
-//// DB (Postgres)
-builder.Services.AddDbContext<AppDbContext>(opt =>
-    opt.UseNpgsql(builder.Configuration.GetConnectionString("Default")));
+// Infrastructure
+builder.Services.AddInfrastructure(
+    opt => opt.UseNpgsql(builder.Configuration.GetConnectionString("Default")),
+    builder.Configuration);
 
 // Application
 builder.Services.AddAutoMapper(typeof(CategoryProfile).Assembly);
 builder.Services.AddValidatorsFromAssemblyContaining<CategoryCreateValidator>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 
-// Infrastructure
-builder.Services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
-builder.Services.AddScoped<IImageService, ImageService>();
-
-builder.Services.AddScoped<IDbSeederService, DbSeederService>();
-
-
-builder.Services.AddQuartz(q => {
+// Quartz 
+builder.Services.AddQuartz(q =>
+{
     var jobKey = new JobKey(nameof(DbSeedJob));
     q.AddJob<DbSeedJob>(opts => opts.WithIdentity(jobKey));
-
     q.AddTrigger(opts => opts
         .ForJob(jobKey)
         .WithIdentity($"{nameof(DbSeedJob)}-trigger")
         .StartNow());
 });
+builder.Services.AddQuartzHostedService(opt => { opt.WaitForJobsToComplete = true; });
 
-builder.Services.AddQuartzHostedService(opt =>
-{
-    opt.WaitForJobsToComplete = true;
-});
-
-
+// CORS / MVC / Swagger
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowVite5173", policy =>
     {
         policy
-            .WithOrigins("http://localhost:5173")
+            .WithOrigins("https://localhost:5173")
             .AllowAnyHeader()
-            .AllowAnyMethod();
-
+            .AllowAnyMethod()
+            .AllowCredentials();
     });
 });
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
+builder.Services.AddHttpClient();
 
 var app = builder.Build();
-// Apply Migrations
-//await app.ApplyMigrationsAsync();
-// Seeder
-//await app.Services.SeedCategoriesAsync(Path.Combine("Files", "SeederFiles", "categories.json"));
 
 app.UseSwagger();
 app.UseSwaggerUI();
+
 app.UseCors("AllowVite5173");
 
+app.UseCookiePolicy(new CookiePolicyOptions
+{
+    MinimumSameSitePolicy = SameSiteMode.None,
+    Secure = CookieSecurePolicy.Always 
+});
+
+
+
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
+app.UseAuthorization();
+
+
+
+// Static files (Images)
 app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(imagesPath),

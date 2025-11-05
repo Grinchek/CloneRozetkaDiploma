@@ -18,5 +18,5 @@ public class Category
     [ForeignKey(nameof(Parent))]
     public int? ParentId { get; set; }
     public Category? Parent { get; set; }
-    public ICollection<Category>? Children { get; set; }
+
 }

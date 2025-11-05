@@ -281,3 +281,6 @@ yarn-debug.log*
 yarn-error.log*
 
 package-lock.json
+src/CloneRozetka.Api/.env
+src/CloneRozetka.Api/appsettings.Development.json
+dpkeys/

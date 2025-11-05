@@ -16,4 +16,9 @@
 		<PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.0.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Http" Version="2.3.0" />
 	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Users\Mappers\" />
+	  <Folder Include="Users\Validators\" />
+	</ItemGroup>
 </Project>

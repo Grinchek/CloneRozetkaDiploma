@@ -1,17 +1,24 @@
-import CategoryTree from "./features/categories/components/CategoryTree";
 import "./styles.css";
+import {Route, Routes} from "react-router-dom";
+import HomePage from "./pages/HomePage";
+import LoginPage from "./pages/auth/LoginPage";
+
+
 
 export default function App() {
-  return (
-    <div className="layout">
-      <aside className="layout-sidebar">
-        <CategoryTree />
-      </aside>
+    return (
+        <>
+            <Routes>
+                <Route path="/">
+                    <Route index element={<HomePage/>}/>
 
-      <main className="layout-content">
-        <h1>Мій дипломний проєкт</h1>
-        <p>Основний контент сторінки.</p>
-      </main>
-    </div>
-  );
+                    <Route path={"login"} element={
+                        <LoginPage/>
+                        }/>
+
+                </Route>
+            </Routes>
+        </>
+
+    );
 }
