@@ -1,12 +1,18 @@
 import { useGoogleLogin } from '@react-oauth/google';
+import {useLoginByGoogleMutation} from "../../../features/account/apiAccount.ts";
 
 const LoginPage = ()=>{
+    const [loginByGoogle] = useLoginByGoogleMutation();
     const loginUseGoogle = useGoogleLogin({
         onSuccess: async (tokenResponse) =>
         {
             console.log("tokenResponse GOOGLE", tokenResponse.access_token);
             try {
-                //await loginByGoogle(tokenResponse.access_token).unwrap();
+                const result = await loginByGoogle(
+                    {
+                        token: tokenResponse.access_token
+                    }).unwrap();
+                console.log("login result", result);
                 // dispatch(loginSuccess(result.token));
                 //navigate('/');
             } catch (error) {

@@ -1,9 +1,8 @@
 ﻿using CloneRozetka.Application.Users.Interfaces;
 using CloneRozetka.Application.Users.DTOs;
-using CloneRozetka.Infrastructure.Identity;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using CloneRozetka.Domain.Entities.Identity;
 
 namespace CloneRozetka.Api.Controllers
 {
@@ -40,8 +39,7 @@ namespace CloneRozetka.Api.Controllers
                 return BadRequest(new { errors = result.Errors.Select(e => e.Description) });
 
 
-            var roles = await _userManager.GetRolesAsync(user);
-            var token = _jwt.CreateToken(user.Id, user.UserName!, user.Email, roles); 
+            var token = _jwt.CreateTokenAsync(user); 
 
             return Ok(token);
         }
@@ -62,8 +60,7 @@ namespace CloneRozetka.Api.Controllers
             if (!check.Succeeded)
                 return Unauthorized(new { error = "Invalid credentials" });
 
-            var roles = await _userManager.GetRolesAsync(user);
-            var token = _jwt.CreateToken(user.Id, user.UserName!, user.Email, roles);
+            var token = _jwt.CreateTokenAsync(user);
             return Ok(token);
         }
 

@@ -1,8 +1,6 @@
 ﻿using CloneRozetka.Application.Abstractions;
 using CloneRozetka.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using Quartz.Logging;
 using System.Text.Json;
 
 namespace CloneRozetka.Infrastructure.Persistence.Seed;

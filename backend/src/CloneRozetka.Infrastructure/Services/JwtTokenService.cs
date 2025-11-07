@@ -1,54 +1,52 @@
-﻿using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using CloneRozetka.Application.Users.DTOs;
+﻿using CloneRozetka.Application.Users.DTOs;
 using CloneRozetka.Application.Users.Interfaces;
+using CloneRozetka.Domain.Entities.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace CloneRozetka.Infrastructure.Services
 {
-    public class JwtTokenService : IJwtTokenService
+    public class JwtTokenService(IConfiguration configuration,
+        UserManager<AppUser> userManager) : IJwtTokenService
     {
-        private readonly IConfiguration _config;
-
-        public JwtTokenService(IConfiguration config)
+        public async Task<string> CreateTokenAsync(AppUser user)
         {
-            _config = config;
-        }
+            var key = configuration["Jwt:Key"];
 
-        public AuthResultDto CreateToken(int userId, string userName, string? email, IEnumerable<string> roles)
-        {
             var claims = new List<Claim>
+        {
+            new Claim("email", user.Email),
+            new Claim("name", $"{user.FullName}"),
+            new Claim("image", $"{user.AvatarUrl}")
+        };
+            foreach (var role in await userManager.GetRolesAsync(user))
             {
-                new(JwtRegisteredClaimNames.Sub, userId.ToString()),
-                new(JwtRegisteredClaimNames.UniqueName, userName),
-                new(JwtRegisteredClaimNames.Email, email ?? "")
-            };
+                claims.Add(new Claim("roles", role));
+            }
 
-            claims.AddRange(roles.Select(r => new Claim(ClaimTypes.Role, r)));
+            //ключ для підпису токена - перетворив у байти
+            var keyBytes = System.Text.Encoding.UTF8.GetBytes(key);
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]!));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            //створюємо об'єкт для підпису токена
+            var symmetricSecurityKey = new SymmetricSecurityKey(keyBytes);
 
-            var expires = DateTime.UtcNow.AddMinutes(_config.GetValue<double>("Jwt:ExpiresMinutes", 60));
+            //вказуємо ключ і алгоритм підпису токена
+            var signingCredentials = new SigningCredentials(
+                symmetricSecurityKey,
+                SecurityAlgorithms.HmacSha256);
 
-            var token = new JwtSecurityToken(
-                issuer: _config["Jwt:Issuer"],
-                audience: _config["Jwt:Audience"],
-                claims: claims,
-                expires: expires,
-                signingCredentials: creds
-            );
+            //створюємо токен
+            var jwtSecurityToken = new JwtSecurityToken(
+                claims: claims, //список параметрів у токені, які є доступні
+                expires: DateTime.UtcNow.AddDays(7), // термін дії токена - після цього часу токен буде недійсний
+                signingCredentials: signingCredentials);
 
-            return new AuthResultDto
-            {
-                Token = new JwtSecurityTokenHandler().WriteToken(token),
-                ExpiresAt = expires,
-                UserName = userName,
-                Email = email ?? "",
-                Roles = roles
-            };
+            string token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
+
+            return token;
         }
     }
 }

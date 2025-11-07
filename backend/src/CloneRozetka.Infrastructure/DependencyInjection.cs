@@ -1,6 +1,6 @@
 ﻿using CloneRozetka.Application.Abstractions;
 using CloneRozetka.Application.Users.Interfaces;
-using CloneRozetka.Infrastructure.Identity;
+using CloneRozetka.Domain.Entities.Identity;
 using CloneRozetka.Infrastructure.Persistence;
 using CloneRozetka.Infrastructure.Repositories;
 using CloneRozetka.Infrastructure.Services;
