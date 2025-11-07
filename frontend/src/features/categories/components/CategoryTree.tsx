@@ -8,21 +8,16 @@ type ItemProps = {
   depth?: number;
 };
 
-// Який розмір іконки просимо для сайдбару:
 const ICON_SIZE_PREFIX = "100_";
 
-// Побудова кандидатів на URL іконки, враховуючи:
-// - повний URL (http...) — беремо як є
-// - лише ім'я файлу — пробуємо з префіксом (100_) і без
-// - шлях із /Images/... — нормалізуємо до абсолютного
+
 const buildIconCandidates = (image?: string | null): string[] => {
   if (!image) return [];
   if (image.startsWith("http")) return [image];
 
-  // Витягуємо тільки назву файлу (без проміжних підпапок)
+
   const justName = image.split("/").pop()!.replace(/^\/+/, "");
 
-  // Якщо вже є префікс розміру у назві — спробуємо і його, і варіант без префікса
   if (/^\d+_/.test(justName)) {
     return [
       `${API_BASE}/Images/${justName}`,
@@ -30,7 +25,6 @@ const buildIconCandidates = (image?: string | null): string[] => {
     ];
   }
 
-  // Звичайний кейс: спочатку 100_<name>, потім <name>
   return [
     `${API_BASE}/Images/${ICON_SIZE_PREFIX}${justName}`,
     `${API_BASE}/Images/${justName}`,
