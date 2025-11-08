@@ -1,6 +1,9 @@
 ﻿using CloneRozetka.Application.Abstractions;
+using CloneRozetka.Infrastructure.Identity;
 using CloneRozetka.Infrastructure.Persistence;
 using CloneRozetka.Infrastructure.Persistence.Seed;
+using CloneRozetka.Infrastructure.Persistence.Seed.Users;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -11,13 +14,22 @@ public class DbSeederService(IServiceProvider serviceProvider) : IDbSeederServic
     public async Task SeedData()
     {
         using var scope = serviceProvider.CreateScope();
+        var sp = scope.ServiceProvider;
 
-        var db = serviceProvider.GetRequiredService<AppDbContext>();
-        var imageService = scope.ServiceProvider.GetRequiredService<IImageService>();
+        var db = sp.GetRequiredService<AppDbContext>();
+        var imageService = sp.GetRequiredService<IImageService>();
+
+
+        var userManager = sp.GetRequiredService<UserManager<AppUser>>();
+        var roleManager = sp.GetRequiredService<RoleManager<AppRole>>();
 
         await db.Database.MigrateAsync();
 
-        string path = Path.Combine(Directory.GetCurrentDirectory(), "Files", "SeederFiles", "categories.json");
+        var catPath = Path.Combine(Directory.GetCurrentDirectory(), "Files", "SeederFiles", "categories.json");
+        await CategorySeeder.SeedAsync(db, imageService, catPath); 
 
-        await CategorySeeder.SeedAsync(db, imageService, path);    }
+        var userPath = Path.Combine(Directory.GetCurrentDirectory(), "Files", "SeederFiles", "users.json");
+        await UserSeeder.SeedAsync<AppUser, AppRole, int>(
+            userManager, roleManager, imageService, userPath);
+    }
 }

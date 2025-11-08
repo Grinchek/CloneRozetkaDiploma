@@ -6,6 +6,7 @@
   </PropertyGroup>
 	<ItemGroup>
 	  <Content Remove="Files\SeederFiles\categories.json" />
+	  <Content Remove="Files\SeederFiles\users.json" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -33,5 +34,6 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <None Include="Files\SeederFiles\categories.json" />
+	  <None Include="Files\SeederFiles\users.json" />
 	</ItemGroup>
 </Project>
