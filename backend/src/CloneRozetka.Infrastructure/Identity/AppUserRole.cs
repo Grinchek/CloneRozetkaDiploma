@@ -1,7 +1,7 @@
 ﻿
 using Microsoft.AspNetCore.Identity;
 
-namespace CloneRozetka.Domain.Entities.Identity;
+namespace CloneRozetka.Infrastructure.Identity;
 
 public class AppUserRole : IdentityUserRole<int>
 {

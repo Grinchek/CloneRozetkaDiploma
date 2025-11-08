@@ -1,7 +1,7 @@
 ﻿// Domain: CloneRozetka.Infrastructure/Identity/AppRole.cs
 using Microsoft.AspNetCore.Identity;
 
-namespace CloneRozetka.Domain.Entities.Identity
+namespace CloneRozetka.Infrastructure.Identity
 {
     public class AppRole: IdentityRole<int>
     {

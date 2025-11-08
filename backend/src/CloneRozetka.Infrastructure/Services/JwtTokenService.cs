@@ -1,52 +1,50 @@
-﻿using CloneRozetka.Application.Users.DTOs;
-using CloneRozetka.Application.Users.Interfaces;
-using CloneRozetka.Domain.Entities.Identity;
+﻿using CloneRozetka.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Text;
 
 namespace CloneRozetka.Infrastructure.Services
 {
-    public class JwtTokenService(IConfiguration configuration,
-        UserManager<AppUser> userManager) : IJwtTokenService
+    public class JwtTokenService(IConfiguration configuration, UserManager<AppUser> userManager) : IJwtTokenService
     {
         public async Task<string> CreateTokenAsync(AppUser user)
         {
-            var key = configuration["Jwt:Key"];
+            var key = configuration["Jwt:Key"] ?? throw new InvalidOperationException("Jwt:Key is not configured");
+            var issuer = configuration["Jwt:Issuer"];   
+            var audience = configuration["Jwt:Audience"];
 
             var claims = new List<Claim>
-        {
-            new Claim("email", user.Email),
-            new Claim("name", $"{user.FullName}"),
-            new Claim("image", $"{user.AvatarUrl}")
-        };
-            foreach (var role in await userManager.GetRolesAsync(user))
-            {
-                claims.Add(new Claim("roles", role));
-            }
+{
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Name, user.UserName ?? string.Empty),  
+                new Claim(ClaimTypes.Email, user.Email ?? string.Empty),
+                new Claim("fullName", user.FullName ?? string.Empty),
+                new Claim("avatarUrl", user.AvatarUrl ?? string.Empty)
+            };
 
-            //ключ для підпису токена - перетворив у байти
-            var keyBytes = System.Text.Encoding.UTF8.GetBytes(key);
 
-            //створюємо об'єкт для підпису токена
-            var symmetricSecurityKey = new SymmetricSecurityKey(keyBytes);
+            var roles = await userManager.GetRolesAsync(user);
+            foreach (var role in roles)
+                claims.Add(new Claim(ClaimTypes.Role, role));
 
-            //вказуємо ключ і алгоритм підпису токена
-            var signingCredentials = new SigningCredentials(
-                symmetricSecurityKey,
-                SecurityAlgorithms.HmacSha256);
 
-            //створюємо токен
-            var jwtSecurityToken = new JwtSecurityToken(
-                claims: claims, //список параметрів у токені, які є доступні
-                expires: DateTime.UtcNow.AddDays(7), // термін дії токена - після цього часу токен буде недійсний
-                signingCredentials: signingCredentials);
+            var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
+            var creds = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
 
-            string token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
 
-            return token;
+            var token = new JwtSecurityToken(
+                issuer: issuer,               
+                audience: audience,            
+                claims: claims,
+                notBefore: DateTime.UtcNow,
+                expires: DateTime.UtcNow.AddDays(7),
+                signingCredentials: creds
+            );
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }
 }

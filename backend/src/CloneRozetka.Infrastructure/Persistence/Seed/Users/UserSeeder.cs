@@ -1,5 +1,5 @@
 ﻿using CloneRozetka.Application.Abstractions;
-using CloneRozetka.Domain.Entities.Identity;
+using CloneRozetka.Infrastructure.Identity;
 using System.Text.Json;
 
 namespace CloneRozetka.Infrastructure.Persistence.Seed.Users;

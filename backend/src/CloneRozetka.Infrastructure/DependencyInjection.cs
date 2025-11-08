@@ -1,10 +1,10 @@
 ﻿using CloneRozetka.Application.Abstractions;
 using CloneRozetka.Application.Users.Interfaces;
-using CloneRozetka.Domain.Entities.Identity;
 using CloneRozetka.Infrastructure.Persistence;
 using CloneRozetka.Infrastructure.Repositories;
 using CloneRozetka.Infrastructure.Services;
 using CloneRozetka.Infrastructure.Services.Users;
+using CloneRozetka.Infrastructure.Identity;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.DataProtection;
@@ -58,7 +58,6 @@ public static class DependencyInjection
 
         // -----------------------------
         // 4. Authentication Schemes
-        // -----------------------------
         if (configuration is not null)
         {
             var jwtKey = configuration["Jwt:Key"]
@@ -68,22 +67,10 @@ public static class DependencyInjection
             services
                 .AddAuthentication(options =>
                 {
-                    // Основна схема для API — JWT
+ 
                     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-
-                    // Схема для входу через зовнішніх провайдерів (Google)
-                    options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
-
-                    // Основна схема для Cookie (Identity)
-                    options.DefaultScheme = IdentityConstants.ApplicationScheme;
-
-                    // ВАЖЛИВО: лише Google як DefaultChallengeScheme
-                    options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
-                })
-                .AddCookie(IdentityConstants.ExternalScheme, o =>
-                {
-                    o.Cookie.SameSite = SameSiteMode.None;
-                    o.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
                 })
                 .AddJwtBearer(options =>
                 {
@@ -93,26 +80,19 @@ public static class DependencyInjection
                     {
                         ValidateIssuer = true,
                         ValidIssuer = configuration["Jwt:Issuer"],
-                        ValidateAudience = true,
+
+                        ValidateAudience = true,                   
                         ValidAudience = configuration["Jwt:Audience"],
+
                         ValidateIssuerSigningKey = true,
                         IssuerSigningKey = signingKey,
+
                         ValidateLifetime = true,
                         ClockSkew = TimeSpan.FromSeconds(30)
                     };
-                })
-                .AddGoogle(GoogleDefaults.AuthenticationScheme, options =>
-                {
-                    options.ClientId = configuration["GoogleAuth:ClientId"]!;
-                    options.ClientSecret = configuration["GoogleAuth:ClientSecret"]!;
-                    options.CallbackPath = configuration["GoogleAuth:CallbackPath"]
-                                           ?? "/api/auth/google/callback";
-                    options.SaveTokens = true;
-
-                    options.CorrelationCookie.SameSite = SameSiteMode.None;
-                    options.CorrelationCookie.SecurePolicy = CookieSecurePolicy.Always;
                 });
         }
+
 
         // -----------------------------
         // 5. Infrastructure Services
