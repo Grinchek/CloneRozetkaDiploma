@@ -2,119 +2,107 @@ import { useEffect, useState } from "react";
 import { fetchCategories, API_BASE } from "../api/api";
 import { buildCategoryTree } from "../utils/buildTree";
 import type { CategoryNode } from "../utils/buildTree";
+import "../styles/categories.css";
+import type { CSSProperties } from "react";
 
 type ItemProps = {
-  node: CategoryNode;
-  depth?: number;
+    node: CategoryNode;
+    depth?: number;
 };
 
 const ICON_SIZE_PREFIX = "100_";
 
-
 const buildIconCandidates = (image?: string | null): string[] => {
-  if (!image) return [];
-  if (image.startsWith("http")) return [image];
+    if (!image) return [];
+    if (image.startsWith("http")) return [image];
 
+    const justName = image.split("/").pop()!.replace(/^\/+/, "");
 
-  const justName = image.split("/").pop()!.replace(/^\/+/, "");
+    if (/^\d+_/.test(justName)) {
+        return [
+            `${API_BASE}/Images/${justName}`,
+            `${API_BASE}/Images/${justName.replace(/^\d+_/, "")}`,
+        ];
+    }
 
-  if (/^\d+_/.test(justName)) {
     return [
-      `${API_BASE}/Images/${justName}`,
-      `${API_BASE}/Images/${justName.replace(/^\d+_/, "")}`,
+        `${API_BASE}/Images/${ICON_SIZE_PREFIX}${justName}`,
+        `${API_BASE}/Images/${justName}`,
     ];
-  }
-
-  return [
-    `${API_BASE}/Images/${ICON_SIZE_PREFIX}${justName}`,
-    `${API_BASE}/Images/${justName}`,
-  ];
 };
 
 function TreeItem({ node, depth = 0 }: ItemProps) {
-  const [open, setOpen] = useState(false);
-  const hasChildren = node.children.length > 0;
+    const [open, setOpen] = useState(false);
+    const hasChildren = node.children.length > 0;
 
-  // Кандидати на джерело іконки + індекс поточного
-  const candidates = buildIconCandidates(node.image);
-  const [srcIdx, setSrcIdx] = useState(0);
-  const currentSrc = candidates[srcIdx] ?? null;
+    const candidates = buildIconCandidates(node.image);
+    const [srcIdx, setSrcIdx] = useState(0);
+    const currentSrc = candidates[srcIdx] ?? null;
 
-  return (
-    <li style={{ marginLeft: depth * 8 }}>
-      <div
-        onClick={() => hasChildren && setOpen(!open)}
-        style={{
-          cursor: hasChildren ? "pointer" : "default",
-          display: "flex",
-          alignItems: "center",
-          gap: 8,
-          padding: "4px 6px",
-          borderRadius: 8,
-          userSelect: "none",
-          transition: "background .2s",
-        }}
-        onMouseEnter={(e) => (e.currentTarget.style.background = "#f3f4f6")}
-        onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
-        title={node.name}
-      >
-        {hasChildren ? (open ? "▾" : "▸") : "•"}
+    // передаємо глибину через CSS-змінну, без інлайн-стилів на самих правилах
+    const indentStyle = { ["--depth" as any]: depth } as CSSProperties;
 
-        {/* Іконка з автоматичним fallback */}
-        {currentSrc ? (
-          <img
-            src={currentSrc}
-            alt=""
-            width={18}
-            height={18}
-            loading="lazy"
-            style={{ display: "inline-block", objectFit: "contain", borderRadius: 4 }}
-            onError={() => setSrcIdx((i) => i + 1)} // якщо 404 — беремо наступного кандидата
-          />
-        ) : (
-          <span aria-hidden="true" style={{ width: 18, textAlign: "center", display: "inline-block" }}>
-            🗂️
-          </span>
-        )}
+    return (
+        <li className="tree-item" style={indentStyle}>
+            <div
+                className={`tree-row ${hasChildren ? "is-branch" : ""}`}
+                onClick={() => hasChildren && setOpen(!open)}
+                title={node.name}
+            >
+        <span className={hasChildren ? "caret" : "dot"}>
+          {hasChildren ? (open ? "▾" : "▸") : "•"}
+        </span>
 
-        <span>{node.name}</span>
-      </div>
+                {currentSrc ? (
+                    <img
+                        src={currentSrc}
+                        alt=""
+                        className="tree-icon-img"
+                        loading="lazy"
+                        onError={() => setSrcIdx((i) => i + 1)}
+                    />
+                ) : (
+                    <span aria-hidden="true" className="tree-fallback"></span>
+                )}
 
-      {hasChildren && open && (
-        <ul style={{ listStyle: "none", paddingLeft: 0, marginTop: 4 }}>
-          {node.children.map((child) => (
-            <TreeItem key={child.id} node={child} depth={depth + 1} />
-          ))}
-        </ul>
-      )}
-    </li>
-  );
+                <span>{node.name}</span>
+            </div>
+
+            {hasChildren && open && (
+                <ul className="tree-children">
+                    {node.children.map((child) => (
+                        <TreeItem key={child.id} node={child} depth={depth + 1} />
+                    ))}
+                </ul>
+            )}
+        </li>
+    );
 }
 
 export default function CategoryTree() {
-  const [data, setData] = useState<CategoryNode[] | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
+    const [data, setData] = useState<CategoryNode[] | null>(null);
+    const [error, setError] = useState<string | null>(null);
+    const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetchCategories()
-      .then((flat) => setData(buildCategoryTree(flat)))
-      .catch((e) => setError(String(e)))
-      .finally(() => setLoading(false));
-  }, []);
+    useEffect(() => {
+        fetchCategories()
+            .then((flat) => setData(buildCategoryTree(flat)))
+            .catch((e) => setError(String(e)))
+            .finally(() => setLoading(false));
+    }, []);
 
-  if (loading) return <div className="muted">Завантаження категорій…</div>;
-  if (error) return <div className="error">Помилка: {error}</div>;
-  if (!data || data.length === 0) return <div className="muted">Категорії відсутні</div>;
+    if (loading) return <div className="muted">Завантаження категорій…</div>;
+    if (error) return <div className="error">Помилка: {error}</div>;
+    if (!data || data.length === 0) return <div className="muted">Категорії відсутні</div>;
 
-  return (
-    <nav className="sidebar">
-      <div className="sidebar-header">Категорії</div>
-      <ul style={{ listStyle: "none", paddingLeft: 0, margin: 0 }}>
-        {data.map((n) => (
-          <TreeItem key={n.id} node={n} />
-        ))}
-      </ul>
-    </nav>
-  );
+    return (
+        <nav className="sidebar">
+            <div className="sidebar-header">Категорії</div>
+            <ul className="tree-list">
+                {data.map((n) => (
+                    <TreeItem key={n.id} node={n} />
+                ))}
+            </ul>
+        </nav>
+    );
 }

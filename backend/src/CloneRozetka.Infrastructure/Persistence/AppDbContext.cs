@@ -1,5 +1,5 @@
 ﻿using CloneRozetka.Domain.Entities;
-using CloneRozetka.Domain.Entities.Identity;
+using CloneRozetka.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;

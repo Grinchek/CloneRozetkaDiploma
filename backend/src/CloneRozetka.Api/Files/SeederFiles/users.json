@@ -1,0 +1,23 @@
+[
+  {
+    "Email": "admin@example.com",
+    "FullName": "Адмiн Системний",
+    "AvatarUrl": "https://thispersondoesnotexist.com",
+    "Password": "Admin123!",
+    "Roles": [ "Admin" ]
+  },
+  {
+    "Email": "ivan@example.com",
+    "FullName": "Іван Борисюк",
+    "AvatarUrl": "https://thispersondoesnotexist.com",
+    "Password": "bb123456",
+    "Roles": [ "User" ]
+  },
+  {
+    "Email": "olena@example.com",
+    "FullName": "Олена Шаглінська",
+    "AvatarUrl": "https://thispersondoesnotexist.com",
+    "Password": "password",
+    "Roles": [ "User" ]
+  }
+]

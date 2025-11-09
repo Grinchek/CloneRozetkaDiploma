@@ -2,6 +2,7 @@
 
 public sealed class UserSeederModel
 {
+    public string Email { get; set; } = default!;
     public string? FullName { get; set; } = default!;
     public string? AvatarUrl { get; set; }
     public string Password { get; set; } = default!;

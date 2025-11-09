@@ -3,7 +3,7 @@ using AutoMapper;
 using CloneRozetka.Application.Abstractions;
 using CloneRozetka.Application.Users.DTOs;
 using CloneRozetka.Application.Users.Interfaces;
-using CloneRozetka.Domain.Entities.Identity;
+using CloneRozetka.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using System.Net.Http.Headers;
@@ -20,61 +20,93 @@ public class AccountService(IJwtTokenService tokenService,
 {
     public async Task<string> LoginByGoogle(string token)
     {
-        using var httpClient = new HttpClient();
-
-        httpClient.DefaultRequestHeaders.Authorization =
-            new AuthenticationHeaderValue("Bearer", token);
-
-        //configuration
-        string userInfo = configuration["GoogleUserInfo"] ?? "https://www.googleapis.com/oauth2/v2/userinfo";
-        var response = await httpClient.GetAsync(userInfo);
-
-        if (!response.IsSuccessStatusCode)
-            return null;
-
-        var json = await response.Content.ReadAsStringAsync();
-
-        var googleUser = JsonSerializer.Deserialize<GoogleAccountModel>(json);
-
-        
-        var existingUser = await userManager.FindByEmailAsync(googleUser!.Email);
-        if (existingUser != null)
+        try
         {
-            var userLoginGoogle = await userManager.FindByLoginAsync("Google", googleUser.GogoleId);
+            using var httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", token);
 
-            if (userLoginGoogle == null)
-            {
-                await userManager.AddLoginAsync(existingUser, new UserLoginInfo("Google", googleUser.GogoleId, "Google"));
-            }
-            var jwtToken = await tokenService.CreateTokenAsync(existingUser);
-            return jwtToken;
-        }
-        else
-        {
-            var user = mapper.Map<AppUser>(googleUser);
+            var userInfoUrl = configuration["GoogleUserInfo"]
+                              ?? "https://www.googleapis.com/oauth2/v3/userinfo";
 
-            if (!String.IsNullOrEmpty(googleUser.Picture))
+            var response = await httpClient.GetAsync(userInfoUrl);
+            if (!response.IsSuccessStatusCode)
+                return string.Empty;
+
+            var json = await response.Content.ReadAsStringAsync();
+
+            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+            var googleUser = JsonSerializer.Deserialize<GoogleAccountModel>(json, options);
+            if (googleUser == null || string.IsNullOrWhiteSpace(googleUser.Email))
+                return string.Empty;
+
+            var existingUser = await userManager.FindByEmailAsync(googleUser.Email);
+            if (existingUser != null)
             {
-                user.AvatarUrl = await imageService.SaveImageFromUrlAsync(googleUser.Picture);
+
+                if (!string.IsNullOrWhiteSpace(googleUser.GoogleId))
+                {
+                    var userLoginGoogle = await userManager.FindByLoginAsync("Google", googleUser.GoogleId);
+                    if (userLoginGoogle == null)
+                    {
+                        await userManager.AddLoginAsync(existingUser,
+                            new UserLoginInfo("Google", googleUser.GoogleId, "Google"));
+                    }
+                }
+                return await tokenService.CreateTokenAsync(existingUser);
             }
 
-            var result = await userManager.CreateAsync(user);
-            if (result.Succeeded)
+            var user = new AppUser
             {
+                Email = googleUser.Email,
+                UserName = googleUser.Email, 
+                FullName = googleUser.Name
+            };
 
-                result = await userManager.AddLoginAsync(user, new UserLoginInfo(
+            if (!string.IsNullOrWhiteSpace(googleUser.Picture))
+            {
+                try
+                {
+                    user.AvatarUrl = await imageService.SaveImageFromUrlAsync(googleUser.Picture);
+                }
+                catch
+                {
+
+                }
+            }
+
+            var createRes = await userManager.CreateAsync(user);
+            if (!createRes.Succeeded)
+                return string.Empty;
+
+            if (!string.IsNullOrWhiteSpace(googleUser.GoogleId))
+            {
+                await userManager.AddLoginAsync(user, new UserLoginInfo(
                     loginProvider: "Google",
-                    providerKey: googleUser.GogoleId,
+                    providerKey: googleUser.GoogleId,
                     displayName: "Google"
                 ));
-
-                //await userManager.AddToRoleAsync(user, "User");
-                var jwtToken = await tokenService.CreateTokenAsync(user);
-                return jwtToken;
             }
-        }
 
-        
-        return string.Empty;
+            return await tokenService.CreateTokenAsync(user);
+        }
+        catch
+        {
+
+            return string.Empty;
+        }
     }
+
+    public sealed class GoogleAccountModel
+    {
+
+        public string? Sub { get; set; }
+        public string? Email { get; set; }
+        public string? Name { get; set; }
+        public string? Picture { get; set; }
+
+        // зручно звести до однієї властивості
+        public string? GoogleId => !string.IsNullOrWhiteSpace(Sub) ? Sub : null;
+    }
+
 }

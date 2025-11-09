@@ -1,8 +1,9 @@
-﻿using CloneRozetka.Application.Users.Interfaces;
-using CloneRozetka.Application.Users.DTOs;
+﻿using CloneRozetka.Application.Users.DTOs;
+using CloneRozetka.Application.Users.Interfaces;
+using CloneRozetka.Infrastructure.Identity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using CloneRozetka.Domain.Entities.Identity;
 
 namespace CloneRozetka.Api.Controllers
 {
@@ -26,7 +27,6 @@ namespace CloneRozetka.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Register([FromBody] RegisterDto dto)
         {
-
             var user = new AppUser
             {
                 UserName = dto.UserName,
@@ -38,41 +38,51 @@ namespace CloneRozetka.Api.Controllers
             if (!result.Succeeded)
                 return BadRequest(new { errors = result.Errors.Select(e => e.Description) });
 
-
-            var token = _jwt.CreateTokenAsync(user); 
-
-            return Ok(token);
+            var token = await _jwt.CreateTokenAsync(user); 
+            return Ok(new { token });
         }
 
         [HttpPost]
         public async Task<IActionResult> Login([FromBody] LoginDto dto)
         {
+            Console.WriteLine($"Login attempt: {dto.UserNameOrEmail}");
 
-            AppUser? user = await _userManager.FindByNameAsync(dto.UserNameOrEmail)
-                             ?? await _userManager.FindByEmailAsync(dto.UserNameOrEmail);
+            var user = await _userManager.FindByNameAsync(dto.UserNameOrEmail)
+                        ?? await _userManager.FindByEmailAsync(dto.UserNameOrEmail);
 
             if (user == null)
+            {
+                Console.WriteLine("User not found");
                 return Unauthorized(new { error = "User not found" });
+            }
 
-            var check = await _signIn.CheckPasswordSignInAsync(
-                user, dto.Password, lockoutOnFailure: false);
+            var check = await _signIn.CheckPasswordSignInAsync(user, dto.Password, false);
+            Console.WriteLine($"Password check result: {check.Succeeded}");
 
             if (!check.Succeeded)
                 return Unauthorized(new { error = "Invalid credentials" });
 
-            var token = _jwt.CreateTokenAsync(user);
-            return Ok(token);
+            var token = await _jwt.CreateTokenAsync(user);
+            return Ok(new { token });
         }
 
+        [Authorize]
         [HttpGet]
-        public IActionResult Me()
+        public async Task<IActionResult> Me()
         {
-           
+            var userName = User?.Identity?.Name;
+            if (string.IsNullOrEmpty(userName))
+                return Unauthorized();
+
+            var user = await _userManager.FindByNameAsync(userName);
+            if (user == null) return Unauthorized();
+
             return Ok(new
             {
-                IsAuthenticated = User?.Identity?.IsAuthenticated ?? false,
-                Name = User?.Identity?.Name,
-                Claims = User?.Claims.Select(c => new { c.Type, c.Value }) ?? Enumerable.Empty<object>()
+                isAuthenticated = true,
+                name = user.FullName ?? user.UserName,
+                email = user.Email,
+                avatarUrl = user.AvatarUrl
             });
         }
 

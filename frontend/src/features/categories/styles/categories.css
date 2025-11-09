@@ -1,0 +1,104 @@
+/* Базові токени */
+:root {
+    --ct-font: system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, sans-serif;
+    --ct-bg: #ffffff;
+    --ct-fg: #1f2937;          /* slate-800 */
+    --ct-muted: #6b7280;       /* slate-500 */
+    --ct-border: #e5e7eb;      /* gray-200 */
+    --ct-hover: #f3f4f6;       /* gray-100 */
+    --ct-radius: 10px;
+    --ct-gap: 8px;
+    --ct-indent: 12px;
+}
+
+/* Контейнер сайдбару */
+.sidebar {
+    font-family: var(--ct-font);
+    background: var(--ct-bg);
+    color: var(--ct-fg);
+    border: 1px solid var(--ct-border);
+    border-radius: var(--ct-radius);
+    padding: 12px;
+}
+
+.sidebar-header {
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: .2px;
+    margin-bottom: 8px;
+}
+
+/* Список дерева */
+.tree-list {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+/* Один пункт дерева */
+.tree-item {
+    margin-left: calc(var(--depth, 0) * var(--ct-indent));
+}
+
+/* Клік-зона/рядок */
+.tree-row {
+    display: flex;
+    align-items: center;
+    gap: var(--ct-gap);
+    padding: 6px 8px;
+    border-radius: 8px;
+    user-select: none;
+    transition: background .15s ease-in-out;
+    cursor: default;
+}
+
+.tree-row.is-branch {
+    cursor: pointer;
+}
+
+.tree-row:hover {
+    background: var(--ct-hover);
+}
+
+/* Каретка/крапка */
+.caret,
+.dot {
+    width: 14px;
+    text-align: center;
+    flex: 0 0 14px;
+    font-size: 12px;
+    line-height: 1;
+}
+
+/* Іконка */
+.tree-icon-img {
+    width: 18px;
+    height: 18px;
+    border-radius: 4px;
+    object-fit: contain;
+    display: inline-block;
+}
+
+.tree-fallback {
+    width: 18px;
+    text-align: center;
+    display: inline-block;
+}
+
+/* Діти */
+.tree-children {
+    list-style: none;
+    padding-left: 0;
+    margin: 4px 0 0 0;
+}
+
+/* Стани */
+.muted {
+    color: var(--ct-muted);
+    font-size: 14px;
+}
+
+.error {
+    color: #b91c1c; /* red-700 */
+    font-size: 14px;
+}

@@ -30,6 +30,34 @@ html, body, #root { height: 100%; margin: 0; background: var(--bg); }
   font-weight: 600;
   margin-bottom: 8px;
 }
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* ← рівномірно розкидає елементи */
+    padding: 10px 40px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.navbar ul {
+    display: flex;
+    list-style: none;
+    gap: 25px;
+    margin: 0;
+    padding: 0;
+    flex: 1;
+    justify-content: center; /* ← меню по центру */
+}
+
+.navbar a {
+    text-decoration: none;
+    color: #1f2937;
+    font-weight: 500;
+}
+
+.navbar a:hover {
+    color: #2563eb;
+}
+
 
 .muted { color: var(--muted); }
 .error { color: #b91c1c; }
