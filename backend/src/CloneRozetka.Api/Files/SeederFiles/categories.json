@@ -44,7 +44,6 @@
   {
     "name": "Дім та сад",
     "priority": 7,
-    "priority": 7,
     "urlSlug": "home-garden",
     "parentSlug": null,
     "image": "https://www.loopmarket.com.ua/wp-content/uploads/2025/10/ChatGPT-Image-3-%D0%B6%D0%BE%D0%B2%D1%82.-2025-%D1%80.-22_22_19.png"
@@ -783,5 +782,2063 @@
     "urlSlug": "coffee-tea",
     "parentSlug": "food-drinks",
     "image": "https://as1.ftcdn.net/jpg/03/03/75/02/1000_F_303750280_SopZ4PEpoDDm7mCJOUoQM7w5gN14hzHz.jpg"
+  },
+  {
+    "name": "Відновлені/Refurbished",
+    "priority": 4,
+    "urlSlug": "refurbished-phones",
+    "parentSlug": "smartphones",
+    "image": "https://cdn-icons-png.flaticon.com/512/864/864343.png"
+  },
+  {
+    "name": "Android-планшети",
+    "priority": 1,
+    "urlSlug": "android-tablets",
+    "parentSlug": "tablets",
+    "image": "https://e7.pngegg.com/pngimages/580/758/png-clipart-computer-icons-smartphone-tablet-computers-iphone-tablet-angle-electronics.png"
+  },
+  {
+    "name": "iPad",
+    "priority": 2,
+    "urlSlug": "ipad",
+    "parentSlug": "tablets",
+    "image": "https://e7.pngegg.com/pngimages/580/758/png-clipart-computer-icons-smartphone-tablet-computers-iphone-tablet-angle-electronics.png"
+  },
+  {
+    "name": "Дитячі планшети",
+    "priority": 3,
+    "urlSlug": "kids-tablets",
+    "parentSlug": "tablets",
+    "image": "https://e7.pngegg.com/pngimages/580/758/png-clipart-computer-icons-smartphone-tablet-computers-iphone-tablet-angle-electronics.png"
+  },
+  {
+    "name": "Kindle",
+    "priority": 1,
+    "urlSlug": "kindle",
+    "parentSlug": "e-book-readers",
+    "image": "https://cdn-icons-png.flaticon.com/512/1006/1006419.png"
+  },
+  {
+    "name": "PocketBook",
+    "priority": 2,
+    "urlSlug": "pocketbook",
+    "parentSlug": "e-book-readers",
+    "image": "https://cdn-icons-png.flaticon.com/512/1006/1006419.png"
+  },
+  {
+    "name": "Аксесуари для рідерів",
+    "priority": 3,
+    "urlSlug": "ereader-accessories",
+    "parentSlug": "e-book-readers",
+    "image": "https://cdn-icons-png.flaticon.com/512/1006/1006419.png"
+  },
+  {
+    "name": "Дзеркальні фотоапарати",
+    "priority": 1,
+    "urlSlug": "dslr-cameras",
+    "parentSlug": "photo-video",
+    "image": "https://img.freepik.com/free-psd/camera-outline-logo-design_23-2151263981.jpg?semt=ais_hybrid&w=740&q=80"
+  },
+  {
+    "name": "Бездзеркальні фотоапарати",
+    "priority": 2,
+    "urlSlug": "mirrorless-cameras",
+    "parentSlug": "photo-video",
+    "image": "https://img.freepik.com/free-psd/camera-outline-logo-design_23-2151263981.jpg?semt=ais_hybrid&w=740&q=80"
+  },
+  {
+    "name": "Об’єктиви",
+    "priority": 3,
+    "urlSlug": "camera-lenses",
+    "parentSlug": "photo-video",
+    "image": "https://img.freepik.com/free-psd/camera-outline-logo-design_23-2151263981.jpg?semt=ais_hybrid&w=740&q=80"
+  },
+  {
+    "name": "Штативи та стабілізатори",
+    "priority": 4,
+    "urlSlug": "tripods-gimbals",
+    "parentSlug": "photo-video",
+    "image": "https://img.freepik.com/free-psd/camera-outline-logo-design_23-2151263981.jpg?semt=ais_hybrid&w=740&q=80"
+  },
+  {
+    "name": "Аксесуари для фото",
+    "priority": 5,
+    "urlSlug": "photo-accessories",
+    "parentSlug": "photo-video",
+    "image": "https://img.freepik.com/free-psd/camera-outline-logo-design_23-2151263981.jpg?semt=ais_hybrid&w=740&q=80"
+  },
+  {
+    "name": "Екшн-камери",
+    "priority": 1,
+    "urlSlug": "action-cams",
+    "parentSlug": "action-cameras-drones",
+    "image": "https://cdn-icons-png.flaticon.com/256/2628/2628223.png"
+  },
+  {
+    "name": "GoPro",
+    "priority": 2,
+    "urlSlug": "gopro",
+    "parentSlug": "action-cameras-drones",
+    "image": "https://cdn-icons-png.flaticon.com/256/2628/2628223.png"
+  },
+  {
+    "name": "Дрони",
+    "priority": 3,
+    "urlSlug": "drones",
+    "parentSlug": "action-cameras-drones",
+    "image": "https://cdn-icons-png.flaticon.com/256/2628/2628223.png"
+  },
+  {
+    "name": "Стабілізатори",
+    "priority": 4,
+    "urlSlug": "gimbals",
+    "parentSlug": "action-cameras-drones",
+    "image": "https://cdn-icons-png.flaticon.com/256/2628/2628223.png"
+  },
+  {
+    "name": "Apple Watch",
+    "priority": 1,
+    "urlSlug": "apple-watch",
+    "parentSlug": "wearables",
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQyvKpFd1wKrhR_RCbl1uslGGzw-ZFgP8nAzA&s"
+  },
+  {
+    "name": "Фітнес-браслети",
+    "priority": 2,
+    "urlSlug": "fitness-bands",
+    "parentSlug": "wearables",
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQyvKpFd1wKrhR_RCbl1uslGGzw-ZFgP8nAzA&s"
+  },
+  {
+    "name": "Дитячі смарт-годинники",
+    "priority": 3,
+    "urlSlug": "kids-smartwatches",
+    "parentSlug": "wearables",
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQyvKpFd1wKrhR_RCbl1uslGGzw-ZFgP8nAzA&s"
+  },
+  {
+    "name": "Аксесуари для смарт-годинників",
+    "priority": 4,
+    "urlSlug": "wearable-accessories",
+    "parentSlug": "wearables",
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQyvKpFd1wKrhR_RCbl1uslGGzw-ZFgP8nAzA&s"
+  },
+  {
+    "name": "Вкладиші (in‑ear)",
+    "priority": 1,
+    "urlSlug": "in-ear",
+    "parentSlug": "headphones",
+    "image": "https://cdn-icons-png.flaticon.com/512/88/88197.png"
+  },
+  {
+    "name": "Накладні (on‑ear/over‑ear)",
+    "priority": 2,
+    "urlSlug": "over-ear",
+    "parentSlug": "headphones",
+    "image": "https://cdn-icons-png.flaticon.com/512/88/88197.png"
+  },
+  {
+    "name": "TWS (повністю бездротові)",
+    "priority": 3,
+    "urlSlug": "true-wireless",
+    "parentSlug": "headphones",
+    "image": "https://cdn-icons-png.flaticon.com/512/88/88197.png"
+  },
+  {
+    "name": "Ігрові гарнітури",
+    "priority": 4,
+    "urlSlug": "gaming-headsets",
+    "parentSlug": "headphones",
+    "image": "https://cdn-icons-png.flaticon.com/512/88/88197.png"
+  },
+  {
+    "name": "Bluetooth-колонки",
+    "priority": 1,
+    "urlSlug": "bluetooth-speakers",
+    "parentSlug": "portable-audio",
+    "image": "https://w7.pngwing.com/pngs/84/151/png-transparent-symbol-computer-icons-loudspeaker-audio-electronics-speakers-miscellaneous-rectangle-mobile-phone-case.png"
+  },
+  {
+    "name": "Розумні колонки",
+    "priority": 2,
+    "urlSlug": "smart-speakers",
+    "parentSlug": "portable-audio",
+    "image": "https://w7.pngwing.com/pngs/84/151/png-transparent-symbol-computer-icons-loudspeaker-audio-electronics-speakers-miscellaneous-rectangle-mobile-phone-case.png"
+  },
+  {
+    "name": "Портативні радіоприймачі",
+    "priority": 3,
+    "urlSlug": "portable-radios",
+    "parentSlug": "portable-audio",
+    "image": "https://w7.pngwing.com/pngs/84/151/png-transparent-symbol-computer-icons-loudspeaker-audio-electronics-speakers-miscellaneous-rectangle-mobile-phone-case.png"
+  },
+  {
+    "name": "10–20 тис. мА·год",
+    "priority": 1,
+    "urlSlug": "10k-20k-mah",
+    "parentSlug": "power-banks",
+    "image": null
+  },
+  {
+    "name": ">20 тис. мА·год",
+    "priority": 2,
+    "urlSlug": "over-20k-mah",
+    "parentSlug": "power-banks",
+    "image": null
+  },
+  {
+    "name": "MagSafe/бездротові",
+    "priority": 3,
+    "urlSlug": "magsafe-wireless",
+    "parentSlug": "power-banks",
+    "image": null
+  },
+  {
+    "name": "USB‑C кабелі",
+    "priority": 1,
+    "urlSlug": "usb-c-cables",
+    "parentSlug": "cables-adapters",
+    "image": null
+  },
+  {
+    "name": "Lightning кабелі",
+    "priority": 2,
+    "urlSlug": "lightning-cables",
+    "parentSlug": "cables-adapters",
+    "image": null
+  },
+  {
+    "name": "HDMI кабелі",
+    "priority": 3,
+    "urlSlug": "hdmi-cables",
+    "parentSlug": "cables-adapters",
+    "image": null
+  },
+  {
+    "name": "Аудіо AUX",
+    "priority": 4,
+    "urlSlug": "audio-aux",
+    "parentSlug": "cables-adapters",
+    "image": null
+  },
+  {
+    "name": "Перехідники та хаби",
+    "priority": 5,
+    "urlSlug": "adapters-hubs",
+    "parentSlug": "cables-adapters",
+    "image": null
+  },
+  {
+    "name": "Силіконові",
+    "priority": 1,
+    "urlSlug": "silicone-cases",
+    "parentSlug": "phone-cases",
+    "image": null
+  },
+  {
+    "name": "Протиударні",
+    "priority": 2,
+    "urlSlug": "rugged-cases",
+    "parentSlug": "phone-cases",
+    "image": null
+  },
+  {
+    "name": "Книжки/гаманець",
+    "priority": 3,
+    "urlSlug": "wallet-cases",
+    "parentSlug": "phone-cases",
+    "image": null
+  },
+  {
+    "name": "MagSafe",
+    "priority": 4,
+    "urlSlug": "magsafe-cases",
+    "parentSlug": "phone-cases",
+    "image": null
+  },
+  {
+    "name": "Мережеві зарядні",
+    "priority": 1,
+    "urlSlug": "wall-chargers",
+    "parentSlug": "chargers",
+    "image": null
+  },
+  {
+    "name": "Автозарядні",
+    "priority": 2,
+    "urlSlug": "car-chargers",
+    "parentSlug": "chargers",
+    "image": null
+  },
+  {
+    "name": "Бездротові зарядні",
+    "priority": 3,
+    "urlSlug": "wireless-chargers",
+    "parentSlug": "chargers",
+    "image": null
+  },
+  {
+    "name": "Зарядні станції/хаби",
+    "priority": 4,
+    "urlSlug": "charging-hubs",
+    "parentSlug": "chargers",
+    "image": null
+  },
+  {
+    "name": "Захисне скло",
+    "priority": 1,
+    "urlSlug": "tempered-glass",
+    "parentSlug": "screen-protectors",
+    "image": null
+  },
+  {
+    "name": "Плівка",
+    "priority": 2,
+    "urlSlug": "film-protectors",
+    "parentSlug": "screen-protectors",
+    "image": null
+  },
+  {
+    "name": "Privacy/матові",
+    "priority": 3,
+    "urlSlug": "privacy-matte",
+    "parentSlug": "screen-protectors",
+    "image": null
+  },
+  {
+    "name": "USB‑C",
+    "priority": 1,
+    "urlSlug": "usb-c",
+    "parentSlug": "phone-cables",
+    "image": null
+  },
+  {
+    "name": "Lightning",
+    "priority": 2,
+    "urlSlug": "lightning",
+    "parentSlug": "phone-cables",
+    "image": null
+  },
+  {
+    "name": "Micro‑USB",
+    "priority": 3,
+    "urlSlug": "micro-usb",
+    "parentSlug": "phone-cables",
+    "image": null
+  },
+  {
+    "name": "OLED",
+    "priority": 1,
+    "urlSlug": "oled",
+    "parentSlug": "tvs",
+    "image": null
+  },
+  {
+    "name": "QLED/MiniLED",
+    "priority": 2,
+    "urlSlug": "qled-miniled",
+    "parentSlug": "tvs",
+    "image": null
+  },
+  {
+    "name": "LED",
+    "priority": 3,
+    "urlSlug": "led",
+    "parentSlug": "tvs",
+    "image": null
+  },
+  {
+    "name": "4K/8K",
+    "priority": 4,
+    "urlSlug": "4k-8k",
+    "parentSlug": "tvs",
+    "image": null
+  },
+  {
+    "name": "2.1",
+    "priority": 1,
+    "urlSlug": "2-1",
+    "parentSlug": "soundbars-home-theater",
+    "image": null
+  },
+  {
+    "name": "5.1",
+    "priority": 2,
+    "urlSlug": "5-1",
+    "parentSlug": "soundbars-home-theater",
+    "image": null
+  },
+  {
+    "name": "Dolby Atmos",
+    "priority": 3,
+    "urlSlug": "dolby-atmos",
+    "parentSlug": "soundbars-home-theater",
+    "image": null
+  },
+  {
+    "name": "Компактні",
+    "priority": 4,
+    "urlSlug": "compact-soundbars",
+    "parentSlug": "soundbars-home-theater",
+    "image": null
+  },
+  {
+    "name": "Android TV",
+    "priority": 1,
+    "urlSlug": "android-tv-box",
+    "parentSlug": "tv-boxes",
+    "image": null
+  },
+  {
+    "name": "Apple TV",
+    "priority": 2,
+    "urlSlug": "apple-tv",
+    "parentSlug": "tv-boxes",
+    "image": null
+  },
+  {
+    "name": "Chromecast/Google TV",
+    "priority": 3,
+    "urlSlug": "chromecast-google-tv",
+    "parentSlug": "tv-boxes",
+    "image": null
+  },
+  {
+    "name": "IPTV-приставки",
+    "priority": 4,
+    "urlSlug": "iptv-boxes",
+    "parentSlug": "tv-boxes",
+    "image": null
+  },
+  {
+    "name": "Портативні",
+    "priority": 1,
+    "urlSlug": "portable-projectors",
+    "parentSlug": "projectors",
+    "image": null
+  },
+  {
+    "name": "Для домашнього кінотеатру",
+    "priority": 2,
+    "urlSlug": "home-cinema-projectors",
+    "parentSlug": "projectors",
+    "image": null
+  },
+  {
+    "name": "Короткофокусні",
+    "priority": 3,
+    "urlSlug": "short-throw-projectors",
+    "parentSlug": "projectors",
+    "image": null
+  },
+  {
+    "name": "Кімнатні антени",
+    "priority": 1,
+    "urlSlug": "indoor-antennas",
+    "parentSlug": "antennas-mounts",
+    "image": null
+  },
+  {
+    "name": "Зовнішні антени",
+    "priority": 2,
+    "urlSlug": "outdoor-antennas",
+    "parentSlug": "antennas-mounts",
+    "image": null
+  },
+  {
+    "name": "Кронштейни для ТВ",
+    "priority": 3,
+    "urlSlug": "tv-wall-mounts",
+    "parentSlug": "antennas-mounts",
+    "image": null
+  },
+  {
+    "name": "Ігрові",
+    "priority": 1,
+    "urlSlug": "gaming-laptops",
+    "parentSlug": "laptops",
+    "image": null
+  },
+  {
+    "name": "Ультрабуки",
+    "priority": 2,
+    "urlSlug": "ultrabooks",
+    "parentSlug": "laptops",
+    "image": null
+  },
+  {
+    "name": "Бізнес",
+    "priority": 3,
+    "urlSlug": "business-laptops",
+    "parentSlug": "laptops",
+    "image": null
+  },
+  {
+    "name": "Для навчання",
+    "priority": 4,
+    "urlSlug": "student-laptops",
+    "parentSlug": "laptops",
+    "image": null
+  },
+  {
+    "name": "Ігрові ПК",
+    "priority": 1,
+    "urlSlug": "gaming-desktops",
+    "parentSlug": "desktops",
+    "image": null
+  },
+  {
+    "name": "Офісні ПК",
+    "priority": 2,
+    "urlSlug": "office-desktops",
+    "parentSlug": "desktops",
+    "image": null
+  },
+  {
+    "name": "Міні‑ПК/неттопи",
+    "priority": 3,
+    "urlSlug": "mini-pcs",
+    "parentSlug": "desktops",
+    "image": null
+  },
+  {
+    "name": "Ігрові",
+    "priority": 1,
+    "urlSlug": "gaming-monitors",
+    "parentSlug": "monitors",
+    "image": null
+  },
+  {
+    "name": "4K/5K",
+    "priority": 2,
+    "urlSlug": "4k-5k-monitors",
+    "parentSlug": "monitors",
+    "image": null
+  },
+  {
+    "name": "Ультраширокі",
+    "priority": 3,
+    "urlSlug": "ultrawide-monitors",
+    "parentSlug": "monitors",
+    "image": null
+  },
+  {
+    "name": "NVIDIA",
+    "priority": 1,
+    "urlSlug": "nvidia-gpus",
+    "parentSlug": "gpus",
+    "image": null
+  },
+  {
+    "name": "AMD",
+    "priority": 2,
+    "urlSlug": "amd-gpus",
+    "parentSlug": "gpus",
+    "image": null
+  },
+  {
+    "name": "Вживані/Refurbished",
+    "priority": 3,
+    "urlSlug": "used-gpus",
+    "parentSlug": "gpus",
+    "image": null
+  },
+  {
+    "name": "Intel",
+    "priority": 1,
+    "urlSlug": "intel-cpus",
+    "parentSlug": "cpus",
+    "image": null
+  },
+  {
+    "name": "AMD",
+    "priority": 2,
+    "urlSlug": "amd-cpus",
+    "parentSlug": "cpus",
+    "image": null
+  },
+  {
+    "name": "ATX",
+    "priority": 1,
+    "urlSlug": "atx-motherboards",
+    "parentSlug": "motherboards",
+    "image": null
+  },
+  {
+    "name": "Micro‑ATX",
+    "priority": 2,
+    "urlSlug": "microatx-motherboards",
+    "parentSlug": "motherboards",
+    "image": null
+  },
+  {
+    "name": "Mini‑ITX",
+    "priority": 3,
+    "urlSlug": "miniitx-motherboards",
+    "parentSlug": "motherboards",
+    "image": null
+  },
+  {
+    "name": "DDR4",
+    "priority": 1,
+    "urlSlug": "ddr4-ram",
+    "parentSlug": "ram",
+    "image": null
+  },
+  {
+    "name": "DDR5",
+    "priority": 2,
+    "urlSlug": "ddr5-ram",
+    "parentSlug": "ram",
+    "image": null
+  },
+  {
+    "name": "SO‑DIMM (ноутбуки)",
+    "priority": 3,
+    "urlSlug": "sodimm-ram",
+    "parentSlug": "ram",
+    "image": null
+  },
+  {
+    "name": "SSD SATA",
+    "priority": 1,
+    "urlSlug": "ssd-sata",
+    "parentSlug": "storage",
+    "image": null
+  },
+  {
+    "name": "SSD NVMe",
+    "priority": 2,
+    "urlSlug": "ssd-nvme",
+    "parentSlug": "storage",
+    "image": null
+  },
+  {
+    "name": "HDD",
+    "priority": 3,
+    "urlSlug": "hdd",
+    "parentSlug": "storage",
+    "image": null
+  },
+  {
+    "name": "Механічні клавіатури",
+    "priority": 1,
+    "urlSlug": "mechanical-keyboards",
+    "parentSlug": "keyboards-mice",
+    "image": null
+  },
+  {
+    "name": "Мембранні клавіатури",
+    "priority": 2,
+    "urlSlug": "membrane-keyboards",
+    "parentSlug": "keyboards-mice",
+    "image": null
+  },
+  {
+    "name": "Бездротові комплекти",
+    "priority": 3,
+    "urlSlug": "wireless-combos",
+    "parentSlug": "keyboards-mice",
+    "image": null
+  },
+  {
+    "name": "Лазерні",
+    "priority": 1,
+    "urlSlug": "laser-printers",
+    "parentSlug": "printers-mfp",
+    "image": null
+  },
+  {
+    "name": "Струминні",
+    "priority": 2,
+    "urlSlug": "inkjet-printers",
+    "parentSlug": "printers-mfp",
+    "image": null
+  },
+  {
+    "name": "МФУ",
+    "priority": 3,
+    "urlSlug": "mfp",
+    "parentSlug": "printers-mfp",
+    "image": null
+  },
+  {
+    "name": "Однокамерні",
+    "priority": 1,
+    "urlSlug": "single-chamber",
+    "parentSlug": "refrigerators",
+    "image": null
+  },
+  {
+    "name": "Двокамерні",
+    "priority": 2,
+    "urlSlug": "double-chamber",
+    "parentSlug": "refrigerators",
+    "image": null
+  },
+  {
+    "name": "Side‑by‑Side",
+    "priority": 3,
+    "urlSlug": "side-by-side",
+    "parentSlug": "refrigerators",
+    "image": null
+  },
+  {
+    "name": "Міні‑холодильники",
+    "priority": 4,
+    "urlSlug": "mini-fridges",
+    "parentSlug": "refrigerators",
+    "image": null
+  },
+  {
+    "name": "Фронтальне завантаження",
+    "priority": 1,
+    "urlSlug": "front-load",
+    "parentSlug": "washing-machines",
+    "image": null
+  },
+  {
+    "name": "Вертикальне завантаження",
+    "priority": 2,
+    "urlSlug": "top-load",
+    "parentSlug": "washing-machines",
+    "image": null
+  },
+  {
+    "name": "Прально‑сушильні",
+    "priority": 3,
+    "urlSlug": "washer-dryers",
+    "parentSlug": "washing-machines",
+    "image": null
+  },
+  {
+    "name": "Повнорозмірні",
+    "priority": 1,
+    "urlSlug": "full-size",
+    "parentSlug": "dishwashers",
+    "image": null
+  },
+  {
+    "name": "Вузькі",
+    "priority": 2,
+    "urlSlug": "slimline",
+    "parentSlug": "dishwashers",
+    "image": null
+  },
+  {
+    "name": "Настільні",
+    "priority": 3,
+    "urlSlug": "tabletop",
+    "parentSlug": "dishwashers",
+    "image": null
+  },
+  {
+    "name": "Газові",
+    "priority": 1,
+    "urlSlug": "gas-hobs",
+    "parentSlug": "cookers-hobs",
+    "image": null
+  },
+  {
+    "name": "Електричні",
+    "priority": 2,
+    "urlSlug": "electric-hobs",
+    "parentSlug": "cookers-hobs",
+    "image": null
+  },
+  {
+    "name": "Індукційні",
+    "priority": 3,
+    "urlSlug": "induction-hobs",
+    "parentSlug": "cookers-hobs",
+    "image": null
+  },
+  {
+    "name": "Роботи‑пилососи",
+    "priority": 1,
+    "urlSlug": "robot-vacuums",
+    "parentSlug": "vacuum-cleaners",
+    "image": null
+  },
+  {
+    "name": "Вертикальні",
+    "priority": 2,
+    "urlSlug": "stick-vacuums",
+    "parentSlug": "vacuum-cleaners",
+    "image": null
+  },
+  {
+    "name": "Класичні з мішком/контейнером",
+    "priority": 3,
+    "urlSlug": "canister-vacuums",
+    "parentSlug": "vacuum-cleaners",
+    "image": null
+  },
+  {
+    "name": "Соло",
+    "priority": 1,
+    "urlSlug": "solo-microwaves",
+    "parentSlug": "microwaves",
+    "image": null
+  },
+  {
+    "name": "З грилем",
+    "priority": 2,
+    "urlSlug": "grill-microwaves",
+    "parentSlug": "microwaves",
+    "image": null
+  },
+  {
+    "name": "Конвекційні",
+    "priority": 3,
+    "urlSlug": "convection-microwaves",
+    "parentSlug": "microwaves",
+    "image": null
+  },
+  {
+    "name": "Погружні блендери",
+    "priority": 1,
+    "urlSlug": "immersion-blenders",
+    "parentSlug": "blenders-mixers",
+    "image": null
+  },
+  {
+    "name": "Стаціонарні блендери",
+    "priority": 2,
+    "urlSlug": "countertop-blenders",
+    "parentSlug": "blenders-mixers",
+    "image": null
+  },
+  {
+    "name": "Міксери",
+    "priority": 3,
+    "urlSlug": "mixers",
+    "parentSlug": "blenders-mixers",
+    "image": null
+  },
+  {
+    "name": "Мультиварки‑скороварки",
+    "priority": 1,
+    "urlSlug": "pressure-multicookers",
+    "parentSlug": "multicookers",
+    "image": null
+  },
+  {
+    "name": "Повільноварки",
+    "priority": 2,
+    "urlSlug": "slow-cookers",
+    "parentSlug": "multicookers",
+    "image": null
+  },
+  {
+    "name": "Рисоварки",
+    "priority": 3,
+    "urlSlug": "rice-cookers",
+    "parentSlug": "multicookers",
+    "image": null
+  },
+  {
+    "name": "Парогенератори",
+    "priority": 1,
+    "urlSlug": "steam-stations",
+    "parentSlug": "irons",
+    "image": null
+  },
+  {
+    "name": "Дорожні праски",
+    "priority": 2,
+    "urlSlug": "travel-irons",
+    "parentSlug": "irons",
+    "image": null
+  },
+  {
+    "name": "Класичні праски",
+    "priority": 3,
+    "urlSlug": "classic-irons",
+    "parentSlug": "irons",
+    "image": null
+  },
+  {
+    "name": "Крапельні",
+    "priority": 1,
+    "urlSlug": "drip-coffee-makers",
+    "parentSlug": "coffee-machines",
+    "image": null
+  },
+  {
+    "name": "Еспресо (рожкові)",
+    "priority": 2,
+    "urlSlug": "espresso-machines",
+    "parentSlug": "coffee-machines",
+    "image": null
+  },
+  {
+    "name": "Капсульні",
+    "priority": 3,
+    "urlSlug": "capsule-coffee-machines",
+    "parentSlug": "coffee-machines",
+    "image": null
+  },
+  {
+    "name": "PlayStation",
+    "priority": 1,
+    "urlSlug": "playstation",
+    "parentSlug": "consoles",
+    "image": null
+  },
+  {
+    "name": "Xbox",
+    "priority": 2,
+    "urlSlug": "xbox",
+    "parentSlug": "consoles",
+    "image": null
+  },
+  {
+    "name": "Nintendo",
+    "priority": 3,
+    "urlSlug": "nintendo",
+    "parentSlug": "consoles",
+    "image": null
+  },
+  {
+    "name": "Ігри для PlayStation",
+    "priority": 1,
+    "urlSlug": "ps-games",
+    "parentSlug": "games",
+    "image": null
+  },
+  {
+    "name": "Ігри для Xbox",
+    "priority": 2,
+    "urlSlug": "xbox-games",
+    "parentSlug": "games",
+    "image": null
+  },
+  {
+    "name": "Ігри для Nintendo",
+    "priority": 3,
+    "urlSlug": "nintendo-games",
+    "parentSlug": "games",
+    "image": null
+  },
+  {
+    "name": "PC-ігри (цифрові ключі)",
+    "priority": 4,
+    "urlSlug": "pc-games-keys",
+    "parentSlug": "games",
+    "image": null
+  },
+  {
+    "name": "Геймпади",
+    "priority": 1,
+    "urlSlug": "controllers",
+    "parentSlug": "gaming-accessories",
+    "image": null
+  },
+  {
+    "name": "VR‑гарнітури",
+    "priority": 2,
+    "urlSlug": "vr-headsets",
+    "parentSlug": "gaming-accessories",
+    "image": null
+  },
+  {
+    "name": "Рулі та педалі",
+    "priority": 3,
+    "urlSlug": "steering-wheels",
+    "parentSlug": "gaming-accessories",
+    "image": null
+  },
+  {
+    "name": "Ергономічні",
+    "priority": 1,
+    "urlSlug": "ergonomic-chairs",
+    "parentSlug": "gaming-chairs",
+    "image": null
+  },
+  {
+    "name": "Racing‑style",
+    "priority": 2,
+    "urlSlug": "racing-chairs",
+    "parentSlug": "gaming-chairs",
+    "image": null
+  },
+  {
+    "name": "Для підлітків/дітей",
+    "priority": 3,
+    "urlSlug": "kids-gaming-chairs",
+    "parentSlug": "gaming-chairs",
+    "image": null
+  },
+  {
+    "name": "Для вітальні",
+    "priority": 1,
+    "urlSlug": "living-room-furniture",
+    "parentSlug": "furniture",
+    "image": null
+  },
+  {
+    "name": "Для спальні",
+    "priority": 2,
+    "urlSlug": "bedroom-furniture",
+    "parentSlug": "furniture",
+    "image": null
+  },
+  {
+    "name": "Для кухні",
+    "priority": 3,
+    "urlSlug": "kitchen-furniture",
+    "parentSlug": "furniture",
+    "image": null
+  },
+  {
+    "name": "Для ванної",
+    "priority": 4,
+    "urlSlug": "bathroom-furniture",
+    "parentSlug": "furniture",
+    "image": null
+  },
+  {
+    "name": "Стельові світильники",
+    "priority": 1,
+    "urlSlug": "ceiling-lights",
+    "parentSlug": "lighting",
+    "image": null
+  },
+  {
+    "name": "Лампи/бра/торшери",
+    "priority": 2,
+    "urlSlug": "lamps-and-sconces",
+    "parentSlug": "lighting",
+    "image": null
+  },
+  {
+    "name": "LED‑стрічки",
+    "priority": 3,
+    "urlSlug": "led-strips",
+    "parentSlug": "lighting",
+    "image": null
+  },
+  {
+    "name": "Настінний декор/постери",
+    "priority": 1,
+    "urlSlug": "wall-art",
+    "parentSlug": "decor",
+    "image": null
+  },
+  {
+    "name": "Текстиль (пледи, подушки)",
+    "priority": 2,
+    "urlSlug": "home-textiles",
+    "parentSlug": "decor",
+    "image": null
+  },
+  {
+    "name": "Свічки/аромадифузори",
+    "priority": 3,
+    "urlSlug": "candles-diffusers",
+    "parentSlug": "decor",
+    "image": null
+  },
+  {
+    "name": "Посуд для готування",
+    "priority": 1,
+    "urlSlug": "cookware",
+    "parentSlug": "kitchenware",
+    "image": null
+  },
+  {
+    "name": "Столовий посуд",
+    "priority": 2,
+    "urlSlug": "tableware",
+    "parentSlug": "kitchenware",
+    "image": null
+  },
+  {
+    "name": "Контейнери та зберігання",
+    "priority": 3,
+    "urlSlug": "food-storage",
+    "parentSlug": "kitchenware",
+    "image": null
+  },
+  {
+    "name": "Газонокосарки",
+    "priority": 1,
+    "urlSlug": "lawn-mowers",
+    "parentSlug": "garden-tools",
+    "image": null
+  },
+  {
+    "name": "Тримери/мотокоси",
+    "priority": 2,
+    "urlSlug": "trimmers",
+    "parentSlug": "garden-tools",
+    "image": null
+  },
+  {
+    "name": "Лопати/граблі",
+    "priority": 3,
+    "urlSlug": "shovels-rakes",
+    "parentSlug": "garden-tools",
+    "image": null
+  },
+  {
+    "name": "Плівкові теплиці",
+    "priority": 1,
+    "urlSlug": "film-greenhouses",
+    "parentSlug": "greenhouses-beds",
+    "image": null
+  },
+  {
+    "name": "Полікарбонатні теплиці",
+    "priority": 2,
+    "urlSlug": "polycarbonate-greenhouses",
+    "parentSlug": "greenhouses-beds",
+    "image": null
+  },
+  {
+    "name": "Грядки‑короби",
+    "priority": 3,
+    "urlSlug": "raised-beds",
+    "parentSlug": "greenhouses-beds",
+    "image": null
+  },
+  {
+    "name": "Дрилі",
+    "priority": 1,
+    "urlSlug": "drills",
+    "parentSlug": "power-tools",
+    "image": null
+  },
+  {
+    "name": "Шуруповерти",
+    "priority": 2,
+    "urlSlug": "screwdrivers",
+    "parentSlug": "power-tools",
+    "image": null
+  },
+  {
+    "name": "Болгарки (кутові шліфмашини)",
+    "priority": 3,
+    "urlSlug": "angle-grinders",
+    "parentSlug": "power-tools",
+    "image": null
+  },
+  {
+    "name": "Перфоратори",
+    "priority": 4,
+    "urlSlug": "rotary-hammers",
+    "parentSlug": "power-tools",
+    "image": null
+  },
+  {
+    "name": "Молотки",
+    "priority": 1,
+    "urlSlug": "hammers",
+    "parentSlug": "hand-tools",
+    "image": null
+  },
+  {
+    "name": "Викрутки",
+    "priority": 2,
+    "urlSlug": "screwdrivers-hand",
+    "parentSlug": "hand-tools",
+    "image": null
+  },
+  {
+    "name": "Ключі/головки",
+    "priority": 3,
+    "urlSlug": "wrenches-sockets",
+    "parentSlug": "hand-tools",
+    "image": null
+  },
+  {
+    "name": "Зварювальні інвертори",
+    "priority": 1,
+    "urlSlug": "welding-inverters",
+    "parentSlug": "welding",
+    "image": null
+  },
+  {
+    "name": "Маски та захист",
+    "priority": 2,
+    "urlSlug": "welding-masks",
+    "parentSlug": "welding",
+    "image": null
+  },
+  {
+    "name": "Електроди та дріт",
+    "priority": 3,
+    "urlSlug": "electrodes-wire",
+    "parentSlug": "welding",
+    "image": null
+  },
+  {
+    "name": "Мультиметри",
+    "priority": 1,
+    "urlSlug": "multimeters",
+    "parentSlug": "measuring-tools",
+    "image": null
+  },
+  {
+    "name": "Лазерні далекоміри",
+    "priority": 2,
+    "urlSlug": "laser-measures",
+    "parentSlug": "measuring-tools",
+    "image": null
+  },
+  {
+    "name": "Рівні/кутоміри",
+    "priority": 3,
+    "urlSlug": "levels-angle-finders",
+    "parentSlug": "measuring-tools",
+    "image": null
+  },
+  {
+    "name": "Саморізи/шурупи",
+    "priority": 1,
+    "urlSlug": "screws",
+    "parentSlug": "fasteners",
+    "image": null
+  },
+  {
+    "name": "Болти/гайки/шайби",
+    "priority": 2,
+    "urlSlug": "bolts-nuts-washers",
+    "parentSlug": "fasteners",
+    "image": null
+  },
+  {
+    "name": "Дюбелі/анкери",
+    "priority": 3,
+    "urlSlug": "anchors",
+    "parentSlug": "fasteners",
+    "image": null
+  },
+  {
+    "name": "Літні шини",
+    "priority": 1,
+    "urlSlug": "summer-tires",
+    "parentSlug": "tires-wheels",
+    "image": null
+  },
+  {
+    "name": "Зимові шини",
+    "priority": 2,
+    "urlSlug": "winter-tires",
+    "parentSlug": "tires-wheels",
+    "image": null
+  },
+  {
+    "name": "Литі диски",
+    "priority": 3,
+    "urlSlug": "alloy-wheels",
+    "parentSlug": "tires-wheels",
+    "image": null
+  },
+  {
+    "name": "Сталеві диски",
+    "priority": 4,
+    "urlSlug": "steel-wheels",
+    "parentSlug": "tires-wheels",
+    "image": null
+  },
+  {
+    "name": "Відеореєстратори",
+    "priority": 1,
+    "urlSlug": "dashcams",
+    "parentSlug": "car-electronics",
+    "image": null
+  },
+  {
+    "name": "Магнітоли/головні пристрої",
+    "priority": 2,
+    "urlSlug": "head-units",
+    "parentSlug": "car-electronics",
+    "image": null
+  },
+  {
+    "name": "Парктроніки/камери",
+    "priority": 3,
+    "urlSlug": "parking-sensors-cameras",
+    "parentSlug": "car-electronics",
+    "image": null
+  },
+  {
+    "name": "Автошампуні/мийка",
+    "priority": 1,
+    "urlSlug": "car-shampoos",
+    "parentSlug": "car-care",
+    "image": null
+  },
+  {
+    "name": "Віск/поліролі",
+    "priority": 2,
+    "urlSlug": "waxes-polishes",
+    "parentSlug": "car-care",
+    "image": null
+  },
+  {
+    "name": "Очисники салону",
+    "priority": 3,
+    "urlSlug": "interior-cleaners",
+    "parentSlug": "car-care",
+    "image": null
+  },
+  {
+    "name": "Килимки",
+    "priority": 1,
+    "urlSlug": "floor-mats",
+    "parentSlug": "car-accessories",
+    "image": null
+  },
+  {
+    "name": "Чохли на сидіння",
+    "priority": 2,
+    "urlSlug": "seat-covers",
+    "parentSlug": "car-accessories",
+    "image": null
+  },
+  {
+    "name": "Органайзери багажника",
+    "priority": 3,
+    "urlSlug": "trunk-organizers",
+    "parentSlug": "car-accessories",
+    "image": null
+  },
+  {
+    "name": "Моторні оливи",
+    "priority": 1,
+    "urlSlug": "engine-oil",
+    "parentSlug": "oils-fluids",
+    "image": null
+  },
+  {
+    "name": "Гальмівна рідина",
+    "priority": 2,
+    "urlSlug": "brake-fluid",
+    "parentSlug": "oils-fluids",
+    "image": null
+  },
+  {
+    "name": "Антифриз/охолоджуюча",
+    "priority": 3,
+    "urlSlug": "coolant",
+    "parentSlug": "oils-fluids",
+    "image": null
+  },
+  {
+    "name": "Гантелі/гири",
+    "priority": 1,
+    "urlSlug": "dumbbells-kettlebells",
+    "parentSlug": "fitness",
+    "image": null
+  },
+  {
+    "name": "Килимки/петлі",
+    "priority": 2,
+    "urlSlug": "mats-bands",
+    "parentSlug": "fitness",
+    "image": null
+  },
+  {
+    "name": "Кардіо‑тренажери",
+    "priority": 3,
+    "urlSlug": "cardio-machines",
+    "parentSlug": "fitness",
+    "image": null
+  },
+  {
+    "name": "Гірські (MTB)",
+    "priority": 1,
+    "urlSlug": "mtb-bikes",
+    "parentSlug": "bicycles",
+    "image": null
+  },
+  {
+    "name": "Шосейні",
+    "priority": 2,
+    "urlSlug": "road-bikes",
+    "parentSlug": "bicycles",
+    "image": null
+  },
+  {
+    "name": "Електросамокати",
+    "priority": 1,
+    "urlSlug": "electric-scooters",
+    "parentSlug": "scooters-gyros",
+    "image": null
+  },
+  {
+    "name": "Гіроборди/сегвеї",
+    "priority": 2,
+    "urlSlug": "hoverboards",
+    "parentSlug": "scooters-gyros",
+    "image": null
+  },
+  {
+    "name": "Намети",
+    "priority": 1,
+    "urlSlug": "tents",
+    "parentSlug": "camping",
+    "image": null
+  },
+  {
+    "name": "Спальні мішки",
+    "priority": 2,
+    "urlSlug": "sleeping-bags",
+    "parentSlug": "camping",
+    "image": null
+  },
+  {
+    "name": "Вудилища",
+    "priority": 1,
+    "urlSlug": "fishing-rods",
+    "parentSlug": "fishing",
+    "image": null
+  },
+  {
+    "name": "Котушки",
+    "priority": 2,
+    "urlSlug": "reels",
+    "parentSlug": "fishing",
+    "image": null
+  },
+  {
+    "name": "Приманки/блешні",
+    "priority": 3,
+    "urlSlug": "lures-baits",
+    "parentSlug": "fishing",
+    "image": null
+  },
+  {
+    "name": "Плаття",
+    "priority": 1,
+    "urlSlug": "dresses",
+    "parentSlug": "womens-clothing",
+    "image": null
+  },
+  {
+    "name": "Спідниці",
+    "priority": 2,
+    "urlSlug": "skirts",
+    "parentSlug": "womens-clothing",
+    "image": null
+  },
+  {
+    "name": "Блузки/сорочки",
+    "priority": 3,
+    "urlSlug": "blouses-shirts",
+    "parentSlug": "womens-clothing",
+    "image": null
+  },
+  {
+    "name": "Верхній одяг",
+    "priority": 4,
+    "urlSlug": "womens-outerwear",
+    "parentSlug": "womens-clothing",
+    "image": null
+  },
+  {
+    "name": "Куртки/пальта",
+    "priority": 1,
+    "urlSlug": "mens-outerwear",
+    "parentSlug": "mens-clothing",
+    "image": null
+  },
+  {
+    "name": "Футболки/поло",
+    "priority": 2,
+    "urlSlug": "tshirts-polos",
+    "parentSlug": "mens-clothing",
+    "image": null
+  },
+  {
+    "name": "Штани/джинси",
+    "priority": 3,
+    "urlSlug": "pants-jeans",
+    "parentSlug": "mens-clothing",
+    "image": null
+  },
+  {
+    "name": "Зимове взуття",
+    "priority": 1,
+    "urlSlug": "winter-shoes",
+    "parentSlug": "shoes",
+    "image": null
+  },
+  {
+    "name": "Літнє взуття",
+    "priority": 2,
+    "urlSlug": "summer-shoes",
+    "parentSlug": "shoes",
+    "image": null
+  },
+  {
+    "name": "Спортивне взуття",
+    "priority": 3,
+    "urlSlug": "sports-shoes",
+    "parentSlug": "shoes",
+    "image": null
+  },
+  {
+    "name": "Гаманці/портмоне",
+    "priority": 2,
+    "urlSlug": "wallets",
+    "parentSlug": "bags-accessories",
+    "image": null
+  },
+  {
+    "name": "Прикраси",
+    "priority": 3,
+    "urlSlug": "jewelry",
+    "parentSlug": "bags-accessories",
+    "image": null
+  },
+  {
+    "name": "Конструктори",
+    "priority": 1,
+    "urlSlug": "building-sets",
+    "parentSlug": "toys",
+    "image": null
+  },
+  {
+    "name": "М’які іграшки",
+    "priority": 2,
+    "urlSlug": "plush-toys",
+    "parentSlug": "toys",
+    "image": null
+  },
+  {
+    "name": "Настільні ігри",
+    "priority": 3,
+    "urlSlug": "board-games",
+    "parentSlug": "toys",
+    "image": null
+  },
+  {
+    "name": "Самокати",
+    "priority": 2,
+    "urlSlug": "kids-scooters",
+    "parentSlug": "kids-transport",
+    "image": null
+  },
+  {
+    "name": "Каталки/толокари",
+    "priority": 3,
+    "urlSlug": "ride-ons",
+    "parentSlug": "kids-transport",
+    "image": null
+  },
+  {
+    "name": "Коляски",
+    "priority": 1,
+    "urlSlug": "strollers",
+    "parentSlug": "strollers-car-seats",
+    "image": null
+  },
+  {
+    "name": "Автокрісла",
+    "priority": 2,
+    "urlSlug": "car-seats",
+    "parentSlug": "strollers-car-seats",
+    "image": null
+  },
+  {
+    "name": "Аксесуари",
+    "priority": 3,
+    "urlSlug": "stroller-accessories",
+    "parentSlug": "strollers-car-seats",
+    "image": null
+  },
+  {
+    "name": "Підгузки/пелюшки",
+    "priority": 1,
+    "urlSlug": "diapers-swaddles",
+    "parentSlug": "baby-care",
+    "image": null
+  },
+  {
+    "name": "Годівля/пляшечки",
+    "priority": 2,
+    "urlSlug": "feeding-bottles",
+    "parentSlug": "baby-care",
+    "image": null
+  },
+  {
+    "name": "Купання/гігієна",
+    "priority": 3,
+    "urlSlug": "bath-hygiene",
+    "parentSlug": "baby-care",
+    "image": null
+  },
+  {
+    "name": "Рюкзаки/ранець",
+    "priority": 1,
+    "urlSlug": "school-backpacks",
+    "parentSlug": "school-supplies",
+    "image": null
+  },
+  {
+    "name": "Зошити/блокноти",
+    "priority": 2,
+    "urlSlug": "notebooks",
+    "parentSlug": "school-supplies",
+    "image": null
+  },
+  {
+    "name": "Канцтовари",
+    "priority": 3,
+    "urlSlug": "stationery-sets",
+    "parentSlug": "school-supplies",
+    "image": null
+  },
+  {
+    "name": "Макіяж",
+    "priority": 1,
+    "urlSlug": "makeup",
+    "parentSlug": "cosmetics",
+    "image": null
+  },
+  {
+    "name": "Догляд за шкірою",
+    "priority": 2,
+    "urlSlug": "skincare",
+    "parentSlug": "cosmetics",
+    "image": null
+  },
+  {
+    "name": "Манікюр/педикюр",
+    "priority": 3,
+    "urlSlug": "nails",
+    "parentSlug": "cosmetics",
+    "image": null
+  },
+  {
+    "name": "Жіночі аромати",
+    "priority": 1,
+    "urlSlug": "womens-perfume",
+    "parentSlug": "perfumery",
+    "image": null
+  },
+  {
+    "name": "Чоловічі аромати",
+    "priority": 2,
+    "urlSlug": "mens-perfume",
+    "parentSlug": "perfumery",
+    "image": null
+  },
+  {
+    "name": "Нішеві аромати",
+    "priority": 3,
+    "urlSlug": "niche-perfume",
+    "parentSlug": "perfumery",
+    "image": null
+  },
+  {
+    "name": "Шампуні/бальзами",
+    "priority": 1,
+    "urlSlug": "shampoos-conditioners",
+    "parentSlug": "haircare",
+    "image": null
+  },
+  {
+    "name": "Стайлінг",
+    "priority": 2,
+    "urlSlug": "hair-styling",
+    "parentSlug": "haircare",
+    "image": null
+  },
+  {
+    "name": "Інструменти",
+    "priority": 3,
+    "urlSlug": "hair-tools",
+    "parentSlug": "haircare",
+    "image": null
+  },
+  {
+    "name": "Фени/щипці/праски",
+    "priority": 1,
+    "urlSlug": "hair-dryers-stylers",
+    "parentSlug": "beauty-tech",
+    "image": null
+  },
+  {
+    "name": "Тримери/машинки",
+    "priority": 2,
+    "urlSlug": "trimmers-clippers",
+    "parentSlug": "beauty-tech",
+    "image": null
+  },
+  {
+    "name": "Епілятори",
+    "priority": 3,
+    "urlSlug": "epilators",
+    "parentSlug": "beauty-tech",
+    "image": null
+  },
+  {
+    "name": "Тонометри",
+    "priority": 1,
+    "urlSlug": "blood-pressure-monitors",
+    "parentSlug": "medical-devices",
+    "image": null
+  },
+  {
+    "name": "Глюкометри",
+    "priority": 2,
+    "urlSlug": "glucometers",
+    "parentSlug": "medical-devices",
+    "image": null
+  },
+  {
+    "name": "Інгалятори/небулізатори",
+    "priority": 3,
+    "urlSlug": "nebulizers",
+    "parentSlug": "medical-devices",
+    "image": null
+  },
+  {
+    "name": "Корм",
+    "priority": 1,
+    "urlSlug": "dog-food",
+    "parentSlug": "dogs",
+    "image": null
+  },
+  {
+    "name": "Повідки/ошийники",
+    "priority": 2,
+    "urlSlug": "leashes-collars",
+    "parentSlug": "dogs",
+    "image": null
+  },
+  {
+    "name": "Лежаки/будки",
+    "priority": 3,
+    "urlSlug": "dog-beds-houses",
+    "parentSlug": "dogs",
+    "image": null
+  },
+  {
+    "name": "Наповнювачі",
+    "priority": 1,
+    "urlSlug": "cat-litter",
+    "parentSlug": "cats",
+    "image": null
+  },
+  {
+    "name": "Кігтеточки",
+    "priority": 2,
+    "urlSlug": "scratchers",
+    "parentSlug": "cats",
+    "image": null
+  },
+  {
+    "name": "Будиночки/лежанки",
+    "priority": 3,
+    "urlSlug": "cat-houses-beds",
+    "parentSlug": "cats",
+    "image": null
+  },
+  {
+    "name": "Акваріуми",
+    "priority": 1,
+    "urlSlug": "aquarium-tanks",
+    "parentSlug": "aquariums",
+    "image": null
+  },
+  {
+    "name": "Фільтри/компресори",
+    "priority": 2,
+    "urlSlug": "filters-pumps",
+    "parentSlug": "aquariums",
+    "image": null
+  },
+  {
+    "name": "Декорації/рослини",
+    "priority": 3,
+    "urlSlug": "decor-plants",
+    "parentSlug": "aquariums",
+    "image": null
+  },
+  {
+    "name": "Клітки",
+    "priority": 1,
+    "urlSlug": "bird-cages",
+    "parentSlug": "birds",
+    "image": null
+  },
+  {
+    "name": "Корм",
+    "priority": 2,
+    "urlSlug": "bird-food",
+    "parentSlug": "birds",
+    "image": null
+  },
+  {
+    "name": "Аксесуари",
+    "priority": 3,
+    "urlSlug": "bird-accessories",
+    "parentSlug": "birds",
+    "image": null
+  },
+  {
+    "name": "Офісний папір",
+    "priority": 1,
+    "urlSlug": "office-paper",
+    "parentSlug": "paper",
+    "image": null
+  },
+  {
+    "name": "Фотопапір",
+    "priority": 2,
+    "urlSlug": "photo-paper",
+    "parentSlug": "paper",
+    "image": null
+  },
+  {
+    "name": "Блокноти/нотатники",
+    "priority": 3,
+    "urlSlug": "notepads",
+    "parentSlug": "paper",
+    "image": null
+  },
+  {
+    "name": "Ручки",
+    "priority": 1,
+    "urlSlug": "pens",
+    "parentSlug": "writing",
+    "image": null
+  },
+  {
+    "name": "Маркері/текстмаркери",
+    "priority": 2,
+    "urlSlug": "markers-highlighters",
+    "parentSlug": "writing",
+    "image": null
+  },
+  {
+    "name": "Олівці",
+    "priority": 3,
+    "urlSlug": "pencils",
+    "parentSlug": "writing",
+    "image": null
+  },
+  {
+    "name": "Органайзери",
+    "priority": 1,
+    "urlSlug": "desk-organizers",
+    "parentSlug": "desk-organization",
+    "image": null
+  },
+  {
+    "name": "Підставки/тримачі",
+    "priority": 2,
+    "urlSlug": "stands-holders",
+    "parentSlug": "desk-organization",
+    "image": null
+  },
+  {
+    "name": "Кабель‑менеджмент",
+    "priority": 3,
+    "urlSlug": "cable-management",
+    "parentSlug": "desk-organization",
+    "image": null
+  },
+  {
+    "name": "Письмові столи",
+    "priority": 1,
+    "urlSlug": "desks",
+    "parentSlug": "office-furniture",
+    "image": null
+  },
+  {
+    "name": "Офісні крісла",
+    "priority": 2,
+    "urlSlug": "office-chairs",
+    "parentSlug": "office-furniture",
+    "image": null
+  },
+  {
+    "name": "Шафи/тумби",
+    "priority": 3,
+    "urlSlug": "storage-cabinets",
+    "parentSlug": "office-furniture",
+    "image": null
+  },
+  {
+    "name": "Пиломатеріали",
+    "priority": 1,
+    "urlSlug": "lumber",
+    "parentSlug": "building-materials",
+    "image": null
+  },
+  {
+    "name": "Гіпсокартон/профілі",
+    "priority": 2,
+    "urlSlug": "drywall-profiles",
+    "parentSlug": "building-materials",
+    "image": null
+  },
+  {
+    "name": "Цемент/суміші",
+    "priority": 3,
+    "urlSlug": "cement-mixes",
+    "parentSlug": "building-materials",
+    "image": null
+  },
+  {
+    "name": "Розетки/вимикачі",
+    "priority": 1,
+    "urlSlug": "sockets-switches",
+    "parentSlug": "electrics",
+    "image": null
+  },
+  {
+    "name": "Кабель/провід",
+    "priority": 2,
+    "urlSlug": "cables-wires",
+    "parentSlug": "electrics",
+    "image": null
+  },
+  {
+    "name": "Автоматика/УЗО",
+    "priority": 3,
+    "urlSlug": "breakers-rcd",
+    "parentSlug": "electrics",
+    "image": null
+  },
+  {
+    "name": "Змішувачі",
+    "priority": 1,
+    "urlSlug": "faucets",
+    "parentSlug": "plumbing",
+    "image": null
+  },
+  {
+    "name": "Труби/фітинги",
+    "priority": 2,
+    "urlSlug": "pipes-fittings",
+    "parentSlug": "plumbing",
+    "image": null
+  },
+  {
+    "name": "Санфаянс",
+    "priority": 3,
+    "urlSlug": "sanitary-ware",
+    "parentSlug": "plumbing",
+    "image": null
+  },
+  {
+    "name": "Радіатори/тепла підлога",
+    "priority": 1,
+    "urlSlug": "radiators-floor-heating",
+    "parentSlug": "heating-ac",
+    "image": null
+  },
+  {
+    "name": "Котли/колонки",
+    "priority": 2,
+    "urlSlug": "boilers-water-heaters",
+    "parentSlug": "heating-ac",
+    "image": null
+  },
+  {
+    "name": "Кондиціонери",
+    "priority": 3,
+    "urlSlug": "air-conditioners",
+    "parentSlug": "heating-ac",
+    "image": null
+  },
+  {
+    "name": "Вода",
+    "priority": 1,
+    "urlSlug": "water",
+    "parentSlug": "beverages",
+    "image": null
+  },
+  {
+    "name": "Газовані напої",
+    "priority": 2,
+    "urlSlug": "sodas",
+    "parentSlug": "beverages",
+    "image": null
+  },
+  {
+    "name": "Соки",
+    "priority": 3,
+    "urlSlug": "juices",
+    "parentSlug": "beverages",
+    "image": null
+  },
+  {
+    "name": "Енергетики",
+    "priority": 4,
+    "urlSlug": "energy-drinks",
+    "parentSlug": "beverages",
+    "image": null
+  },
+  {
+    "name": "Крупи/макарони",
+    "priority": 1,
+    "urlSlug": "cereals-pasta",
+    "parentSlug": "groceries",
+    "image": null
+  },
+  {
+    "name": "Консерви",
+    "priority": 2,
+    "urlSlug": "canned-food",
+    "parentSlug": "groceries",
+    "image": null
+  },
+  {
+    "name": "Соуси/спеції",
+    "priority": 3,
+    "urlSlug": "sauces-spices",
+    "parentSlug": "groceries",
+    "image": null
+  },
+  {
+    "name": "Чіпси/снеки",
+    "priority": 1,
+    "urlSlug": "chips-snacks",
+    "parentSlug": "snacks-sweets",
+    "image": null
+  },
+  {
+    "name": "Печиво/вафлі",
+    "priority": 2,
+    "urlSlug": "cookies-wafers",
+    "parentSlug": "snacks-sweets",
+    "image": null
+  },
+  {
+    "name": "Шоколад/батончики",
+    "priority": 3,
+    "urlSlug": "chocolate-bars",
+    "parentSlug": "snacks-sweets",
+    "image": null
+  },
+  {
+    "name": "Кава",
+    "priority": 1,
+    "urlSlug": "coffee",
+    "parentSlug": "coffee-tea",
+    "image": null
+  },
+  {
+    "name": "Чай",
+    "priority": 2,
+    "urlSlug": "tea",
+    "parentSlug": "coffee-tea",
+    "image": null
+  },
+  {
+    "name": "Аксесуари (фільтри, турки)",
+    "priority": 3,
+    "urlSlug": "coffee-tea-accessories",
+    "parentSlug": "coffee-tea",
+    "image": null
   }
 ]

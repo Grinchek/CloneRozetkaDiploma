@@ -62,7 +62,7 @@ function TreeItem({ node, depth = 0 }: ItemProps) {
                         onError={() => setSrcIdx((i) => i + 1)}
                     />
                 ) : (
-                    <span aria-hidden="true" className="tree-fallback">🗂️</span>
+                    <span aria-hidden="true" className="tree-fallback"></span>
                 )}
 
                 <span>{node.name}</span>
