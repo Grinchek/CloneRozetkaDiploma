@@ -1,5 +1,6 @@
 ﻿
 using AutoMapper;
+using CloneRozetka.Application;
 using CloneRozetka.Application.Abstractions;
 using CloneRozetka.Application.Users.DTOs;
 using CloneRozetka.Application.Users.Interfaces;
@@ -15,7 +16,8 @@ public class AccountService(IJwtTokenService tokenService,
     UserManager<AppUser> userManager,
     IMapper mapper,
     IConfiguration configuration,
-    IImageService imageService
+    IImageService imageService,
+    ISmtpService smtpService
     ) : IAccountService
 {
     public async Task<string> LoginByGoogle(string token)
@@ -95,6 +97,47 @@ public class AccountService(IJwtTokenService tokenService,
 
             return string.Empty;
         }
+    }
+    public async Task<bool> ForgotPasswordAsync(ForgotPasswordModel model)
+    {
+        var user = await userManager.FindByEmailAsync(model.Email);
+
+        if (user == null)
+        {
+            return false;
+        }
+
+        string token = await userManager.GeneratePasswordResetTokenAsync(user);
+        var resetLink = $"{configuration["ClientUrl"]}/reset-password?token={Uri.EscapeDataString(token)}&email={Uri.EscapeDataString(model.Email)}";
+
+        var emailModel = new EmailMessage
+        {
+            To = model.Email,
+            Subject = "Password Reset",
+            Body = $"<p>Click the link below to reset your password:</p><a href='{resetLink}'>Reset Password</a>"
+        };
+
+        var result = await smtpService.SendEmailAsync(emailModel);
+
+        return result;
+    }
+    public async Task<bool> ValidateResetTokenAsync(ValidateResetTokenModel model)
+    {
+        var user = await userManager.FindByEmailAsync(model.Email);
+
+        return await userManager.VerifyUserTokenAsync(
+            user,
+            TokenOptions.DefaultProvider,
+            "ResetPassword",
+            model.Token);
+    }
+
+    public async Task ResetPasswordAsync(ResetPasswordModel model)
+    {
+        var user = await userManager.FindByEmailAsync(model.Email);
+
+        if (user != null)
+            await userManager.ResetPasswordAsync(user, model.Token, model.NewPassword);
     }
 
     public sealed class GoogleAccountModel

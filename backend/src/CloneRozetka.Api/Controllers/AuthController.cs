@@ -1,9 +1,12 @@
-﻿using CloneRozetka.Application.Users.DTOs;
+﻿using CloneRozetka.Application.Abstractions;
+using CloneRozetka.Application.Users.DTOs;
 using CloneRozetka.Application.Users.Interfaces;
 using CloneRozetka.Infrastructure.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.WebUtilities;
+using System.Text;
 
 namespace CloneRozetka.Api.Controllers
 {
@@ -15,6 +18,7 @@ namespace CloneRozetka.Api.Controllers
         private readonly SignInManager<AppUser> _signIn;
         private readonly IJwtTokenService _jwt;
         private readonly IAccountService accountService;
+
 
         public AuthController(UserManager<AppUser> userManager, SignInManager<AppUser> signIn, IJwtTokenService jwt, IAccountService accountService )
         {
@@ -105,6 +109,28 @@ namespace CloneRozetka.Api.Controllers
                 Token = result
             });
         }
+        [HttpPost]
+        public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordModel model)
+        {
+            bool res = await accountService.ForgotPasswordAsync(model);
+            if (res)
+                return Ok();
+            else
+                return BadRequest(new
+                {
+                    Status = 400,
+                    IsValid = false,
+                    Errors = new { Email = "Користувача з такою поштою не існує" }
+                });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordModel model)
+        {
+            await accountService.ResetPasswordAsync(model);
+            return Ok();
+        }
+
 
     }
 }
