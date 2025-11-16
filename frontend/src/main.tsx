@@ -1,6 +1,7 @@
 import ReactDOM from "react-dom/client";
 import App from "./App";
 import "./index.css";
+import "./styles/profile.css";
 import {BrowserRouter} from "react-router-dom";
 import {GoogleOAuthProvider} from "@react-oauth/google";
 import {Provider} from "react-redux";

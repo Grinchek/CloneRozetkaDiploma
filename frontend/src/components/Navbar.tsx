@@ -32,19 +32,20 @@ const Navbar = () => {
                 <div className="navbar-actions">
                     {token ? (
                         <>
-                            <div className="navbar-user">
+                            <Link to="/profile" className="navbar-user">
                                 {src ? (
                                     <img
                                         src={src}
                                         alt="avatar"
                                         className="navbar-avatar"
-                                        onError={() => setIdx(i => i + 1)} // якщо 404 — перейти на наступний варіант
+                                        onError={() => setIdx(i => i + 1)}
                                     />
                                 ) : (
                                     <div className="navbar-avatar" />
                                 )}
                                 <span>{me?.name ?? 'Користувач'}</span>
-                            </div>
+                            </Link>
+
                             <button className="navbar-btn" onClick={handleLogout}>Вийти</button>
                         </>
                     ) : (

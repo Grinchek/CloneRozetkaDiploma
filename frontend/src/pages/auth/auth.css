@@ -55,11 +55,33 @@
     border: 1px solid #d1d5db;
     border-radius: 6px;
     cursor: pointer;
-    transition: background 0.2s;
+    transition: background 0.2s, border-color 0.2s; /* Added border-color to transition */
+    display: flex; /* For aligning content within the button */
+    align-items: center; /* Vertically align items */
+    justify-content: center; /* Horizontally center items */
+    font-family: 'Roboto', sans-serif; /* Recommended Google font */
+    font-size: 16px;
+    color: #3c4043; /* Google's standard dark gray text color */
+    text-decoration: none; /* Remove underline if it's an anchor tag */
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* Subtle shadow */
 }
 
 .google-login-btn:hover {
-    background: #f3f4f6;
+    background: #f8f9fa; /* Lighter background on hover */
+    border-color: #c5c7ca; /* Slightly darker border on hover */
+}
+
+.google-login-btn:active {
+    background: #e6e8eb; /* Even darker background on active */
+    border-color: #b0b3b6; /* Darker border on active */
+}
+
+/* Optional: Style for a Google icon within the button */
+.google-login-btn .google-icon {
+    margin-right: 8px; /* Space between icon and text */
+    width: 18px; /* Adjust icon size as needed */
+    height: 18px;
+    /* You would typically use an SVG or an image for the icon here */
 }
 
 .divider {

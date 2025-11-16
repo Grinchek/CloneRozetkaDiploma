@@ -19,7 +19,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 var imagesPath = Path.Combine(Directory.GetCurrentDirectory(), "Images");
 Directory.CreateDirectory(imagesPath);
-Console.WriteLine("working connection {0}", builder.Configuration.GetConnectionString("Default"));
 
 // Infrastructure
 builder.Services.AddInfrastructure(
