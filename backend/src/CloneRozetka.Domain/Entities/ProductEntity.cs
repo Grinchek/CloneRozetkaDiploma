@@ -18,7 +18,7 @@ public class ProductEntity : BaseEntity<long>
     public string? Description { get; set; }
 
     [ForeignKey("Category")]
-    public long CategoryId { get; set; }
+    public int CategoryId { get; set; }
 
     public CategoryEntity? Category { get; set; }
 
