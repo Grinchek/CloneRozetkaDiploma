@@ -11,12 +11,14 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, int,
         IdentityRoleClaim<int>, IdentityUserToken<int>>
 {
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
-    public DbSet<Category> Categories => Set<Category>();
+    public DbSet<CategoryEntity> Categories => Set<CategoryEntity>();
+    public DbSet<ProductEntity> Products => Set<ProductEntity>();
+    public DbSet<ProductImageEntity> ProductImages => Set<ProductImageEntity>();
 
     protected override void OnModelCreating(ModelBuilder b)
     {
         base.OnModelCreating(b);
-        b.Entity<Category>(e =>
+        b.Entity<CategoryEntity>(e =>
         {
             e.ToTable("tblCategories");
             e.HasKey(x => x.Id);

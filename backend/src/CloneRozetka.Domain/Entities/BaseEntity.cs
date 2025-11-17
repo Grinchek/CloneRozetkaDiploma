@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Domain.Entities;
+namespace CloneRozetka.Domain.Entities;
 
 public interface IEntity<T>
 {

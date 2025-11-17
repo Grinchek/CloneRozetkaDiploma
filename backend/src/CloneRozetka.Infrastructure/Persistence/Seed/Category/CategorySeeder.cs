@@ -22,7 +22,7 @@ public static class CategorySeeder
         var existing = await db.Categories.AsNoTracking()
             .ToDictionaryAsync(c => c.UrlSlug);
 
-        var toAdd = new List<Category>();
+        var toAdd = new List<CategoryEntity>();
 
         // 1) Додаємо відсутні: зберігаємо картинку з URL -> Image = ім’я збереженого файлу
         foreach (var m in items)
@@ -37,7 +37,7 @@ public static class CategorySeeder
                 savedImage = await images.SaveImageFromUrlAsync(m.Image);
             }
 
-            toAdd.Add(new Category
+            toAdd.Add(new CategoryEntity
             {
                 Name = m.Name,
                 Priority = m.Priority,
