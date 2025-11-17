@@ -15,6 +15,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using CloneRozetka.Application;
 
 namespace CloneRozetka.Infrastructure;
 
@@ -102,6 +103,7 @@ public static class DependencyInjection
         services.AddScoped<IDbSeederService, DbSeederService>();
         services.AddScoped<IJwtTokenService, JwtTokenService>();
         services.AddScoped<IAccountService, AccountService>();
+        services.AddScoped<ISmtpService, SmtpService>();
 
         return services;
     }

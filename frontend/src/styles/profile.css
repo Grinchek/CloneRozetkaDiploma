@@ -1,0 +1,157 @@
+.profile-page {
+    padding: 24px 32px;
+    display: grid;
+    grid-template-columns: minmax(0, 360px) minmax(0, 1fr);
+    gap: 24px;
+}
+
+/* Основна картка профілю */
+.profile-card {
+    background: #ffffff;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    padding: 20px 24px;
+    box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
+}
+
+.profile-header {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+
+.profile-avatar {
+    width: 72px;
+    height: 72px;
+    border-radius: 999px;
+    overflow: hidden;
+    flex-shrink: 0;
+    background: #f3f4f6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.profile-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.avatar-placeholder {
+    font-size: 28px;
+    font-weight: 600;
+    color: #4b5563;
+}
+
+.profile-main-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.profile-name {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.profile-email {
+    margin: 0;
+    font-size: 14px;
+    color: #6b7280;
+}
+
+.profile-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 6px;
+}
+
+.badge {
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 999px;
+    border: 1px solid #e5e7eb;
+}
+
+.badge-success {
+    background: #ecfdf3;
+    border-color: #bbf7d0;
+    color: #166534;
+}
+
+.badge-warning {
+    background: #fffbeb;
+    border-color: #fed7aa;
+    color: #92400e;
+}
+
+.badge-light {
+    background: #f3f4f6;
+    color: #374151;
+}
+
+.profile-date {
+    margin: 6px 0 0;
+    font-size: 12px;
+    color: #9ca3af;
+}
+
+/* Праві блоки */
+.profile-sections {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.profile-section {
+    background: #ffffff;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    padding: 18px 22px;
+}
+
+.profile-section h2 {
+    margin: 0 0 8px;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.profile-section .muted {
+    margin: 0;
+    font-size: 13px;
+    color: #6b7280;
+}
+
+.profile-list {
+    margin: 0;
+    padding-left: 18px;
+    font-size: 14px;
+    color: #4b5563;
+}
+
+/* Примітивний skeleton */
+.skeleton {
+    height: 140px;
+    background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 37%, #f3f4f6 63%);
+    background-size: 400% 100%;
+    animation: skeleton-loading 1.4s ease infinite;
+}
+
+@keyframes skeleton-loading {
+    0% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0 50%;
+    }
+}
+
+/* Адаптив */
+@media (max-width: 900px) {
+    .profile-page {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}

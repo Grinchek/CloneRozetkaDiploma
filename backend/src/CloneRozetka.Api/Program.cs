@@ -14,10 +14,7 @@ using Quartz;
 // Load .env file
 DotEnv.Load();
 var builder = WebApplication.CreateBuilder(args);
-builder.Logging.AddFilter("Microsoft.AspNetCore.Authentication", LogLevel.Debug);
-builder.Logging.AddFilter("Microsoft.AspNetCore.Cookies", LogLevel.Debug);
-builder.Logging.AddFilter("Microsoft.AspNetCore.Authentication", LogLevel.Trace);
-builder.Logging.AddFilter("Microsoft.AspNetCore.Cookies", LogLevel.Trace);
+
 
 
 var imagesPath = Path.Combine(Directory.GetCurrentDirectory(), "Images");
