@@ -88,7 +88,7 @@ const ProfilePage = () => {
                 </div>
             </section>
 
-            {/* праві блоки залишаються як були */}
+
             <section className="profile-sections">
                 <div className="profile-section">
                     <h2>Особисті дані</h2>

@@ -22,7 +22,7 @@ namespace CloneRozetka.Infrastructure.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("CloneRozetka.Domain.Entities.Category", b =>
+            modelBuilder.Entity("CloneRozetka.Domain.Entities.CategoryEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -60,6 +60,79 @@ namespace CloneRozetka.Infrastructure.Migrations
                     b.HasIndex("ParentId");
 
                     b.ToTable("tblCategories", (string)null);
+                });
+
+            modelBuilder.Entity("CloneRozetka.Domain.Entities.ProductEntity", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(10000)
+                        .HasColumnType("character varying(10000)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("character varying(250)");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("numeric");
+
+                    b.Property<string>("Slug")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("character varying(250)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("tblProducts");
+                });
+
+            modelBuilder.Entity("CloneRozetka.Domain.Entities.ProductImageEntity", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("character varying(250)");
+
+                    b.Property<short>("Priority")
+                        .HasColumnType("smallint");
+
+                    b.Property<long>("ProductId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("tblProductImages");
                 });
 
             modelBuilder.Entity("CloneRozetka.Infrastructure.Identity.AppRole", b =>
@@ -285,13 +358,35 @@ namespace CloneRozetka.Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("CloneRozetka.Domain.Entities.Category", b =>
+            modelBuilder.Entity("CloneRozetka.Domain.Entities.CategoryEntity", b =>
                 {
-                    b.HasOne("CloneRozetka.Domain.Entities.Category", "Parent")
-                        .WithMany()
+                    b.HasOne("CloneRozetka.Domain.Entities.CategoryEntity", "Parent")
+                        .WithMany("Children")
                         .HasForeignKey("ParentId");
 
                     b.Navigation("Parent");
+                });
+
+            modelBuilder.Entity("CloneRozetka.Domain.Entities.ProductEntity", b =>
+                {
+                    b.HasOne("CloneRozetka.Domain.Entities.CategoryEntity", "Category")
+                        .WithMany("Products")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("CloneRozetka.Domain.Entities.ProductImageEntity", b =>
+                {
+                    b.HasOne("CloneRozetka.Domain.Entities.ProductEntity", "Product")
+                        .WithMany("ProductImages")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("CloneRozetka.Infrastructure.Identity.AppUserLogin", b =>
@@ -349,6 +444,18 @@ namespace CloneRozetka.Infrastructure.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("CloneRozetka.Domain.Entities.CategoryEntity", b =>
+                {
+                    b.Navigation("Children");
+
+                    b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("CloneRozetka.Domain.Entities.ProductEntity", b =>
+                {
+                    b.Navigation("ProductImages");
                 });
 
             modelBuilder.Entity("CloneRozetka.Infrastructure.Identity.AppRole", b =>

@@ -8,7 +8,7 @@ namespace CloneRozetka.Application.Categories.Validators;
 
 public class CategoryCreateValidator : AbstractValidator<CategoryCreateRequest>
 {
-    public CategoryCreateValidator(IRepository<Category> repo)
+    public CategoryCreateValidator(IRepository<CategoryEntity> repo)
     {
         RuleFor(x => x.Name)
             .NotEmpty().MaximumLength(255);
@@ -52,7 +52,7 @@ public class CategoryCreateValidator : AbstractValidator<CategoryCreateRequest>
 
 public class CategoryUpdateValidator : AbstractValidator<CategoryUpdateRequest>
 {
-    public CategoryUpdateValidator(IRepository<Category> repo)
+    public CategoryUpdateValidator(IRepository<CategoryEntity> repo)
     {
         RuleFor(x => x.Id).GreaterThan(0);
 

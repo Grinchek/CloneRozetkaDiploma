@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CloneRozetka.Domain.Entities;
 
-public class Category
+public class CategoryEntity
 {
     public int Id { get; set; }
     [StringLength(200)]
@@ -17,6 +17,11 @@ public class Category
     public bool IsDeleted { get; set; }
     [ForeignKey(nameof(Parent))]
     public int? ParentId { get; set; }
-    public Category? Parent { get; set; }
+    public CategoryEntity? Parent { get; set; }
+
+    public virtual ICollection<CategoryEntity>? Children { get; set; }
+    public virtual ICollection<ProductEntity>? Products { get; set; }
+
+
 
 }

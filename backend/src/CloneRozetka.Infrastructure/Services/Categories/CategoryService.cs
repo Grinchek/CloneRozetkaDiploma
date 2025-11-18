@@ -9,12 +9,12 @@ namespace CloneRozetka.Application.Categories;
 
 public class CategoryService : ICategoryService
 {
-    private readonly IRepository<Category> _repo;
+    private readonly IRepository<CategoryEntity> _repo;
     private readonly IImageService _images;
     private readonly IMapper _mapper;
 
     public CategoryService(
-        IRepository<Category> repo,
+        IRepository<CategoryEntity> repo,
         IImageService images,
         IMapper mapper)
     {
@@ -39,7 +39,7 @@ public class CategoryService : ICategoryService
 
     public async Task<int> CreateAsync(CategoryCreateRequest req, CancellationToken ct = default)
     {
-        var entity = new Category
+        var entity = new CategoryEntity
         {
             Name = req.Name,
             Priority = req.Priority,

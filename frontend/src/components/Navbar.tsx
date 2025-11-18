@@ -5,7 +5,11 @@ import { buildAvatarCandidates } from '../utils/image';
 import '../styles/navbar.css';
 import { useMemo, useState } from 'react';
 
-const Navbar = () => {
+type NavbarProps = {
+    onHomeClick?: () => void;
+};
+
+const Navbar = ({ onHomeClick }: NavbarProps) => {
     const navigate = useNavigate();
     const token = localStorage.getItem('token');
     const { data: me } = useMeQuery(undefined, { skip: !token });
@@ -20,43 +24,48 @@ const Navbar = () => {
     };
 
     return (
-            <nav className="navbar">
-                <div className="navbar-logo">Clone<span style={{ color: '#2563eb' }}>Rozetka</span></div>
+        <nav className="navbar">
+            <div className="navbar-logo">
+                Clone<span style={{ color: '#2563eb' }}>Rozetka</span>
+            </div>
 
-                <div className="navbar-links">
-                    <Link to="/">Головна</Link>
-                    <Link to="/categories">Категорії</Link>
-                    <Link to="/about">Про нас</Link>
-                </div>
+            <div className="navbar-links">
+                <Link to="/" onClick={onHomeClick}>Головна</Link>
+                <Link to="/categories">Категорії</Link>
+                <Link to="/about">Про нас</Link>
+            </div>
 
-                <div className="navbar-actions">
-                    {token ? (
-                        <>
-                            <Link to="/profile" className="navbar-user">
-                                {src ? (
-                                    <img
-                                        src={src}
-                                        alt="avatar"
-                                        className="navbar-avatar"
-                                        onError={() => setIdx(i => i + 1)}
-                                    />
-                                ) : (
-                                    <div className="navbar-avatar" />
-                                )}
-                                <span>{me?.name ?? 'Користувач'}</span>
-                            </Link>
+            <div className="navbar-actions">
+                {token ? (
+                    <>
+                        <Link to="/profile" className="navbar-user">
+                            {src ? (
+                                <img
+                                    src={src}
+                                    alt="avatar"
+                                    className="navbar-avatar"
+                                    onError={() => setIdx(i => i + 1)}
+                                />
+                            ) : (
+                                <div className="navbar-avatar" />
+                            )}
+                            <span>{me?.name ?? 'Користувач'}</span>
+                        </Link>
 
-                            <button className="navbar-btn" onClick={handleLogout}>Вийти</button>
-                        </>
-                    ) : (
-                        <button className="navbar-btn" onClick={() => navigate('/login', { replace: true })}>
-                            Увійти
+                        <button className="navbar-btn" onClick={handleLogout}>
+                            Вийти
                         </button>
-                    )}
-                </div>
-            </nav>
-
-
+                    </>
+                ) : (
+                    <button
+                        className="navbar-btn"
+                        onClick={() => navigate('/login', { replace: true })}
+                    >
+                        Увійти
+                    </button>
+                )}
+            </div>
+        </nav>
     );
 };
 
