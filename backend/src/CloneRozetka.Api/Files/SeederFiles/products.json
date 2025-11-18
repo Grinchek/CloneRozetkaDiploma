@@ -1,0 +1,247 @@
+﻿[
+  {
+    "name": "Відновлені/Refurbished — демо товар 1",
+    "slug": "demo-refurbished-phones",
+    "price": 9099.0,
+    "description": "Демонстраційний товар для підкатегорії «Відновлені/Refurbished» (refurbished-phones).",
+    "categoryId": 113
+  },
+  {
+    "name": "Android-планшети — демо товар 1",
+    "slug": "demo-android-tablets",
+    "price": 11099.0,
+    "description": "Демонстраційний товар для підкатегорії «Android-планшети» (android-tablets).",
+    "categoryId": 114
+  },
+  {
+    "name": "iPad — демо товар 2",
+    "slug": "demo-ipad",
+    "price": 11199.0,
+    "description": "Демонстраційний товар для підкатегорії «iPad» (ipad).",
+    "categoryId": 115
+  },
+  {
+    "name": "Дитячі планшети — демо товар 3",
+    "slug": "demo-kids-tablets",
+    "price": 11299.0,
+    "description": "Демонстраційний товар для підкатегорії «Дитячі планшети» (kids-tablets).",
+    "categoryId": 116
+  },
+  {
+    "name": "Kindle — демо товар 1",
+    "slug": "demo-kindle",
+    "price": 6099.0,
+    "description": "Демонстраційний товар для підкатегорії «Kindle» (kindle).",
+    "categoryId": 117
+  },
+  {
+    "name": "PocketBook — демо товар 2",
+    "slug": "demo-pocketbook",
+    "price": 6199.0,
+    "description": "Демонстраційний товар для підкатегорії «PocketBook» (pocketbook).",
+    "categoryId": 118
+  },
+  {
+    "name": "Аксесуари для рідерів — демо товар 3",
+    "slug": "demo-ereader-accessories",
+    "price": 6299.0,
+    "description": "Демонстраційний товар для підкатегорії «Аксесуари для рідерів» (ereader-accessories).",
+    "categoryId": 119
+  },
+  {
+    "name": "Дзеркальні фотоапарати — демо товар 1",
+    "slug": "demo-dslr-cameras",
+    "price": 25099.0,
+    "description": "Демонстраційний товар для підкатегорії «Дзеркальні фотоапарати» (dslr-cameras).",
+    "categoryId": 120
+  },
+  {
+    "name": "Бездзеркальні фотоапарати — демо товар 2",
+    "slug": "demo-mirrorless-cameras",
+    "price": 25299.0,
+    "description": "Демонстраційний товар для підкатегорії «Бездзеркальні фотоапарати» (mirrorless-cameras).",
+    "categoryId": 121
+  },
+  {
+    "name": "Об’єктиви — демо товар 3",
+    "slug": "demo-camera-lenses",
+    "price": 25399.0,
+    "description": "Демонстраційний товар для підкатегорії «Об’єктиви» (camera-lenses).",
+    "categoryId": 122
+  },
+  {
+    "name": "Штативи та стабілізатори — демо товар 4",
+    "slug": "demo-tripods-gimbals",
+    "price": 25499.0,
+    "description": "Демонстраційний товар для підкатегорії «Штативи та стабілізатори» (tripods-gimbals).",
+    "categoryId": 123
+  },
+  {
+    "name": "Аксесуари для фото — демо товар 5",
+    "slug": "demo-photo-accessories",
+    "price": 25599.0,
+    "description": "Демонстраційний товар для підкатегорії «Аксесуари для фото» (photo-accessories).",
+    "categoryId": 124
+  },
+  {
+    "name": "Екшн-камери — демо товар 1",
+    "slug": "demo-action-cams",
+    "price": 18099.0,
+    "description": "Демонстраційний товар для підкатегорії «Екшн-камери» (action-cams).",
+    "categoryId": 125
+  },
+  {
+    "name": "GoPro — демо товар 2",
+    "slug": "demo-gopro",
+    "price": 18199.0,
+    "description": "Демонстраційний товар для підкатегорії «GoPro» (gopro).",
+    "categoryId": 126
+  },
+  {
+    "name": "Дрони — демо товар 3",
+    "slug": "demo-drones",
+    "price": 18299.0,
+    "description": "Демонстраційний товар для підкатегорії «Дрони» (drones).",
+    "categoryId": 127
+  },
+  {
+    "name": "Стабілізатори — демо товар 4",
+    "slug": "demo-gimbals",
+    "price": 18399.0,
+    "description": "Демонстраційний товар для підкатегорії «Стабілізатори» (gimbals).",
+    "categoryId": 128
+  },
+  {
+    "name": "Apple Watch — демо товар 1",
+    "slug": "demo-apple-watch",
+    "price": 8099.0,
+    "description": "Демонстраційний товар для підкатегорії «Apple Watch» (apple-watch).",
+    "categoryId": 129
+  },
+  {
+    "name": "Фітнес-браслети — демо товар 2",
+    "slug": "demo-fitness-bands",
+    "price": 8199.0,
+    "description": "Демонстраційний товар для підкатегорії «Фітнес-браслети» (fitness-bands).",
+    "categoryId": 130
+  },
+  {
+    "name": "Дитячі смарт-годинники — демо товар 3",
+    "slug": "demo-kids-smartwatches",
+    "price": 8299.0,
+    "description": "Демонстраційний товар для підкатегорії «Дитячі смарт-годинники» (kids-smartwatches).",
+    "categoryId": 131
+  },
+  {
+    "name": "Аксесуари для смарт-годинників — демо товар 4",
+    "slug": "demo-wearable-accessories",
+    "price": 8399.0,
+    "description": "Демонстраційний товар для підкатегорії «Аксесуари для смарт-годинників» (wearable-accessories).",
+    "categoryId": 132
+  },
+  {
+    "name": "Вкладиші (in-ear) — демо товар 1",
+    "slug": "demo-in-ear",
+    "price": 3099.0,
+    "description": "Демонстраційний товар для підкатегорії «Вкладиші (in-ear)» (in-ear).",
+    "categoryId": 133
+  },
+  {
+    "name": "Накладні (on-ear/over-ear) — демо товар 2",
+    "slug": "demo-over-ear",
+    "price": 3199.0,
+    "description": "Демонстраційний товар для підкатегорії «Накладні (on-ear/over-ear)» (over-ear).",
+    "categoryId": 134
+  },
+  {
+    "name": "TWS (повністю бездротові) — демо товар 3",
+    "slug": "demo-true-wireless",
+    "price": 3299.0,
+    "description": "Демонстраційний товар для підкатегорії «TWS (повністю бездротові)» (true-wireless).",
+    "categoryId": 135
+  },
+  {
+    "name": "Ігрові гарнітури — демо товар 4",
+    "slug": "demo-gaming-headsets",
+    "price": 3399.0,
+    "description": "Демонстраційний товар для підкатегорії «Ігрові гарнітури» (gaming-headsets).",
+    "categoryId": 136
+  },
+  {
+    "name": "Bluetooth-колонки — демо товар 1",
+    "slug": "demo-bluetooth-speakers",
+    "price": 4099.0,
+    "description": "Демонстраційний товар для підкатегорії «Bluetooth-колонки» (bluetooth-speakers).",
+    "categoryId": 137
+  },
+  {
+    "name": "Розумні колонки — демо товар 2",
+    "slug": "demo-smart-speakers",
+    "price": 4199.0,
+    "description": "Демонстраційний товар для підкатегорії «Розумні колонки» (smart-speakers).",
+    "categoryId": 138
+  },
+  {
+    "name": "Портативні радіоприймачі — демо товар 3",
+    "slug": "demo-portable-radios",
+    "price": 4299.0,
+    "description": "Демонстраційний товар для підкатегорії «Портативні радіоприймачі» (portable-radios).",
+    "categoryId": 139
+  },
+  {
+    "name": "10–20 тис. мА·год — демо товар 1",
+    "slug": "demo-10k-20k-mah",
+    "price": 1599.0,
+    "description": "Демонстраційний товар для підкатегорії «10–20 тис. мА·год» (10k-20k-mah).",
+    "categoryId": 140
+  },
+  {
+    "name": ">20 тис. мА·год — демо товар 2",
+    "slug": "demo-over-20k-mah",
+    "price": 1699.0,
+    "description": "Демонстраційний товар для підкатегорії «>20 тис. мА·год» (over-20k-mah).",
+    "categoryId": 141
+  },
+  {
+    "name": "MagSafe/бездротові — демо товар 3",
+    "slug": "demo-magsafe-wireless",
+    "price": 1799.0,
+    "description": "Демонстраційний товар для підкатегорії «MagSafe/бездротові» (magsafe-wireless).",
+    "categoryId": 142
+  },
+  {
+    "name": "USB-C кабелі — демо товар 1",
+    "slug": "demo-usb-c-cables",
+    "price": 599.0,
+    "description": "Демонстраційний товар для підкатегорії «USB-C кабелі» (usb-c-cables).",
+    "categoryId": 143
+  },
+  {
+    "name": "Lightning кабелі — демо товар 2",
+    "slug": "demo-lightning-cables",
+    "price": 699.0,
+    "description": "Демонстраційний товар для підкатегорії «Lightning кабелі» (lightning-cables).",
+    "categoryId": 144
+  },
+  {
+    "name": "HDMI кабелі — демо товар 3",
+    "slug": "demo-hdmi-cables",
+    "price": 799.0,
+    "description": "Демонстраційний товар для підкатегорії «HDMI кабелі» (hdmi-cables).",
+    "categoryId": 145
+  },
+  {
+    "name": "Аудіо AUX — демо товар 4",
+    "slug": "demo-audio-aux",
+    "price": 899.0,
+    "description": "Демонстраційний товар для підкатегорії «Аудіо AUX» (audio-aux).",
+    "categoryId": 146
+  },
+  {
+    "name": "Перехідники та хаби — демо товар 5",
+    "slug": "demo-adapters-hubs",
+    "price": 999.0,
+    "description": "Демонстраційний товар для підкатегорії «Перехідники та хаби» (adapters-hubs).",
+    "categoryId": 147
+  }
+]

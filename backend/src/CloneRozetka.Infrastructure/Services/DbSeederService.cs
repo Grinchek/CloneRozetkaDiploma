@@ -2,6 +2,7 @@
 using CloneRozetka.Infrastructure.Identity;
 using CloneRozetka.Infrastructure.Persistence;
 using CloneRozetka.Infrastructure.Persistence.Seed;
+using CloneRozetka.Infrastructure.Persistence.Seed.Products;
 using CloneRozetka.Infrastructure.Persistence.Seed.Users;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -31,5 +32,10 @@ public class DbSeederService(IServiceProvider serviceProvider) : IDbSeederServic
         var userPath = Path.Combine(Directory.GetCurrentDirectory(), "Files", "SeederFiles", "users.json");
         await UserSeeder.SeedAsync<AppUser, AppRole, int>(
             userManager, roleManager, imageService, userPath);
+
+        var productPath = Path.Combine(Directory.GetCurrentDirectory(), "Files", "SeederFiles", "products.json");
+        await ProductSeeder.SeedAsync(db, productPath);
+
+        await ProductImageSeeder.SeedAsync(db, imageService);
     }
 }

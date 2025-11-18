@@ -90,3 +90,5 @@ app.UseStaticFiles(new StaticFileOptions
 
 app.MapControllers();
 app.Run();
+
+//https://picsum.photos/seed/girl/800/600

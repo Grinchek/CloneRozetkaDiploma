@@ -1,0 +1,172 @@
+:root {
+    --prod-font: var(--ct-font, system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, sans-serif);
+    --prod-border: var(--ct-border, #e5e7eb);
+    --prod-muted: var(--ct-muted, #6b7280);
+    --prod-radius: 10px;
+}
+
+/* Контейнер блоку товарів */
+.products {
+    font-family: var(--prod-font);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Заголовок */
+.products-header {
+    color: #000;
+}
+
+
+/* Стани */
+.products-muted {
+    color: var(--prod-muted);
+    font-size: 14px;
+}
+
+.products-error {
+    color: #b91c1c;
+    font-size: 14px;
+}
+
+/* Сітка товарів */
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+}
+
+
+/* Карточка товару */
+.product-card {
+    background: #ffffff;
+    border-radius: var(--prod-radius);
+    border: 1px solid var(--prod-border);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+    transition: transform 0.12s ease-out, box-shadow 0.12s ease-out;
+}
+
+.product-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(15, 23, 42, 0.08);
+}
+
+/* Зона картинки */
+.product-card-image-wrap {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    background: #f3f4f6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.product-card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.product-card-image-fallback {
+    font-size: 13px;
+    color: var(--prod-muted);
+}
+
+/* Тіло карточки */
+.product-card-body {
+    padding: 10px 12px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.product-card-title {
+    font-size: 14px;
+    font-weight: 500;
+    margin: 0;
+    line-height: 1.3;
+    max-height: 3.2em;
+    overflow: hidden;
+}
+
+/* Низ карточки */
+.product-card-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.product-card-price {
+    font-weight: 600;
+    font-size: 15px;
+    color: #1a1a1a;
+}
+
+/* Кнопка */
+.product-card-btn {
+    border: 1px solid #000;
+    border-radius: 999px;
+    padding: 6px 12px;
+    font-size: 13px;
+    cursor: pointer;
+    background: #000; /* чорна */
+    color: #fff;      /* біла */
+    font-weight: 500;
+    white-space: nowrap;
+    transition: background 0.12s ease-out, color 0.12s ease-out, border-color 0.12s ease-out;
+}
+
+.product-card-btn:hover {
+    background: #fff;
+    color: #000;
+}
+
+
+.product-card-btn:active {
+    transform: translateY(0);
+}
+
+/* Пагінація */
+.products-pagination {
+    margin-top: 12px;
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.products-page-btn {
+    min-width: 32px;
+    height: 32px;
+    padding: 0 8px;
+    border-radius: 999px;
+    border: 1px solid #000; /* чорна рамка */
+    background: #fff;
+    font-size: 13px;
+    cursor: pointer;
+    color: #000;
+    transition: background 0.12s ease-out, color 0.12s ease-out;
+}
+
+.products-page-btn:hover {
+    background: #000;
+    color: #fff;
+}
+
+.products-page-btn.is-active {
+    background: #000;
+    color: #fff;
+}
+
+
+.products-page-btn:disabled {
+    opacity: 0.4;
+    cursor: default;
+}

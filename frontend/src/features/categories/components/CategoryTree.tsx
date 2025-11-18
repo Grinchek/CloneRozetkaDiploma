@@ -1,13 +1,14 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
 import { fetchCategories, API_BASE } from "../api/api";
 import { buildCategoryTree } from "../utils/buildTree";
 import type { CategoryNode } from "../utils/buildTree";
 import "../styles/categories.css";
-import type { CSSProperties } from "react";
 
 type ItemProps = {
     node: CategoryNode;
     depth?: number;
+    onSelect?: (node: CategoryNode) => void;
+    activeId?: number | null;
 };
 
 const ICON_SIZE_PREFIX = "100_";
@@ -31,7 +32,7 @@ const buildIconCandidates = (image?: string | null): string[] => {
     ];
 };
 
-function TreeItem({ node, depth = 0 }: ItemProps) {
+function TreeItem({ node, depth = 0, onSelect, activeId }: ItemProps) {
     const [open, setOpen] = useState(false);
     const hasChildren = node.children.length > 0;
 
@@ -39,19 +40,30 @@ function TreeItem({ node, depth = 0 }: ItemProps) {
     const [srcIdx, setSrcIdx] = useState(0);
     const currentSrc = candidates[srcIdx] ?? null;
 
-    // передаємо глибину через CSS-змінну, без інлайн-стилів на самих правилах
     const indentStyle = { ["--depth" as any]: depth } as CSSProperties;
+    const isActive = node.id === activeId;
 
     return (
         <li className="tree-item" style={indentStyle}>
             <div
-                className={`tree-row ${hasChildren ? "is-branch" : ""}`}
-                onClick={() => hasChildren && setOpen(!open)}
+                className={
+                    "tree-row " +
+                    (hasChildren ? "is-branch " : "") +
+                    (isActive ? "is-active" : "")
+                }
+                onClick={() => onSelect?.(node)}
                 title={node.name}
             >
-        <span className={hasChildren ? "caret" : "dot"}>
-          {hasChildren ? (open ? "▾" : "▸") : "•"}
-        </span>
+                <span
+                    className={hasChildren ? "caret" : "dot"}
+                    onClick={(e) => {
+                        if (!hasChildren) return;
+                        e.stopPropagation(); // щоб не тригерити вибір
+                        setOpen((v) => !v);
+                    }}
+                >
+                    {hasChildren ? (open ? "▾" : "▸") : "•"}
+                </span>
 
                 {currentSrc ? (
                     <img
@@ -71,7 +83,13 @@ function TreeItem({ node, depth = 0 }: ItemProps) {
             {hasChildren && open && (
                 <ul className="tree-children">
                     {node.children.map((child) => (
-                        <TreeItem key={child.id} node={child} depth={depth + 1} />
+                        <TreeItem
+                            key={child.id}
+                            node={child}
+                            depth={depth + 1}
+                            onSelect={onSelect}
+                            activeId={activeId}
+                        />
                     ))}
                 </ul>
             )}
@@ -79,7 +97,15 @@ function TreeItem({ node, depth = 0 }: ItemProps) {
     );
 }
 
-export default function CategoryTree() {
+type CategoryTreeProps = {
+    onSelectCategory?: (node: CategoryNode) => void;
+    activeCategoryId?: number | null;
+};
+
+export default function CategoryTree({
+                                         onSelectCategory,
+                                         activeCategoryId,
+                                     }: CategoryTreeProps) {
     const [data, setData] = useState<CategoryNode[] | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
@@ -93,14 +119,20 @@ export default function CategoryTree() {
 
     if (loading) return <div className="muted">Завантаження категорій…</div>;
     if (error) return <div className="error">Помилка: {error}</div>;
-    if (!data || data.length === 0) return <div className="muted">Категорії відсутні</div>;
+    if (!data || data.length === 0)
+        return <div className="muted">Категорії відсутні</div>;
 
     return (
         <nav className="sidebar">
             <div className="sidebar-header">Категорії</div>
             <ul className="tree-list">
                 {data.map((n) => (
-                    <TreeItem key={n.id} node={n} />
+                    <TreeItem
+                        key={n.id}
+                        node={n}
+                        onSelect={onSelectCategory}
+                        activeId={activeCategoryId ?? null}
+                    />
                 ))}
             </ul>
         </nav>
