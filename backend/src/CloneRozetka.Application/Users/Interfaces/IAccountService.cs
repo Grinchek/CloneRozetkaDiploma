@@ -1,4 +1,4 @@
-﻿using CloneRozetka.Application.Users.DTOs;
+﻿using CloneRozetka.Application.Users.DTOs.Account;
 using System;
 using System.Collections.Generic;
 using System.Linq;
