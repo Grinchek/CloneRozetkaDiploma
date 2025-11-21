@@ -27,7 +27,7 @@ builder.Services.AddInfrastructure(
     builder.Configuration);
 
 // Application
-builder.Services.AddAutoMapper(typeof(ProductMapper).Assembly);
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddValidatorsFromAssemblyContaining<CategoryCreateValidator>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 
