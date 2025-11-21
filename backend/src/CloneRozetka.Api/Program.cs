@@ -4,6 +4,7 @@ using CloneRozetka.Application.Categories.Mappers;
 using CloneRozetka.Application.Categories.Validators;
 using CloneRozetka.Infrastructure;
 using CloneRozetka.Infrastructure.Jobs;
+using CloneRozetka.Infrastructure.Mappers;
 using dotenv.net;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
@@ -26,7 +27,7 @@ builder.Services.AddInfrastructure(
     builder.Configuration);
 
 // Application
-builder.Services.AddAutoMapper(typeof(CategoryProfile).Assembly);
+builder.Services.AddAutoMapper(typeof(ProductMapper).Assembly);
 builder.Services.AddValidatorsFromAssemblyContaining<CategoryCreateValidator>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 

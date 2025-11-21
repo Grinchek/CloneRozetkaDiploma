@@ -1,4 +1,6 @@
-﻿using CloneRozetka.Application.Abstractions;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using CloneRozetka.Application.Abstractions;
 using CloneRozetka.Application.Products.DTOs;
 using CloneRozetka.Domain.Entities;
 using CloneRozetka.Infrastructure.Persistence;
@@ -9,44 +11,50 @@ namespace CloneRozetka.WebApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class ProductsController : ControllerBase
+    public class ProductsController(AppDbContext _db, 
+        IImageService _imageService,
+        IMapper _mapper) : ControllerBase
     {
-        private readonly AppDbContext _db;
-        private readonly IImageService _imageService;
+        //private readonly AppDbContext _db;
+        //private readonly IImageService _imageService;
 
-        public ProductsController(AppDbContext db, IImageService imageService)
-        {
-            _db = db;
-            _imageService = imageService;
-        }
+        //public ProductsController(AppDbContext db, IImageService imageService)
+        //{
+        //    _db = db;
+        //    _imageService = imageService;
+        //}
 
         // GET: api/products
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProductListItemDto>>> GetAll()
         {
-            var items = await _db.Products
-                .Include(p => p.ProductImages)
-                .AsNoTracking()
+            //var items = await _db.Products
+            //    .Include(p => p.ProductImages)
+            //    .AsNoTracking()
+            //    .ToListAsync();
+
+            //var result = items.Select(p =>
+            //{
+            //    var mainImage = p.ProductImages?
+            //        .OrderBy(i => i.Priority)
+            //        .FirstOrDefault();
+
+            //    return new ProductListItemDto
+            //    {
+            //        Id = p.Id,
+            //        Name = p.Name,
+            //        Slug = p.Slug!,
+            //        Price = p.Price,
+            //        CategoryId = p.CategoryId,
+            //        MainImageUrl = mainImage is null
+            //            ? null
+            //            : $"/Images/400_{mainImage.Name}" 
+            //    };
+            //});
+
+            var result = await _db.Products
+                .ProjectTo<ProductListItemDto>(_mapper.ConfigurationProvider)
                 .ToListAsync();
-
-            var result = items.Select(p =>
-            {
-                var mainImage = p.ProductImages?
-                    .OrderBy(i => i.Priority)
-                    .FirstOrDefault();
-
-                return new ProductListItemDto
-                {
-                    Id = p.Id,
-                    Name = p.Name,
-                    Slug = p.Slug!,
-                    Price = p.Price,
-                    CategoryId = p.CategoryId,
-                    MainImageUrl = mainImage is null
-                        ? null
-                        : $"/Images/400_{mainImage.Name}" 
-                };
-            });
 
             return Ok(result);
         }
