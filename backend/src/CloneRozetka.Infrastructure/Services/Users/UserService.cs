@@ -19,19 +19,20 @@ namespace CloneRozetka.Infrastructure.Services.Users
     {
         public async Task<SearchResult<AdminUserItemModel>> SearchUsersAsync(UserSearchModel model)
         {
+            //SQL запит до бд
             var query = userManager.Users.AsQueryable();
-
+            // фільтрація по імені
             if (!string.IsNullOrWhiteSpace(model.Name))
             {
+                // нормалізація рядка для пошуку до нижнього регістру та видалення зайвих пробілів
                 string nameFilter = model.Name.Trim().ToLower().Normalize();
-
-                query = query.Where(u =>
-                    (u.FullName).ToLower().Contains(nameFilter) ||
-                    u.FullName.ToLower().Contains(nameFilter));
+                // додавання умови фільтрації до запиту (перевірка чи містить ім'я користувача підрядок пошукового запиту)
+                query = query.Where(u => u.FullName!.ToLower().Contains(nameFilter));
             }
-
+            // фільтрація по датах створення користувача
             if (model?.StartDate != null)
             {
+                // додавання умови фільтрації до запиту (перевірка чи дата створення користувача більша або дорівнює початковій даті)
                 query = query.Where(u => u.CreatedAt >= model.StartDate);
             }
 
@@ -46,11 +47,13 @@ namespace CloneRozetka.Infrastructure.Services.Users
                 if (roles.Count() > 0)
                     query = query.Where(user => roles.Any(role => user.UserRoles.Select(x => x.Role.Name).Contains(role)));
             }
-
+            // отримання загальної кількості користувачів, що відповідають умовам фільтрації
             var totalCount = await query.CountAsync();
-
+            // розрахунок параметрів пагінації (безпечна кількість елементів на сторінку, загальна кількість сторінок, безпечний номер поточної сторінки)
             var safeItemsPerPage = model.ItemPerPAge < 1 ? 10 : model.ItemPerPAge;
+            // округлення вгору для отримання загальної кількості сторінок
             var totalPages = (int)Math.Ceiling(totalCount / (double)safeItemsPerPage);
+            // забезпечення, що номер сторінки знаходиться в межах допустимого діапазону
             var safePage = Math.Min(Math.Max(1, model.Page), Math.Max(1, totalPages));
 
             var users = await query

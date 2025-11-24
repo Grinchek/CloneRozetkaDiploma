@@ -10,7 +10,7 @@ namespace CloneRozetka.Infrastructure.Identity
         public string? GoogleId { get; set; }
 
         public bool IsEmailVarified { get; set; }
-        public DateTime CreatedAt { get; set; }
+        public DateTime CreatedAt { get; set; }= DateTime.UtcNow;
         public DateTime? LastLoginAt { get; set; }
         public bool IsBlocked { get; set; } = false;
 

@@ -1,0 +1,18 @@
+﻿using CloneRozetka.Application.Users.DTOs.AdminUser;
+using CloneRozetka.Infrastructure.Identity;
+
+namespace CloneRozetka.Infrastructure.Mappers;
+
+public class AdminUserMapper: AutoMapper.Profile
+{
+    public AdminUserMapper()
+    {
+        CreateMap<AppUser, AdminUserItemModel>()
+         .ForMember(dest => dest.IsLoginGoogle, opt => opt.MapFrom(src => src.UserLogins!.Any(l => l.LoginProvider == "Google")))
+         .ForMember(dest => dest.IsLoginPassword, opt => opt.MapFrom(src => !string.IsNullOrEmpty(src.PasswordHash)))
+         .ForMember(dest => dest.Roles, opt => opt.MapFrom(src => src.UserRoles!.Select(ur => ur.Role.Name).ToList()))
+         .ForMember(dest => dest.LoginTypes, opt => opt.Ignore());
+    }
+    
+}
+
