@@ -4,7 +4,6 @@ using CloneRozetka.Application.Abstractions;
 using CloneRozetka.Application.Search;
 using CloneRozetka.Application.Search.Params;
 using CloneRozetka.Application.Users.DTOs.AdminUser;
-using CloneRozetka.Domain.Entities;
 using CloneRozetka.Infrastructure.Identity;
 using CloneRozetka.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Identity;
