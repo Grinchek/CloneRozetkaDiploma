@@ -1,4 +1,4 @@
-﻿namespace CloneRozetka.Application.Users.DTOs
+﻿namespace CloneRozetka.Application.Users.DTOs.Account
 {
     public class ValidateResetTokenModel
     {

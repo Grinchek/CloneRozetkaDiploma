@@ -2,7 +2,7 @@
 using AutoMapper;
 using CloneRozetka.Application;
 using CloneRozetka.Application.Abstractions;
-using CloneRozetka.Application.Users.DTOs;
+using CloneRozetka.Application.Users.DTOs.Account;
 using CloneRozetka.Application.Users.Interfaces;
 using CloneRozetka.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;

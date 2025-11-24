@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CloneRozetka.Application.Users.DTOs;
+using CloneRozetka.Application.Users.DTOs.Account;
 using CloneRozetka.Domain.Entities;
 
 namespace CloneRozetka.Application.Users.Mappers
