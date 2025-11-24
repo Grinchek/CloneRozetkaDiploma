@@ -104,6 +104,7 @@ public static class DependencyInjection
         services.AddScoped<IJwtTokenService, JwtTokenService>();
         services.AddScoped<IAccountService, AccountService>();
         services.AddScoped<ISmtpService, SmtpService>();
+        services.AddScoped<IUserService, UserService>();
 
         return services;
     }
