@@ -1,12 +1,16 @@
 ﻿using CloneRozetka.Application.Categories.DTOs;
+using CloneRozetka.Application.Search;
+using CloneRozetka.Application.Search.Params;
+using CloneRozetka.Application.Users.DTOs.AdminUser;
 
 namespace CloneRozetka.Application.Categories.Interfaces;
 
 public interface ICategoryService
 {
-    Task<IReadOnlyList<CategoryDto>> ListAsync(CancellationToken ct = default);
-    Task<CategoryDto?> GetAsync(int id, CancellationToken ct = default);
-    Task<int> CreateAsync(CategoryCreateRequest req, CancellationToken ct = default);
-    Task UpdateAsync(CategoryUpdateRequest req, CancellationToken ct = default);
-    Task DeleteAsync(int id, CancellationToken ct = default);
+    Task<IReadOnlyList<CategoryDto>> ListAsync();
+    Task<CategoryDto?> GetAsync(int id);
+    Task<int> CreateAsync(CategoryCreateRequest req);
+    Task UpdateAsync(CategoryUpdateRequest req);
+    Task DeleteAsync(int id);
+    Task<SearchResult<CategoryDto>> SearchCategoriesAsync(CategorySearchModel model);
 }

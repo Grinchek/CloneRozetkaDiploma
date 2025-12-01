@@ -11,7 +11,9 @@ html, body, #root { height: 100%; margin: 0; background: var(--bg); }
 .layout {
   display: grid;
   grid-template-columns: 280px 1fr;
-  height: 100vh;
+    height: 90vh;
+
+
 }
 
 .layout-sidebar {

@@ -3,7 +3,10 @@ using AutoMapper.QueryableExtensions;
 using CloneRozetka.Application.Abstractions;
 using CloneRozetka.Application.Categories.DTOs;
 using CloneRozetka.Application.Categories.Interfaces;
+using CloneRozetka.Application.Search;
+using CloneRozetka.Application.Search.Params;
 using CloneRozetka.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace CloneRozetka.Application.Categories;
 
@@ -23,21 +26,19 @@ public class CategoryService : ICategoryService
         _mapper = mapper;
     }
 
-    public async Task<IReadOnlyList<CategoryDto>> ListAsync(CancellationToken ct = default)
+    public async Task<IReadOnlyList<CategoryDto>> ListAsync()
         => await _repo.ToListAsync(
             _repo.Query(asNoTracking: true)
                  .Where(x => !x.IsDeleted)
-                 .ProjectTo<CategoryDto>(_mapper.ConfigurationProvider),
-            ct);
+                 .ProjectTo<CategoryDto>(_mapper.ConfigurationProvider));
 
-    public async Task<CategoryDto?> GetAsync(int id, CancellationToken ct = default)
+    public async Task<CategoryDto?> GetAsync(int id)
         => await _repo.FirstOrDefaultAsync(
             _repo.Query(asNoTracking: true)
                  .Where(x => x.Id == id && !x.IsDeleted)
-                 .ProjectTo<CategoryDto>(_mapper.ConfigurationProvider),
-            ct);
+                 .ProjectTo<CategoryDto>(_mapper.ConfigurationProvider));
 
-    public async Task<int> CreateAsync(CategoryCreateRequest req, CancellationToken ct = default)
+    public async Task<int> CreateAsync(CategoryCreateRequest req)
     {
         var entity = new CategoryEntity
         {
@@ -49,13 +50,13 @@ public class CategoryService : ICategoryService
 
         if (req.Image is not null)
             entity.Image = await _images.SaveImageAsync(req.Image);
-        await _repo.AddAsync(entity, ct);
+        await _repo.AddAsync(entity);
         return entity.Id;
     }
 
-    public async Task UpdateAsync(CategoryUpdateRequest req, CancellationToken ct = default)
+    public async Task UpdateAsync(CategoryUpdateRequest req)
     {
-        var entity = await _repo.GetByIdAsync(req.Id, ct)
+        var entity = await _repo.GetByIdAsync(req.Id)
                      ?? throw new KeyNotFoundException("Category not found");
 
         entity.Name = req.Name;
@@ -71,15 +72,56 @@ public class CategoryService : ICategoryService
             entity.Image = await _images.SaveImageAsync(req.Image);
         }
 
-        await _repo.UpdateAsync(entity, ct);
+        await _repo.UpdateAsync(entity);
     }
 
-    public async Task DeleteAsync(int id, CancellationToken ct = default)
+    public async Task DeleteAsync(int id)
     {
-        var entity = await _repo.GetByIdAsync(id, ct)
+        var entity = await _repo.GetByIdAsync(id)
                      ?? throw new KeyNotFoundException("Category not found");
 
         entity.IsDeleted = true;
-        await _repo.UpdateAsync(entity, ct);
+        await _repo.UpdateAsync(entity);
+    }
+    public async Task<SearchResult<CategoryDto>> SearchCategoriesAsync(CategorySearchModel model)
+    {
+        // базовий запит
+        var query = _repo.Query(asNoTracking: true)
+                         .Where(c => !c.IsDeleted);
+
+        // фільтрація по імені
+        if (!string.IsNullOrWhiteSpace(model.Name))
+        {
+            var nameFilter = model.Name.Trim().ToLower();
+            query = query.Where(c => c.Name.ToLower().Contains(nameFilter));
+        }
+
+        // загальна к-сть елементів після фільтрацій
+        var totalCount = await query.CountAsync();
+
+        // безпечні значення пагінації
+        var safeItemsPerPage = model.ItemPerPAge < 1 ? 10 : model.ItemPerPAge;
+        var totalPages = (int)Math.Ceiling(totalCount / (double)safeItemsPerPage);
+        var safePage = Math.Min(Math.Max(1, model.Page), Math.Max(1, totalPages));
+
+        // завантаження поточної сторінки
+        var categories = await query
+            .OrderBy(c => c.Id) 
+            .Skip((safePage - 1) * safeItemsPerPage)
+            .Take(safeItemsPerPage)
+            .ProjectTo<CategoryDto>(_mapper.ConfigurationProvider)
+            .ToListAsync();
+
+        return new SearchResult<CategoryDto>
+        {
+            Items = categories,
+            Pagination = new PaginationModel
+            {
+                TotalCount = totalCount,
+                TotalPages = totalPages,
+                ItemsPerPage = safeItemsPerPage,
+                CurrentPage = safePage
+            }
+        };
     }
 }

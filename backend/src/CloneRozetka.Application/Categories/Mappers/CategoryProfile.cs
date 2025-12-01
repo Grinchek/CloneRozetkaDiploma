@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CloneRozetka.Application.Categories.DTOs;
+using CloneRozetka.Application.Search.Params;
 using CloneRozetka.Domain.Entities;
 
 namespace CloneRozetka.Application.Categories.Mappers;
@@ -21,5 +22,15 @@ public class CategoryProfile : Profile
         CreateMap<CategoryUpdateRequest, CategoryEntity>()
             .ForMember(d => d.Image, o => o.Ignore())
             .ForMember(d => d.Parent, o => o.Ignore());
+        // Category -> CategorySearchModel
+        CreateMap<IEnumerable<CategoryEntity>, CategorySearchModel>()
+            .ForMember(d => d.OldestCategories,
+                opt => opt.MapFrom(src =>
+                    src.Where(c => !c.IsDeleted && c.ParentId == null)
+                       .OrderBy(c => c.Name)
+                       .Select(c => c.Name)
+                       .ToList()
+                ));
+
     }
 }

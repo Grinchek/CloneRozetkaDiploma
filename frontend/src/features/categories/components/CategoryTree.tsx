@@ -100,11 +100,13 @@ function TreeItem({ node, depth = 0, onSelect, activeId }: ItemProps) {
 type CategoryTreeProps = {
     onSelectCategory?: (node: CategoryNode) => void;
     activeCategoryId?: number | null;
+    onCategoriesLoaded?: (nodes: CategoryNode[]) => void;
 };
 
 export default function CategoryTree({
                                          onSelectCategory,
                                          activeCategoryId,
+                                         onCategoriesLoaded,          // 👈 додали
                                      }: CategoryTreeProps) {
     const [data, setData] = useState<CategoryNode[] | null>(null);
     const [error, setError] = useState<string | null>(null);
@@ -112,10 +114,19 @@ export default function CategoryTree({
 
     useEffect(() => {
         fetchCategories()
-            .then((flat) => setData(buildCategoryTree(flat)))
+            .then((flat) => {
+                const tree = buildCategoryTree(flat);
+                setData(tree);
+
+                // 👇 віддаємо дерево нагору, якщо треба
+                if (onCategoriesLoaded) {
+                    onCategoriesLoaded(tree);
+                }
+            })
             .catch((e) => setError(String(e)))
             .finally(() => setLoading(false));
-    }, []);
+    }, [onCategoriesLoaded]);
+
 
     if (loading) return <div className="muted">Завантаження категорій…</div>;
     if (error) return <div className="error">Помилка: {error}</div>;
