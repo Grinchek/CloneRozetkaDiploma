@@ -79,6 +79,8 @@ namespace CloneRozetka.Api.Controllers
                 return Unauthorized();
 
             var user = await _userManager.FindByNameAsync(userName);
+            var roles = await _userManager.GetRolesAsync(user);
+            var mainRole = roles.FirstOrDefault() ?? "User";
             if (user == null) return Unauthorized();
 
             return Ok(new
@@ -86,7 +88,8 @@ namespace CloneRozetka.Api.Controllers
                 isAuthenticated = true,
                 name = user.FullName ?? user.UserName,
                 email = user.Email,
-                avatarUrl = user.AvatarUrl
+                avatarUrl = user.AvatarUrl,
+                role = mainRole
             });
         }
 

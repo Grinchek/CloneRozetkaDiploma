@@ -4,6 +4,7 @@
     align-items: center;
     min-height: 100vh;
     background: #f9fafb;
+    padding-bottom: 22vh;
 }
 
 .auth-card {

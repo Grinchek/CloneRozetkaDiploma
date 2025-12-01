@@ -40,7 +40,6 @@ const ProfilePage = () => {
 
     return (
         <>
-            <Navbar onHomeClick={() => setSelectedCategory(null)} />
             <div className="profile-page">
                 <section className="profile-card">
                     <div className="profile-header">

@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import CategoryTree from "../../features/categories/components/CategoryTree.tsx";
-import Navbar from "../../components/Navbar";
 import ProductGrid from "../../features/products/components/ProductGrid";
 import type { CategoryNode } from "../../features/categories/utils/buildTree";
 
@@ -44,7 +43,7 @@ const HomePage = () => {
 
     return (
         <>
-            <Navbar onHomeClick={() => setSelectedCategory(null)} />
+
 
             <div className="layout">
                 <aside className="layout-sidebar">

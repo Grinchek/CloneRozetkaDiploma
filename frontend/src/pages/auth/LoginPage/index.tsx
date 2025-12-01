@@ -7,7 +7,6 @@ import {
     useRegisterMutation,
 } from '../../../features/account/apiAccount';
 import '../../auth/auth.css';
-import Navbar from "../../../components/Navbar.tsx";
 
 const AuthPage = () => {
     const navigate = useNavigate();
@@ -86,7 +85,6 @@ const AuthPage = () => {
 
     return (
         <>
-            <Navbar onHomeClick={() => setSelectedCategory(null)} />
             <div className="auth-page">
                 <div className="auth-card">
                     <h2>{isRegister ? 'Реєстрація' : 'Вхід'}</h2>

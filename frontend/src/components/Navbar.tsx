@@ -22,6 +22,7 @@ const Navbar = ({ onHomeClick }: NavbarProps) => {
         localStorage.removeItem('token');
         navigate('/', { replace: true });
     };
+    const isAdmin = me?.role === 'Admin';
 
     return (
         <nav className="navbar">
@@ -38,7 +39,7 @@ const Navbar = ({ onHomeClick }: NavbarProps) => {
             <div className="navbar-actions">
                 {token ? (
                     <>
-                        <Link to="/profile" className="navbar-user">
+                        <Link to={isAdmin ? '/admin' : '/profile'} className="navbar-user">
                             {src ? (
                                 <img
                                     src={src}
