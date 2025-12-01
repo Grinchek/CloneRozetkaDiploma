@@ -27,7 +27,7 @@ export const apiAccount = createApi({
             invalidatesTags: ['User'],
         }),
         me: builder.query<
-            { isAuthenticated: boolean; name?: string; email?: string; avatarUrl?: string },
+            { isAuthenticated: boolean; name?: string; email?: string; avatarUrl?: string;role: string },
             void
         >({
             query: () => ({ url: '/Me', method: 'GET' }),
