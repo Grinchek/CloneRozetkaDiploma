@@ -7,6 +7,7 @@ import {
     useRegisterMutation,
 } from '../../../features/account/apiAccount';
 import '../../auth/auth.css';
+import Navbar from "../../../components/Navbar.tsx";
 
 const AuthPage = () => {
     const navigate = useNavigate();
@@ -84,82 +85,86 @@ const AuthPage = () => {
 
 
     return (
-        <div className="auth-page">
-            <div className="auth-card">
-                <h2>{isRegister ? 'Реєстрація' : 'Вхід'}</h2>
+        <>
+            <Navbar onHomeClick={() => setSelectedCategory(null)} />
+            <div className="auth-page">
+                <div className="auth-card">
+                    <h2>{isRegister ? 'Реєстрація' : 'Вхід'}</h2>
 
-                <form onSubmit={handleSubmit} className="auth-form">
-                    <input
-                        type="text"
-                        name="userNameOrEmail"
-                        placeholder="Ім'я користувача або Email"
-                        value={form.userNameOrEmail}
-                        onChange={handleChange}
-                        required
-                    />
+                    <form onSubmit={handleSubmit} className="auth-form">
+                        <input
+                            type="text"
+                            name="userNameOrEmail"
+                            placeholder="Ім'я користувача або Email"
+                            value={form.userNameOrEmail}
+                            onChange={handleChange}
+                            required
+                        />
 
-                    {isRegister && (
-                        <>
-                            <input
-                                type="email"
-                                name="email"
-                                placeholder="Email"
-                                value={form.email}
-                                onChange={handleChange}
-                                required
-                            />
-                            <input
-                                type="text"
-                                name="fullName"
-                                placeholder="Повне ім’я"
-                                value={form.fullName}
-                                onChange={handleChange}
-                                required
-                            />
-                        </>
-                    )}
+                        {isRegister && (
+                            <>
+                                <input
+                                    type="email"
+                                    name="email"
+                                    placeholder="Email"
+                                    value={form.email}
+                                    onChange={handleChange}
+                                    required
+                                />
+                                <input
+                                    type="text"
+                                    name="fullName"
+                                    placeholder="Повне ім’я"
+                                    value={form.fullName}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </>
+                        )}
 
-                    <input
-                        type="password"
-                        name="password"
-                        placeholder="Пароль"
-                        value={form.password}
-                        onChange={handleChange}
-                        required
-                    />
+                        <input
+                            type="password"
+                            name="password"
+                            placeholder="Пароль"
+                            value={form.password}
+                            onChange={handleChange}
+                            required
+                        />
 
-                    <button type="submit" disabled={isLoginLoading || isRegisterLoading}>
-                        {isRegister
-                            ? isRegisterLoading
-                                ? 'Реєстрація...'
-                                : 'Зареєструватися'
-                            : isLoginLoading
-                                ? 'Вхід...'
-                                : 'Увійти'}
-                    </button>
-                </form>
+                        <button type="submit" disabled={isLoginLoading || isRegisterLoading}>
+                            {isRegister
+                                ? isRegisterLoading
+                                    ? 'Реєстрація...'
+                                    : 'Зареєструватися'
+                                : isLoginLoading
+                                    ? 'Вхід...'
+                                    : 'Увійти'}
+                        </button>
+                    </form>
 
-                <div className="divider">або</div>
+                    <div className="divider">або</div>
 
-                <button
-                    className="google-login-btn"
-                    onClick={() => loginUseGoogle()}
-                >
-                    Увійти через Google
-                </button>
-
-                <p className="switch-mode">
-                    {isRegister ? 'Вже маєш акаунт?' : 'Немає акаунта?'}{' '}
                     <button
-                        className="link-btn"
-                        type="button"
-                        onClick={() => setIsRegister(!isRegister)}
+                        className="google-login-btn"
+                        onClick={() => loginUseGoogle()}
                     >
-                        {isRegister ? 'Увійти' : 'Зареєструватися'}
+                        Увійти через Google
                     </button>
-                </p>
+
+                    <p className="switch-mode">
+                        {isRegister ? 'Вже маєш акаунт?' : 'Немає акаунта?'}{' '}
+                        <button
+                            className="link-btn"
+                            type="button"
+                            onClick={() => setIsRegister(!isRegister)}
+                        >
+                            {isRegister ? 'Увійти' : 'Зареєструватися'}
+                        </button>
+                    </p>
+                </div>
             </div>
-        </div>
+        </>
+
     );
 };
 

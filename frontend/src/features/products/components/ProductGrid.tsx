@@ -1,11 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
-import "../../../styles/products.css";
 
+import "../../../styles/products.css";
+import type { CategoryNode } from "../../categories/utils/buildTree";
 const API_BASE = import.meta.env.VITE_API_BASE ?? "https://localhost:5001";
 const PAGE_SIZE = 16;
 
 export type ProductGridProps = {
     categoryId?: number | null;
+    categories?: CategoryNode[];
 };
 
 type Product = {
@@ -14,6 +16,12 @@ type Product = {
     price: number;
     mainImageUrl?: string | null;
     categoryId: number;
+};
+
+type CategoryTree = {
+    id: number;
+    parentId: number | null;
+    children?: CategoryTree[];
 };
 
 const buildProductImageSrc = (value?: string | null): string | null => {
@@ -30,7 +38,37 @@ const buildProductImageSrc = (value?: string | null): string | null => {
     return `${API_BASE}/Images/200_${value}`;
 };
 
-export default function ProductGrid({ categoryId }: ProductGridProps) {
+// ⭐ хелпери для дерева
+function findCategoryNode(
+    categories: CategoryNode[],
+    id: number
+): CategoryNode | null {
+    for (const c of categories) {
+        if (c.id === id) return c;
+        if (c.children && c.children.length) {
+            const found = findCategoryNode(c.children, id);
+            if (found) return found;
+        }
+    }
+    return null;
+}
+
+function collectCategoryIds(
+    category: CategoryNode,
+    acc: number[] = []
+): number[] {
+    acc.push(category.id);
+
+    if (category.children && category.children.length) {
+        for (const child of category.children) {
+            collectCategoryIds(child, acc);
+        }
+    }
+
+    return acc;
+}
+
+export default function ProductGrid({ categoryId, categories }: ProductGridProps) {
     const [items, setItems] = useState<Product[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -66,8 +104,23 @@ export default function ProductGrid({ categoryId }: ProductGridProps) {
 
     const filtered = useMemo(() => {
         if (!categoryId) return items;
-        return items.filter((p) => p.categoryId === categoryId);
-    }, [items, categoryId]);
+
+        if (!categories || categories.length === 0) {
+            // fallback: тільки прямі товари
+            return items.filter((p) => p.categoryId === categoryId);
+        }
+
+        const root = findCategoryNode(categories, categoryId);
+
+        if (!root) {
+            return items.filter((p) => p.categoryId === categoryId);
+        }
+
+        const allowedIds = collectCategoryIds(root);
+
+        return items.filter((p) => allowedIds.includes(p.categoryId));
+    }, [items, categoryId, categories]);
+    // ⭐ додали categories в залежності
 
     const totalPages = useMemo(
         () => (filtered.length === 0 ? 1 : Math.ceil(filtered.length / PAGE_SIZE)),
@@ -124,7 +177,7 @@ export default function ProductGrid({ categoryId }: ProductGridProps) {
                     const imgSrc = buildProductImageSrc(p.mainImageUrl);
 
                     return (
-                        <article key={p.id} className="product-card">
+                        <article key={p.id} className="product-card text-black">
                             <div className="product-card-image-wrap">
                                 {imgSrc ? (
                                     <img
@@ -141,7 +194,7 @@ export default function ProductGrid({ categoryId }: ProductGridProps) {
                             </div>
 
                             <div className="product-card-body">
-                                <h3 className="product-card-title" title={p.name}>
+                                <h3 className="product-card-title text-black" title={p.name}>
                                     {p.name}
                                 </h3>
 

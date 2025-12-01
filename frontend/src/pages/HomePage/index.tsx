@@ -10,7 +10,6 @@ const STORAGE_KEY = "selectedCategory";
 
 const HomePage = () => {
     const [selectedCategory, setSelectedCategory] = useState<SelectedCategory>(() => {
-        // початковий стан – читаємо з localStorage
         try {
             const raw = localStorage.getItem(STORAGE_KEY);
             if (!raw) return null;
@@ -23,12 +22,14 @@ const HomePage = () => {
                 return { id: parsed.id, name: parsed.name };
             }
         } catch {
-            // якщо щось пішло не так – просто ігноруємо
+            // ignore
         }
         return null;
     });
 
-    // синхронізуємо selectedCategory з localStorage
+    // 👇 тут зберііаємо дерево категорій
+    const [categories, setCategories] = useState<CategoryNode[]>([]);
+
     useEffect(() => {
         if (selectedCategory) {
             localStorage.setItem(STORAGE_KEY, JSON.stringify(selectedCategory));
@@ -50,6 +51,7 @@ const HomePage = () => {
                     <CategoryTree
                         onSelectCategory={handleSelectCategory}
                         activeCategoryId={selectedCategory?.id ?? null}
+                        onCategoriesLoaded={setCategories}  // 👈 забираємо дерево
                     />
                 </aside>
 
@@ -65,7 +67,10 @@ const HomePage = () => {
                         )}
                     </div>
 
-                    <ProductGrid categoryId={selectedCategory?.id ?? null} />
+                    <ProductGrid
+                        categoryId={selectedCategory?.id ?? null} // 👈 заміна selectedCategoryId
+                        categories={categories}                   // 👈 дерево з CategoryTree
+                    />
                 </main>
             </div>
         </>
