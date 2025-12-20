@@ -1,154 +1,357 @@
-import { FormEvent, useState } from 'react';
-import '../styles/admin.css';
 import {
-    useGetCategoriesQuery,
+    useEffect,
+    useState,
+    type ChangeEvent,
+    type FormEvent,
+} from "react";
+import "../styles/admin.css";
+import CategoryTree from "../features/categories/components/CategoryTree";
+import type { CategoryNode } from "../features/categories/utils/buildTree";
+
+import {
     useCreateCategoryMutation,
     useUpdateCategoryMutation,
     useDeleteCategoryMutation,
+} from "../features/categories/api/categoryApi";
 
-} from '../features/categories/api/categoryApi.ts';
+type SelectedCategory = { id: number; name: string } | null;
+const STORAGE_KEY = "selectedCategory";
+
+type CategoryFormMode = "create" | "edit";
+
+type CategoryFormState = {
+    name: string;
+    priority: number;
+    slug: string;
+    parentId: string;   // зберігаємо як string для select
+    imageUrl: string;
+    imageFile: File | null;
+};
+
+type FlatCategory = {
+    id: number;
+    name: string;
+};
+
+const initialForm: CategoryFormState = {
+    name: "",
+    slug: "",
+    parentId: "",
+    imageUrl: "",
+    imageFile: null,
+};
 
 const AdminCategoriesSection = () => {
-    const { data: categories, isLoading, isError } = useGetCategoriesQuery();
-    const [createCategory, { isLoading: isCreating }] = useCreateCategoryMutation();
-    const [updateCategory, { isLoading: isUpdating }] = useUpdateCategoryMutation();
-    const [deleteCategory, { isLoading: isDeleting }] = useDeleteCategoryMutation();
-    const [name, setName] = useState('');
-    const [slug, setSlug] = useState('');
-    const [editingId, setEditingId] = useState<number | null>(null);
+    const [selectedCategory, setSelectedCategory] =
+        useState<SelectedCategory>(() => {
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if (!raw) return null;
+                const parsed = JSON.parse(raw);
+                if (
+                    parsed &&
+                    typeof parsed.id === "number" &&
+                    typeof parsed.name === "string"
+                ) {
+                    return { id: parsed.id, name: parsed.name };
+                }
+            } catch {
+                // ignore
+            }
+            return null;
+        });
 
-    const isEditMode = editingId !== null;
+    const [mode, setMode] = useState<CategoryFormMode>(
+        selectedCategory ? "edit" : "create"
+    );
+    const [form, setForm] = useState<CategoryFormState>(initialForm);
 
+    // всі категорії з дерева – для селекта батька
+    const [allCategories, setAllCategories] = useState<FlatCategory[]>([]);
+
+    const [createCategory, { isLoading: isCreating }] =
+        useCreateCategoryMutation();
+    const [updateCategory, { isLoading: isUpdating }] =
+        useUpdateCategoryMutation();
+    const [deleteCategory, { isLoading: isDeleting }] =
+        useDeleteCategoryMutation();
+
+    const submitting = isCreating || isUpdating || isDeleting;
+
+    useEffect(() => {
+        if (selectedCategory) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(selectedCategory));
+            setMode("edit");
+        } else {
+            localStorage.removeItem(STORAGE_KEY);
+            setMode("create");
+            setForm(initialForm);
+        }
+    }, [selectedCategory]);
+
+    // отримуємо всі категорії від CategoryTree
+    const handleCategoriesLoaded = (nodes: CategoryNode[]) => {
+        const flat: FlatCategory[] = [];
+
+        const walk = (list: CategoryNode[]) => {
+            for (const n of list) {
+                flat.push({ id: n.id, name: n.name });
+                if (n.children && n.children.length > 0) {
+                    walk(n.children);
+                }
+            }
+        };
+
+        walk(nodes);
+        setAllCategories(flat);
+    };
+
+    // клік по категорії в дереві
+    const handleSelectCategory = (node: CategoryNode) => {
+        const anyNode = node as any;
+        const parentId = (anyNode.parentId as number | undefined) ?? null;
+
+        setSelectedCategory({ id: node.id, name: node.name });
+
+        setForm({
+            name: node.name ?? "",
+            priority: node.priority ?? 0,
+            slug:
+                (anyNode.slug as string | undefined) ??
+                (anyNode.urlSlug as string | undefined) ??
+                "",
+            parentId: parentId ? parentId.toString() : "",
+            imageUrl:
+                (anyNode.imageUrl as string | undefined) ??
+                (anyNode.image as string | undefined) ??
+                "",
+            imageFile: null,
+        });
+    };
+
+    const handleInputChange = (
+        e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    ) => {
+        const { name, value } = e.target;
+        setForm((prev) => ({ ...prev, [name]: value }));
+    };
+
+    const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0] ?? null;
+        setForm((prev) => ({
+            ...prev,
+            imageFile: file,
+        }));
+    };
+
+    const handleResetToCreate = () => {
+        setSelectedCategory(null);
+        setForm(initialForm);
+        setMode("create");
+    };
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
+        if (submitting) return;
 
-        if (!name.trim() || !slug.trim()) return;
+        const parentId = form.parentId ? Number(form.parentId) : null;
+        // якщо вибрали файл – можемо надіслати його імʼя як Image (поки без реального upload)
+        const image =
+            form.imageUrl.trim() || (form.imageFile ? form.imageFile.name : "");
+
+        const payload = {
+            name: form.name.trim(),
+            priority: form.priority,
+            slug: form.slug.trim(),
+            parentId,
+            image: image || null,
+        };
 
         try {
-            if (isEditMode && editingId !== null) {
-                await updateCategory({ id: editingId, name, slug }).unwrap();
-            } else {
-                await createCategory({ name, slug }).unwrap();
+            if (mode === "create") {
+                console.log(payload);
+                await createCategory(payload).unwrap();
+                setForm(initialForm);
+            } else if (mode === "edit" && selectedCategory) {
+                await updateCategory({
+                    id: selectedCategory.id,
+                    ...payload,
+                }).unwrap();
             }
-
-            setName('');
-            setSlug('');
-            setEditingId(null);
         } catch (err) {
-            console.error('Помилка при збереженні категорії', err);
+            console.error(err);
+            alert("Сталася помилка при збереженні категорії");
         }
     };
 
-    const handleEdit = (category: Category) => {
-        setEditingId(category.id);
-        setName(category.name);
-        setSlug(category.slug);
-    };
+    const handleDelete = async () => {
+        if (!selectedCategory || submitting) return;
 
-    const handleCancelEdit = () => {
-        setEditingId(null);
-        setName('');
-        setSlug('');
-    };
-
-    const handleDelete = async (id: number) => {
-        if (!window.confirm('Точно видалити цю категорію?')) return;
+        const ok = window.confirm(
+            `Точно видалити категорію "${selectedCategory.name}"?`
+        );
+        if (!ok) return;
 
         try {
-            await deleteCategory(id).unwrap();
+            await deleteCategory(selectedCategory.id).unwrap();
+            setSelectedCategory(null);
+            setForm(initialForm);
         } catch (err) {
-            console.error('Помилка при видаленні категорії', err);
+            console.error(err);
+            alert("Сталася помилка при видаленні категорії");
         }
     };
+
+    const isEdit = mode === "edit" && selectedCategory;
+
+    const parentOptions = allCategories.filter((c) =>
+        selectedCategory ? c.id !== selectedCategory.id : true
+    );
 
     return (
-
         <section className="admin-categories">
-            <h2>Категорії</h2>
+            <aside className="left-sidebar">
+                <CategoryTree
+                    onSelectCategory={handleSelectCategory}
+                    activeCategoryId={selectedCategory?.id ?? null}
+                    onCategoriesLoaded={handleCategoriesLoaded}
+                />
+            </aside>
 
-            <form className="admin-categories-form" onSubmit={handleSubmit}>
-                <div className="form-row">
-                    <div className="form-field">
-                        <label htmlFor="category-name">Назва</label>
-                        <input
-                            id="category-name"
-                            type="text"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            placeholder="Наприклад: Смартфони"
-                        />
-                    </div>
+            <main className="right-panel">
+                <div className="panel-header">
+                    <h2>
+                        {isEdit
+                            ? `Редагування категорії: ${selectedCategory!.name}`
+                            : "Створення нової категорії"}
+                    </h2>
 
-                    <div className="form-field">
-                        <label htmlFor="category-slug">Slug</label>
-                        <input
-                            id="category-slug"
-                            type="text"
-                            value={slug}
-                            onChange={(e) => setSlug(e.target.value)}
-                            placeholder="napr-smarthfony"
-                        />
-                    </div>
-                </div>
-
-                <div className="form-actions">
-                    <button type="submit" disabled={isCreating || isUpdating}>
-                        {isEditMode ? 'Зберегти зміни' : 'Додати категорію'}
-                    </button>
-                    {isEditMode && (
-                        <button type="button" onClick={handleCancelEdit}>
-                            Скасувати
+                    {isEdit && (
+                        <button
+                            type="button"
+                            className="btn secondary"
+                            onClick={handleResetToCreate}
+                        >
+                            Нова категорія
                         </button>
                     )}
                 </div>
-            </form>
 
-            <div className="admin-categories-list">
-                {isLoading && <p>Завантаження категорій...</p>}
-                {isError && <p style={{ color: 'red' }}>Помилка завантаження категорій.</p>}
+                <form className="category-form" onSubmit={handleSubmit}>
+                    <div className="form-row">
+                        <label htmlFor="name">Назва</label>
+                        <input
+                            id="name"
+                            name="name"
+                            type="text"
+                            value={form.name}
+                            onChange={handleInputChange}
+                            required
+                            placeholder="Наприклад, Ноутбуки"
+                        />
+                    </div>
+                    <div className="form-row">
+                        <label htmlFor="priority">Пріоритет</label>
+                        <input
+                            id="priority"
+                            name="priority"
+                            type="number"
+                            value={form.priority}
+                            onChange={handleInputChange}
+                            required
+                            placeholder="Пріоритет"
+                        />
+                    </div>
 
-                {categories && categories.length > 0 ? (
-                    <table className="admin-categories-table">
-                        <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Назва</th>
-                            <th>Slug</th>
-                            <th>Дії</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {categories.map((category) => (
-                            <tr key={category.id}>
-                                <td>{category.id}</td>
-                                <td>{category.name}</td>
-                                <td>{category.urlSlug}</td>
-                                <td>
-                                    <button
-                                        type="button"
-                                        onClick={() => handleEdit(category)}
-                                    >
-                                        Редагувати
-                                    </button>
-                                    <button
-                                        type="button"
-                                        onClick={() => handleDelete(category.id)}
-                                        disabled={isDeleting}
-                                    >
-                                        Видалити
-                                    </button>
-                                </td>
-                            </tr>
-                        ))}
-                        </tbody>
-                    </table>
-                ) : !isLoading && (
-                    <p>Категорій поки немає.</p>
-                )}
-            </div>
+                    <div className="form-row">
+                        <label htmlFor="slug">Slug</label>
+                        <input
+                            id="slug"
+                            name="slug"
+                            type="text"
+                            value={form.slug}
+                            onChange={handleInputChange}
+                            required
+                            placeholder="napryklad-noutbuky"
+                        />
+                    </div>
+
+                    <div className="form-row">
+                        <label htmlFor="parentId">Батьківська категорія</label>
+                        <select
+                            id="parentId"
+                            name="parentId"
+                            value={form.parentId}
+                            onChange={handleInputChange}
+                        >
+                            <option value="">(Без батьківської)</option>
+                            {parentOptions.map((c) => (
+                                <option
+                                    key={c.id}
+                                    value={c.id.toString()}
+                                >
+                                    {c.name}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+
+                    <div className="form-row">
+                        <label htmlFor="imageUrl">
+                            Зображення (URL){" "}
+                            <span className="muted">(необовʼязково)</span>
+                        </label>
+                        <input
+                            id="imageUrl"
+                            name="imageUrl"
+                            type="text"
+                            value={form.imageUrl}
+                            onChange={handleInputChange}
+                            placeholder="https://... або назва файлу"
+                        />
+                    </div>
+
+                    <div className="form-row">
+                        <label htmlFor="imageFile">
+                            Або вибір зображення з файлів
+                        </label>
+                        <input
+                            id="imageFile"
+                            name="imageFile"
+                            type="file"
+                            accept="image/*"
+                            onChange={handleFileChange}
+                        />
+                        {form.imageFile && (
+                            <div className="muted">
+                                Обрано файл: {form.imageFile.name}
+                            </div>
+                        )}
+                    </div>
+
+                    <div className="form-actions">
+                        <button
+                            type="submit"
+                            className="btn primary"
+                            disabled={submitting}
+                        >
+                            {isEdit ? "Зберегти зміни" : "Створити категорію"}
+                        </button>
+
+                        {isEdit && (
+                            <button
+                                type="button"
+                                className="btn danger"
+                                onClick={handleDelete}
+                                disabled={submitting}
+                            >
+                                Видалити
+                            </button>
+                        )}
+                    </div>
+                </form>
+            </main>
         </section>
-
     );
 };
 

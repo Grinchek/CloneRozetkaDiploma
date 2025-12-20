@@ -1,66 +1,66 @@
-:root {
-  --bg: #ffffff;
-  --muted: #6b7280;
-  --border: #e5e7eb;
-}
+/*:root {*/
+/*  --bg: #ffffff;*/
+/*  --muted: #6b7280;*/
+/*  --border: #e5e7eb;*/
+/*}*/
 
-* { box-sizing: border-box; }
+/** { box-sizing: border-box; }*/
 
-html, body, #root { height: 100%; margin: 0; background: var(--bg);}
+/*html, body, #root { height: 100%; margin: 0; background: var(--bg);}*/
 
-.layout {
-  display: grid;
-  grid-template-columns: 280px 1fr;
-    height: 77vh;
-
-
-}
-
-.layout-sidebar {
-  border-right: 1px solid var(--border);
-  padding: 12px;
-  overflow: auto;
-}
-
-.layout-content {
-  padding: 20px;
-  overflow: auto;
-}
-
-.sidebar { font-family: system-ui, sans-serif; }
-.sidebar-header {
-  font-weight: 600;
-  margin-bottom: 8px;
-}
-.navbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between; /* ← рівномірно розкидає елементи */
-    padding: 10px 40px;
-    border-bottom: 1px solid #e5e7eb;
-}
-
-.navbar ul {
-    display: flex;
-    list-style: none;
-    gap: 25px;
-    margin: 0;
-    padding: 0;
-    flex: 1;
-    justify-content: center; /* ← меню по центру */
-}
-
-.navbar a {
-    text-decoration: none;
-    color: #1f2937;
-    font-weight: 500;
-}
-
-.navbar a:hover {
-    color: #2563eb;
-}
+/*.layout {*/
+/*  display: grid;*/
+/*  grid-template-columns: 280px 1fr;*/
+/*    height: 77vh;*/
 
 
-.muted { color: var(--muted); }
-.error { color: #b91c1c; }
+/*}*/
+
+/*.layout-sidebar {*/
+/*  border-right: 1px solid var(--border);*/
+/*  padding: 12px;*/
+/*  overflow: auto;*/
+/*}*/
+
+/*.layout-content {*/
+/*  padding: 20px;*/
+/*  overflow: auto;*/
+/*}*/
+
+/*.sidebar { font-family: system-ui, sans-serif; }*/
+/*.sidebar-header {*/
+/*  font-weight: 600;*/
+/*  margin-bottom: 8px;*/
+/*}*/
+/*.navbar {*/
+/*    display: flex;*/
+/*    align-items: center;*/
+/*    justify-content: space-between; !* ← рівномірно розкидає елементи *!*/
+/*    padding: 10px 40px;*/
+/*    border-bottom: 1px solid #e5e7eb;*/
+/*}*/
+
+/*.navbar ul {*/
+/*    display: flex;*/
+/*    list-style: none;*/
+/*    gap: 25px;*/
+/*    margin: 0;*/
+/*    padding: 0;*/
+/*    flex: 1;*/
+/*    justify-content: center; !* ← меню по центру *!*/
+/*}*/
+
+/*.navbar a {*/
+/*    text-decoration: none;*/
+/*    color: #1f2937;*/
+/*    font-weight: 500;*/
+/*}*/
+
+/*.navbar a:hover {*/
+/*    color: #2563eb;*/
+/*}*/
+
+
+/*.muted { color: var(--muted); }*/
+/*.error { color: #b91c1c; }*/
 

@@ -1,167 +1,149 @@
-/* Контейнер всієї адмінки */
-.admin-page {
-    padding: 24px;
-    max-width: 1200px;
-    margin: 0 auto;
-
+/* Контейнер всього розділу */
+.admin-categories {
+    display: flex;
+    gap: 24px;
+    padding: 24px 32px 40px;
+    align-items: flex-start; /* вирівнюємо обидві колонки по верху */
 }
-.admin-header {
-    margin-top: 8px;
-    margin-bottom: 16px;
+
+/* Ліва панель з деревом */
+.left-sidebar {
+    width: 280px;
+    border-right: 1px solid #ddd;
+    padding-right: 15px;
+    max-height: calc(100vh - 160px); /* трошки нижче, ніж висота вікна */
+    overflow-y: auto;
+}
+
+/* Права панель з формою */
+.right-panel {
+    flex: 1;
+    padding: 0;                /* забираємо зайві внутрішні відступи */
+    display: flex;
+    flex-direction: column;    /* заголовок + форма в колонку */
 }
 
 /* Заголовок */
-.admin-header h1 {
-    margin: 0 0 4px;
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;       /* менший відступ, щоб форма була ближче до заголовка */
 }
 
-.admin-header p {
+.panel-header h2 {
     margin: 0;
-    color: #64748b;
+    font-size: 24px;
+    font-weight: 600;
 }
 
-/* Сітка карток */
-.admin-grid {
-    margin-top: 24px;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+/* Поля форми */
+.category-form {
+    display: flex;
+    flex-direction: column;
+    max-width: 520px;
     gap: 16px;
-}
+    padding: 20px;
+    border-radius: 8px;
+    background: #fafafa;
+    border: 1px solid #e3e3e3;
 
-/* Картка адмінки */
-.admin-card {
-    display: flex;
-    flex-direction: column;
-    background: #ffffff;
-    border-radius: 12px;
-    padding: 16px 20px;
-    border: 1px solid #e2e8f0;
-    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
-    color: #0f172a;
-    max-height: 420px;
-    overflow: hidden;
-}
-
-.admin-card h2 {
-    margin-top: 0;
-    margin-bottom: 8px;
-    color: #0f172a;
-}
-
-.admin-card p {
+   
     margin: 0;
-    color: #6b7280;
-    font-size: 0.95rem;
+    align-self: flex-start;
 }
 
-/* СЕКЦІЯ КАТЕГОРІЙ */
-
-.admin-categories {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    height: 100%;
-}
-
-.admin-categories-form {
-    margin-top: 4px;
-}
-
-/* Форма */
+/* Рядок */
 .form-row {
     display: flex;
-    gap: 16px;
-    flex-wrap: wrap;
-}
-
-.form-field {
-    display: flex;
     flex-direction: column;
-    flex: 1;
-    min-width: 180px;
-    color: black;
+    gap: 6px;
 }
 
-.form-field label {
-    font-size: 0.9rem;
-    margin-bottom: 4px;
+.form-row label {
+    font-weight: 500;
+    color: #222;
 }
 
-.form-field input {
-    padding: 6px 8px;
+.category-form input,
+.category-form select {
+    padding: 10px 12px;
+    font-size: 14px;
+    border: 1px solid #cfcfcf;
     border-radius: 6px;
-    border: 1px solid #cbd5f5;
+    outline: none;
+    transition: border-color 0.2s;
 }
 
-.form-actions {
-    margin-top: 8px;
-    display: flex;
-    gap: 8px;
+.category-form input:focus,
+.category-form select:focus {
+    border-color: #2d7dff;
 }
 
-.form-actions button {
-    padding: 6px 10px;
-    border-radius: 6px;
+/* Кнопки */
+.btn {
+    padding: 10px 18px;
     border: none;
+    border-radius: 6px;
     cursor: pointer;
+    font-size: 15px;
+}
+
+.btn.primary {
     background: #2563eb;
-    color: #ffffff;
+    color: white;
 }
 
-.form-actions button[type="button"] {
+.btn.primary:hover {
+    background: #1d4ed8;
+}
+
+.btn.secondary {
     background: #e5e7eb;
-    color: #111827;
 }
 
-/* Контейнер списку категорій зі скролом */
-.admin-categories-list {
-    flex: 1;
-    overflow-y: auto;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    background: #ffffff;
+.btn.secondary:hover {
+    background: #d1d5db;
 }
 
-/* Таблиця */
-.admin-categories-table {
+.btn.danger {
+    background: #dc2626;
+    color: white;
+}
+
+.btn.danger:hover {
+    background: #b91c1c;
+}
+
+/* Кнопки знизу */
+.form-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+/* Маленький текст */
+.muted {
+    color: #777;
+    font-size: 13px;
+}
+/* Загальний контейнер адмінки */
+.admin-page {
+    /* якщо десь було height: 100vh або overflow: hidden – перекриємо */
+    height: auto;
+    min-height: 100vh;
+    overflow: visible;
+}
+
+/* Сітка адмінки – без вертикального центрування */
+.admin-grid {
     width: 100%;
-    border-collapse: collapse;
-    font-size: 0.9rem;
 }
 
-/* Липкий заголовок таблиці */
-.admin-categories-table thead th {
-    position: sticky;
-    top: 0;
-    background: #f8fafc;
-    z-index: 1;
+/* Карта (обгортка) навколо AdminCategoriesSection */
+.admin-card {
+    /* головне — не центрувати контент по вертикалі */
+    display: block;        /* перекриває display:flex/grid з інших стилів */
+    padding-bottom: 96px;  /* запас під футер, ~висота футера */
 }
 
-/* Комірки */
-.admin-categories-table th,
-.admin-categories-table td {
-    padding: 6px 10px;
-    text-align: left;
-    border-bottom: 1px solid #e2e8f0;
-}
-
-/* Зебра-рядки */
-.admin-categories-table tbody tr:nth-child(even) {
-    background: #f9fafb;
-}
-
-/* Кнопки в таблиці */
-.admin-categories-table td button {
-    padding: 3px 8px;
-    font-size: 0.8rem;
-    margin-right: 4px;
-    border-radius: 6px;
-    border: none;
-    cursor: pointer;
-    background: #e5e7eb;
-}
-
-.admin-categories-table td button:last-child {
-    background: #fee2e2;
-    color: #b91c1c;
-}
