@@ -50,7 +50,7 @@ const HomePage = () => {
                     <CategoryTree
                         onSelectCategory={handleSelectCategory}
                         activeCategoryId={selectedCategory?.id ?? null}
-                        onCategoriesLoaded={setCategories}  // 👈 забираємо дерево
+                        onCategoriesLoaded={setCategories}
                     />
                 </aside>
 
@@ -67,8 +67,8 @@ const HomePage = () => {
                     </div>
 
                     <ProductGrid
-                        categoryId={selectedCategory?.id ?? null} // 👈 заміна selectedCategoryId
-                        categories={categories}                   // 👈 дерево з CategoryTree
+                        categoryId={selectedCategory?.id ?? null}
+                        categories={categories}
                     />
                 </main>
             </div>

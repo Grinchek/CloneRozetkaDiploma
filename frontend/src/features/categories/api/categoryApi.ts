@@ -3,21 +3,31 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 export interface Category {
     id: number;
     name: string;
+    priority: number|null;
     slug: string;
-
+    parentId?: number | null;
+    image?: string | null;
 }
 
 export interface CreateCategoryRequest {
     name: string;
+    priority: number;
     slug: string;
+    parentId?: number | null;
+    image?: string | null;
 }
 
 export interface UpdateCategoryRequest {
     id: number;
     name: string;
+    priority: number;
     slug: string;
+    parentId?: number | null;
+    image?: string | null;
 }
+
 const API_URL = import.meta.env.VITE_API_BASE + '/api';
+
 export const categoryApi = createApi({
     reducerPath: 'categoryApi',
     baseQuery: fetchBaseQuery({
