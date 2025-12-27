@@ -12,11 +12,9 @@ public static class CategorySeeder
         IImageService images,
         string jsonPath)
     {
-
         var json = await File.ReadAllTextAsync(jsonPath);
         var items = JsonSerializer.Deserialize<List<CategorySeedModel>>(json,
             new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? [];
-
 
         // Існуючі за slug
         var existing = await db.Categories.AsNoTracking()
@@ -34,7 +32,16 @@ public static class CategorySeeder
 
             if (!string.IsNullOrWhiteSpace(m.Image))
             {
-                savedImage = await images.SaveImageFromUrlAsync(m.Image);
+                try
+                {
+                    savedImage = await images.SaveImageFromUrlAsync(m.Image);
+                }
+                catch
+                {
+                    // Якщо картинка битa / невідомий формат – просто пропускаємо,
+                    // щоб не валити весь сидер
+                    savedImage = null;
+                }
             }
 
             toAdd.Add(new CategoryEntity
@@ -43,7 +50,7 @@ public static class CategorySeeder
                 Priority = m.Priority,
                 UrlSlug = m.UrlSlug,
                 ParentId = null,        // прив’яжемо нижче
-                Image = savedImage,  // ім’я файлу (напр. 9a2b... .webp)
+                Image = savedImage,     // ім’я файлу або null
                 IsDeleted = false
             });
         }
@@ -58,7 +65,7 @@ public static class CategorySeeder
                 .ToDictionaryAsync(c => c.UrlSlug);
         }
 
-        // 2) Прив’язуємо ParentId і, за потреби, дозберігаємо Image для вже існуючих
+        // 2) Прив’язуємо ParentId
         foreach (var m in items)
         {
             if (!existing.TryGetValue(m.UrlSlug, out var snapshot))
@@ -66,7 +73,6 @@ public static class CategorySeeder
 
             var tracked = await db.Categories.FirstAsync(c => c.Id == snapshot.Id);
 
-            // ParentId
             if (!string.IsNullOrWhiteSpace(m.ParentSlug) &&
                 existing.TryGetValue(m.ParentSlug, out var parent))
             {
@@ -76,6 +82,5 @@ public static class CategorySeeder
         }
 
         await db.SaveChangesAsync();
-
     }
 }
