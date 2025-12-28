@@ -1,3 +1,4 @@
+using CloneRozetka.Application.Abstractions;
 using CloneRozetka.Application.Categories;
 using CloneRozetka.Application.Categories.Interfaces;
 using CloneRozetka.Application.Categories.Mappers;
@@ -5,6 +6,7 @@ using CloneRozetka.Application.Categories.Validators;
 using CloneRozetka.Infrastructure;
 using CloneRozetka.Infrastructure.Jobs;
 using CloneRozetka.Infrastructure.Mappers;
+using CloneRozetka.Infrastructure.Services.Categories;
 using dotenv.net;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
@@ -30,6 +32,7 @@ builder.Services.AddInfrastructure(
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddValidatorsFromAssemblyContaining<CategoryCreateValidator>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<ICartService, CartService>();
 
 // Quartz 
 builder.Services.AddQuartz(q =>

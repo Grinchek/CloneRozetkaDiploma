@@ -14,6 +14,7 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, int,
     public DbSet<CategoryEntity> Categories => Set<CategoryEntity>();
     public DbSet<ProductEntity> Products => Set<ProductEntity>();
     public DbSet<ProductImageEntity> ProductImages => Set<ProductImageEntity>();
+    public DbSet<CartEntity> Carts => Set<CartEntity>();
 
     protected override void OnModelCreating(ModelBuilder b)
     {
@@ -45,6 +46,25 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, int,
             b.HasOne(l => l.User)
                 .WithMany(u => u.UserLogins)
                 .HasForeignKey(l => l.UserId)
+                .IsRequired();
+        });
+
+        b.Entity<CartEntity>(e =>
+        {
+            e.ToTable("tblCarts");
+
+            e.HasKey(c => new { c.UserId, c.ProductId });
+
+            e.Property(c => c.Quantity).HasDefaultValue(1);
+
+            e.HasOne(c => c.Product)
+                .WithMany()
+                .HasForeignKey(c => c.ProductId)
+                .IsRequired();
+
+            e.HasOne<AppUser>()
+                .WithMany() 
+                .HasForeignKey(c => c.UserId)
                 .IsRequired();
         });
     }
