@@ -19,15 +19,27 @@ namespace CloneRozetka.Api.Controllers
         public async Task<ActionResult<IEnumerable<CartItemDTO>>> Add([FromBody] CartItemDTO dto)
         {
             if (dto is null)
-            {
                 return BadRequest();
-            }
 
             await service.AddAsync(dto);
+            return Ok(await service.ListAsync(dto.UserId));
+        }
 
-            var items = await service.ListAsync(dto.UserId);
+        [HttpPut]
+        public async Task<IActionResult> Update([FromBody] CartItemDTO dto)
+        {
+            if (dto is null)
+                return BadRequest();
 
-            return Ok(items);
+            await service.UpdateAsync(dto);
+            return NoContent();
+        }
+
+        [HttpDelete("{userId:int}/{productId:long}")]
+        public async Task<IActionResult> Delete(int userId, long productId)
+        {
+            await service.DeleteAsync(userId, productId);
+            return NoContent();
         }
     }
 }
