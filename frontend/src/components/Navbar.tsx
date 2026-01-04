@@ -1,9 +1,8 @@
 // src/components/Navbar.tsx
 import { Link, useNavigate } from 'react-router-dom';
-import { useMeQuery } from '../features/account/apiAccount';
-import { buildAvatarCandidates } from '../utils/image';
+
 import '../styles/navbar.css';
-import { useMemo, useState } from 'react';
+import UserDropdown from "../admin/components/header/UserDropdown.tsx";
 
 type NavbarProps = {
     onHomeClick?: () => void;
@@ -12,17 +11,12 @@ type NavbarProps = {
 const Navbar = ({ onHomeClick }: NavbarProps) => {
     const navigate = useNavigate();
     const token = localStorage.getItem('token');
-    const { data: me } = useMeQuery(undefined, { skip: !token });
 
-    const candidates = useMemo(() => buildAvatarCandidates(me?.avatarUrl), [me?.avatarUrl]);
-    const [idx, setIdx] = useState(0);
-    const src = candidates[idx];
 
-    const handleLogout = () => {
-        localStorage.removeItem('token');
-        navigate('/', { replace: true });
-    };
-    const isAdmin = me?.role === 'Admin';
+
+
+
+
 
     return (
         <nav className="navbar">
@@ -37,32 +31,37 @@ const Navbar = ({ onHomeClick }: NavbarProps) => {
             </div>
 
             <div className="navbar-actions">
+
                 {token ? (
                     <>
-                        <Link to={isAdmin ? '/admin' : '/profile'} className="navbar-user">
-                            {src ? (
-                                <img
-                                    src={src}
-                                    alt="avatar"
-                                    className="navbar-avatar"
-                                    onError={() => setIdx(i => i + 1)}
-                                />
-                            ) : (
-                                <div className="navbar-avatar" />
-                            )}
-                            <span>{me?.name ?? 'Користувач'}</span>
-                        </Link>
-
-                        <button className="navbar-btn" onClick={handleLogout}>
-                            Вийти
-                        </button>
+                        <UserDropdown />
                     </>
                 ) : (
+
                     <button
-                        className="navbar-btn"
-                        onClick={() => navigate('/login', { replace: true })}
+                        className="flex items-center text-gray-700 dropdown-toggle dark:text-gray-400"
+                        onClick={() => navigate('/signin', { replace: true })}
                     >
-                        Увійти
+
+                         <span className="mr-3 overflow-hidden rounded-full h-11 w-11">
+                             <svg
+                                 className="fill-gray-500 group-hover:fill-gray-700 dark:fill-gray-400 dark:group-hover:fill-gray-300"
+                                 width="45"
+                                 height="46"
+                                 viewBox="0 0 24 24"
+                                 fill="none"
+                                 xmlns="http://www.w3.org/2000/svg"
+                             >
+                        <path
+                            fillRule="evenodd"
+                            clipRule="evenodd"
+                            d="M4 22a8 8 0 1 1 16 0H4zm8-9c-3.315 0-6-2.685-6-6s2.685-6 6-6 6 2.685 6 6-2.685 6-6 6z"
+                            fill=""
+                        />
+                    </svg>
+                        </span>
+
+                        <span>Увійти</span>
                     </button>
                 )}
             </div>

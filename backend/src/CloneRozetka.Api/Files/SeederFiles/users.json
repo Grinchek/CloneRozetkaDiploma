@@ -19,5 +19,68 @@
     "AvatarUrl": "https://thispersondoesnotexist.com",
     "Password": "password",
     "Roles": [ "User" ]
+  },
+  {
+    "Email": "admin2@example.com",
+    "FullName": "Адмiн Системний2",
+    "AvatarUrl": "https://thispersondoesnotexist.com",
+    "Password": "Admin123!",
+    "Roles": [ "Admin" ]
+  },
+  {
+    "Email": "jadviga@example.com",
+    "FullName": "Цимбал Ядвіга",
+    "AvatarUrl": "https://thispersondoesnotexist.com",
+    "Password": "password",
+    "Roles": [ "User" ]
+  },
+  {
+    "Email": "ihor@example.com",
+    "FullName": "Поривай Ігор",
+    "AvatarUrl": "https://thispersondoesnotexist.com",
+    "Password": "password",
+    "Roles": [ "User" ]
+  },
+  {
+    "Email": "rudan@example.com",
+    "FullName": "Шпек Рудан",
+    "AvatarUrl": "https://thispersondoesnotexist.com",
+    "Password": "password",
+    "Roles": [ "User" ]
+  },
+  {
+    "Email": "evhen@example.com",
+    "FullName": "Осецький Євген",
+    "AvatarUrl": "https://thispersondoesnotexist.com",
+    "Password": "password",
+    "Roles": [ "User" ]
+  },
+  {
+    "Email": "viola@example.com",
+    "FullName": "Олексієнко Віола",
+    "AvatarUrl": "https://thispersondoesnotexist.com",
+    "Password": "password",
+    "Roles": [ "User" ]
+  },
+  {
+    "Email": "edita@example.com",
+    "FullName": "Кутас Едіта",
+    "AvatarUrl": "https://thispersondoesnotexist.com",
+    "Password": "password",
+    "Roles": [ "User" ]
+  },
+  {
+    "Email": "krasunia@example.com",
+    "FullName": "Лесюк Красуня",
+    "AvatarUrl": "https://thispersondoesnotexist.com",
+    "Password": "password",
+    "Roles": [ "User" ]
+  },
+  {
+    "Email": "genia@example.com",
+    "FullName": "Ерстенюк Євген",
+    "AvatarUrl": "https://thispersondoesnotexist.com",
+    "Password": "password",
+    "Roles": [ "User" ]
   }
 ]

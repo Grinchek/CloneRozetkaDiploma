@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 
 import "../../../styles/products.css";
 import type { CategoryNode } from "../../categories/utils/buildTree";
-const API_BASE = import.meta.env.VITE_API_BASE ?? "https://localhost:5001";
+const API_BASE = import.meta.env.VITE_API_BASE ;
 const PAGE_SIZE = 16;
 
 export type ProductGridProps = {

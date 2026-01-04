@@ -18,10 +18,15 @@ export const apiAccount = createApi({
             query: (body) => ({ url: '/Login', method: 'POST', body }),
             invalidatesTags: ['User'],
         }),
-        register: builder.mutation<{ token: string }, { userName: string; email: string; fullName: string; password: string }>({
-            query: (body) => ({ url: '/Register', method: 'POST', body }),
+        register: builder.mutation<Response, FormData>({
+            query: (body) => ({
+                url: "/Register",
+                method: "POST",
+                body,
+            }),
             invalidatesTags: ['User'],
         }),
+
         loginByGoogle: builder.mutation<{ token: string }, { token: string }>({
             query: (body) => ({ url: '/GoogleLogin', method: 'POST', body }),
             invalidatesTags: ['User'],

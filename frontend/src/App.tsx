@@ -4,7 +4,7 @@ import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/auth/LoginPage";
 import ProfilePage from "./pages/ProfilePage";
 // import AdminPage from './pages/AdminPage';
-// import RequireAdmin from './components/RequireAdmin';
+ import RequireAdmin from './components/RequireAdmin';
 // import Navbar from "./components/Navbar.tsx";
 import Footer from "./components/Footer";
 import AppLayout from "./admin/layout/AppLayout.tsx";
@@ -41,14 +41,7 @@ export default function App() {
                     <Route path={"login"} element={<LoginPage/>}/>
                     <Route path="/profile" element={<ProfilePage />} />
                 </Route>
-                {/*<Route*/}
-                {/*    path="/admin"*/}
-                {/*    element={*/}
-                {/*        <RequireAdmin>*/}
-                {/*            <AdminPage />*/}
-                {/*        </RequireAdmin>*/}
-                {/*    }*/}
-                {/*/>*/}
+                <Route element={<RequireAdmin />}>
                 <Route  path="admin"  element={<AppLayout />}>
                     <Route index element={<Home />} />
 
@@ -74,6 +67,7 @@ export default function App() {
                     {/* Charts */}
                     <Route path="line-chart" element={<LineChart />} />
                     <Route path="bar-chart" element={<BarChart />} />
+                </Route>
                 </Route>
 
                 {/* Auth Layout */}

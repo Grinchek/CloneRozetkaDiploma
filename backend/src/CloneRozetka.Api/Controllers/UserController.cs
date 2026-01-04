@@ -1,5 +1,6 @@
 ﻿using CloneRozetka.Application.Abstractions;
 using CloneRozetka.Application.Search.Params;
+using CloneRozetka.Application.Users.DTOs.AdminUser;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -27,6 +28,30 @@ namespace CloneRozetka.Api.Controllers
                 ts.Milliseconds / 10);
             Console.WriteLine("-----------Elapsed Time------------: " + elapsedTime);
             return Ok(result);
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetAll([FromQuery] int page = 1, [FromQuery] int itemsPerPage = 10)
+        {
+            var result = await userService.GetAllUsersAsync(page, itemsPerPage);
+            return Ok(result);
+        }
+        [HttpPut]
+        public async Task<IActionResult> Edit([FromBody] AdminUserEditModel model)
+        {
+            if (model == null)
+                return BadRequest("User Id is required");
+
+            await userService.EditUserAsync(model);
+            return Ok(new { message = "User updated successfully" });
+        }
+         [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete([FromRoute] string id)
+        {
+            if (string.IsNullOrWhiteSpace(id))
+                return BadRequest("User Id is required");
+
+            await userService.DeleteUserAsync(id.ToString());
+            return Ok(new { message = "User deleted successfully" });
         }
 
     }
