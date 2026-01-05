@@ -30,6 +30,7 @@ export default function RegisteredUsers() {
     const [data, setData] = useState<SearchResult<AdminUserItemModel> | null>(null);
     const [loading, setLoading] = useState(false);
     const [deletingId, setDeletingId] = useState<string | null>(null);
+    const [roleChangingId, setRoleChangingId] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
 
     const [page, setPage] = useState(1);
@@ -68,6 +69,72 @@ export default function RegisteredUsers() {
             setLoading(false);
         }
     };
+    type AdminUserEditModel = {
+        id: string;
+        fullName: string;
+        email: string;
+        phoneNumber?: string | null;
+        roles: string[];
+        newImageBase64?: string | null;
+    };
+
+    const toggleAdmin = async (user: AdminUserItemModel) => {
+        const token = localStorage.getItem("token");
+        if (!token) {
+            setError("No token. Please login again.");
+            return;
+        }
+
+        const isAdmin = user.roles.includes("Admin");
+        const nextRoles = isAdmin
+            ? user.roles.filter((r) => r !== "Admin")
+            : Array.from(new Set([...user.roles, "Admin"]));
+        
+        const payload: AdminUserEditModel = {
+            id: user.id,
+            fullName: user.fullName,
+            email: user.email,
+            phoneNumber: user.phoneNumber ?? null,
+            roles: nextRoles,
+            newImageBase64: null,
+        };
+
+        try {
+            setRoleChangingId(user.id);
+            setError(null);
+
+            const res = await fetch(`${API_URL}/api/User/change-role`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    accept: "*/*",
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify(payload),
+            });
+
+            if (!res.ok) {
+                const text = await res.text();
+                throw new Error(text || `Change role failed: ${res.status}`);
+            }
+
+            // ✅ оновлюємо roles в UI локально
+            setData((prev) => {
+                if (!prev) return prev;
+                return {
+                    ...prev,
+                    items: prev.items.map((u) =>
+                        u.id === user.id ? { ...u, roles: nextRoles } : u
+                    ),
+                };
+            });
+        } catch (e: any) {
+            setError(e?.message ?? "Unknown error");
+        } finally {
+            setRoleChangingId(null);
+        }
+    };
+
 
     const askDelete = (user: AdminUserItemModel) => {
         setSelectedUser(user);
@@ -279,12 +346,14 @@ export default function RegisteredUsers() {
                                                     isAdmin
                                                         ? "bg-red-100 text-red-700 hover:bg-red-200 dark:bg-red-500/10 dark:text-red-400"
                                                         : "bg-blue-100 text-blue-700 hover:bg-blue-200 dark:bg-blue-500/10 dark:text-blue-400"
-                                                }`}
-                                                disabled
-                                                title="Поки що не реалізовано"
+                                                } disabled:opacity-50`}
+                                                onClick={() => toggleAdmin(user)}
+                                                disabled={roleChangingId === user.id}
+                                                title={isAdmin ? "Зняти роль Admin" : "Надати роль Admin"}
                                             >
-                                                {isAdmin ? "Remove admin" : "Make admin"}
+                                                {roleChangingId === user.id ? "Saving..." : isAdmin ? "Remove admin" : "Make admin"}
                                             </button>
+
                                         </TableCell>
 
                                         <TableCell className="py-3 text-theme-sm text-gray-500 dark:text-gray-400">

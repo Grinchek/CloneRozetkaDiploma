@@ -4,6 +4,7 @@ using CloneRozetka.Application.Abstractions;
 using CloneRozetka.Application.Search;
 using CloneRozetka.Application.Search.Params;
 using CloneRozetka.Application.Users.DTOs.AdminUser;
+using CloneRozetka.Domain.Entities;
 using CloneRozetka.Infrastructure.Identity;
 using CloneRozetka.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Identity;
@@ -198,8 +199,50 @@ namespace CloneRozetka.Infrastructure.Services.Users
             if (!res.Succeeded)
                 throw new Exception(string.Join("; ", res.Errors.Select(e => e.Description)));
         }
+        public async Task ChangeUserRoleAsync(AdminUserEditModel model)
+        {
+            var user = await userManager.Users
+                .Include(x => x.UserRoles)
+                .ThenInclude(ur => ur.Role)
+                .FirstOrDefaultAsync(x => x.Id == model.Id);
+            if (model.Roles != null)
+            {
+                var newRoles = model.Roles
+                    .Where(r => !string.IsNullOrWhiteSpace(r))
+                    .Select(r => r.Trim())
+                    .Distinct()
+                    .ToList();
 
 
+                if (newRoles.Count > 0)
+                {
+                    var existingRoleNames = await roleManager.Roles.Select(r => r.Name!).ToListAsync();
+                    var wrong = newRoles.Except(existingRoleNames).ToList();
+                    if (wrong.Count > 0)
+                        throw new Exception("Unknown roles: " + string.Join(", ", wrong));
+                }
 
-    }
+                var currentRoles = await userManager.GetRolesAsync(user);
+
+                var toAdd = newRoles.Except(currentRoles).ToList();
+                var toRemove = currentRoles.Except(newRoles).ToList();
+
+                if (toRemove.Count > 0)
+                {
+                    var removeRes = await userManager.RemoveFromRolesAsync(user, toRemove);
+                    if (!removeRes.Succeeded)
+                        throw new Exception(string.Join("; ", removeRes.Errors.Select(e => e.Description)));
+                }
+
+                if (toAdd.Count > 0)
+                {
+                    var addRes = await userManager.AddToRolesAsync(user, toAdd);
+                    if (!addRes.Succeeded)
+                        throw new Exception(string.Join("; ", addRes.Errors.Select(e => e.Description)));
+                }
+            }
+        }
+
+
+        }
 }

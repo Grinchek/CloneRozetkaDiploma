@@ -44,7 +44,16 @@ namespace CloneRozetka.Api.Controllers
             await userService.EditUserAsync(model);
             return Ok(new { message = "User updated successfully" });
         }
-         [HttpDelete("{id}")]
+        [HttpPut]
+        [Route("change-role")]
+        public async Task<IActionResult> ChangeRole([FromBody] AdminUserEditModel model)
+        {
+            if (model == null)
+                return BadRequest("User Id and Role are required");
+            await userService.ChangeUserRoleAsync(model);
+            return Ok(new { message = "User role changed successfully" });
+        }
+        [HttpDelete("{id}")]
         public async Task<IActionResult> Delete([FromRoute] string id)
         {
             if (string.IsNullOrWhiteSpace(id))
