@@ -31,7 +31,36 @@ public class CategoryService : ICategoryService
             _repo.Query(asNoTracking: true)
                  .Where(x => !x.IsDeleted)
                  .ProjectTo<CategoryDto>(_mapper.ConfigurationProvider));
+    public async Task<PagedResponse<CategoryDto>> ListPagedAsync(int page, int pageSize)
+    {
+        page = page < 1 ? 1 : page;
+        pageSize = pageSize < 1 ? 10 : pageSize;
 
+        var query = _repo.Query(asNoTracking: true)
+            .Where(x => !x.IsDeleted);
+
+        var totalCount = await query.CountAsync();
+        var totalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
+
+        var items = await query
+            .OrderBy(x => x.Name) // якщо є Name; або Id/CreatedAt
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ProjectTo<CategoryDto>(_mapper.ConfigurationProvider)
+            .ToListAsync();
+
+        return new PagedResponse<CategoryDto>
+        {
+            Items = items,
+            Pagination = new PaginationModel
+            {
+                TotalCount = totalCount,
+                TotalPages = totalPages,
+                ItemsPerPage = pageSize,
+                CurrentPage = page
+            }
+        };
+    }
     public async Task<CategoryDto?> GetAsync(int id)
         => await _repo.FirstOrDefaultAsync(
             _repo.Query(asNoTracking: true)

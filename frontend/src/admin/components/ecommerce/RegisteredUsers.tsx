@@ -17,6 +17,10 @@ interface AdminUserItemModel {
     emailConfirmed: boolean;
     image?: string | null;
     roles: string[];
+
+    // ✅ нові поля з бекенду (Identity lockout)
+    lockoutEnd?: string | null; // ISO string
+    isLocked?: boolean; // computed на бекенді
 }
 
 interface SearchResult<T> {
@@ -24,18 +28,31 @@ interface SearchResult<T> {
     pagination: PaginationModel;
 }
 
+type AdminUserEditModel = {
+    id: string;
+    fullName: string;
+    email: string;
+    phoneNumber?: string | null;
+    roles: string[];
+    newImageBase64?: string | null;
+};
+
 const API_URL = import.meta.env.VITE_API_BASE;
 
 export default function RegisteredUsers() {
     const [data, setData] = useState<SearchResult<AdminUserItemModel> | null>(null);
     const [loading, setLoading] = useState(false);
-    const [deletingId, setDeletingId] = useState<string | null>(null);
+
+    const [togglingLockId, setTogglingLockId] = useState<string | null>(null);
     const [roleChangingId, setRoleChangingId] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
 
     const [page, setPage] = useState(1);
+
+    // modal
     const [confirmOpen, setConfirmOpen] = useState(false);
     const [selectedUser, setSelectedUser] = useState<AdminUserItemModel | null>(null);
+
     const itemsPerPage = 10;
 
     const loadUsers = async (pageToLoad: number) => {
@@ -69,14 +86,6 @@ export default function RegisteredUsers() {
             setLoading(false);
         }
     };
-    type AdminUserEditModel = {
-        id: string;
-        fullName: string;
-        email: string;
-        phoneNumber?: string | null;
-        roles: string[];
-        newImageBase64?: string | null;
-    };
 
     const toggleAdmin = async (user: AdminUserItemModel) => {
         const token = localStorage.getItem("token");
@@ -89,7 +98,7 @@ export default function RegisteredUsers() {
         const nextRoles = isAdmin
             ? user.roles.filter((r) => r !== "Admin")
             : Array.from(new Set([...user.roles, "Admin"]));
-        
+
         const payload: AdminUserEditModel = {
             id: user.id,
             fullName: user.fullName,
@@ -123,9 +132,7 @@ export default function RegisteredUsers() {
                 if (!prev) return prev;
                 return {
                     ...prev,
-                    items: prev.items.map((u) =>
-                        u.id === user.id ? { ...u, roles: nextRoles } : u
-                    ),
+                    items: prev.items.map((u) => (u.id === user.id ? { ...u, roles: nextRoles } : u)),
                 };
             });
         } catch (e: any) {
@@ -135,19 +142,19 @@ export default function RegisteredUsers() {
         }
     };
 
-
-    const askDelete = (user: AdminUserItemModel) => {
+    // ✅ модалка для блок/анблок
+    const askToggleLock = (user: AdminUserItemModel) => {
         setSelectedUser(user);
         setConfirmOpen(true);
     };
 
     const closeConfirm = () => {
-        if (deletingId) return; // не даємо закрити під час delete
+        if (togglingLockId) return;
         setConfirmOpen(false);
         setSelectedUser(null);
     };
 
-    const confirmDelete = async () => {
+    const confirmToggleLock = async () => {
         if (!selectedUser) return;
 
         const token = localStorage.getItem("token");
@@ -158,7 +165,7 @@ export default function RegisteredUsers() {
         }
 
         try {
-            setDeletingId(selectedUser.id);
+            setTogglingLockId(selectedUser.id);
             setError(null);
 
             const res = await fetch(`${API_URL}/api/User/${selectedUser.id}`, {
@@ -171,44 +178,20 @@ export default function RegisteredUsers() {
 
             if (!res.ok) {
                 const text = await res.text();
-                throw new Error(text || `Delete failed: ${res.status}`);
+                throw new Error(text || `Action failed: ${res.status}`);
             }
 
-            // ✅ прибираємо юзера зі списку
-            setData((prev) => {
-                if (!prev) return prev;
-
-                const nextItems = prev.items.filter((u) => u.id !== selectedUser.id);
-                const nextTotalCount = Math.max(0, prev.pagination.totalCount - 1);
-
-                return {
-                    ...prev,
-                    items: nextItems,
-                    pagination: {
-                        ...prev.pagination,
-                        totalCount: nextTotalCount,
-                    },
-                };
-            });
-
-            // ✅ якщо сторінка стала пустою — відкотимось
-            setTimeout(() => {
-                setData((prev) => {
-                    if (!prev) return prev;
-                    if (prev.items.length === 0 && page > 1) setPage((p) => p - 1);
-                    return prev;
-                });
-            }, 0);
+            // ✅ після toggle — оновлюємо список (щоб оновився isLocked/lockoutEnd)
+            await loadUsers(page);
 
             setConfirmOpen(false);
             setSelectedUser(null);
         } catch (e: any) {
             setError(e?.message ?? "Unknown error");
         } finally {
-            setDeletingId(null);
+            setTogglingLockId(null);
         }
     };
-
 
     useEffect(() => {
         loadUsers(page);
@@ -217,9 +200,16 @@ export default function RegisteredUsers() {
 
     const users = data?.items ?? [];
 
+    const formatLockoutEnd = (iso?: string | null) => {
+        if (!iso) return "-";
+        const d = new Date(iso);
+        if (Number.isNaN(d.getTime())) return "-";
+        return d.toLocaleString(); // можна зробити точніше під укр/київ
+    };
+
     return (
-        <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white px-4 pb-3 pt-4 dark:border-gray-800 dark:bg-white/[0.03] sm:px-6">
-            <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+        <div className="rounded-2xl border border-gray-200 bg-white px-4 pb-3 pt-4 dark:border-gray-800 dark:bg-white/[0.03] sm:px-6">
+        <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                     <h3 className="text-lg font-semibold text-gray-800 dark:text-white/90">
                         Registered Users
@@ -248,9 +238,7 @@ export default function RegisteredUsers() {
                 </div>
             </div>
 
-            {loading && (
-                <div className="py-6 text-gray-500 dark:text-gray-400">Loading...</div>
-            )}
+            {loading && <div className="py-6 text-gray-500 dark:text-gray-400">Loading...</div>}
             {error && <div className="py-6 text-red-600">Error: {error}</div>}
 
             {!loading && !error && (
@@ -264,30 +252,43 @@ export default function RegisteredUsers() {
                                 >
                                     User
                                 </TableCell>
+
                                 <TableCell
                                     isHeader
                                     className="py-3 text-start text-theme-xs font-medium text-gray-500 dark:text-gray-400"
                                 >
                                     Email
                                 </TableCell>
+
                                 <TableCell
                                     isHeader
                                     className="py-3 text-start text-theme-xs font-medium text-gray-500 dark:text-gray-400"
                                 >
                                     Phone Number
                                 </TableCell>
+
                                 <TableCell
                                     isHeader
                                     className="py-3 text-start text-theme-xs font-medium text-gray-500 dark:text-gray-400"
                                 >
                                     Verified Email
                                 </TableCell>
+
+                                {/* ✅ Новий стовпець: Status */}
+                                <TableCell
+                                    isHeader
+                                    className="py-3 text-start text-theme-xs font-medium text-gray-500 dark:text-gray-400"
+                                >
+                                    Status
+                                </TableCell>
+
                                 <TableCell
                                     isHeader
                                     className="py-3 text-start text-theme-xs font-medium text-gray-500 dark:text-gray-400"
                                 >
                                     Role
                                 </TableCell>
+
                                 <TableCell
                                     isHeader
                                     className="py-3 text-start text-theme-xs font-medium text-gray-500 dark:text-gray-400"
@@ -300,9 +301,12 @@ export default function RegisteredUsers() {
                         <TableBody className="divide-y divide-gray-100 dark:divide-gray-800">
                             {users.map((user) => {
                                 const isAdmin = user.roles.includes("Admin");
+
                                 const avatarSrc = user.image
                                     ? `${API_URL}/${user.image}`
                                     : "/images/user/default-avatar.png";
+
+                                const isLocked = !!user.isLocked;
 
                                 return (
                                     <TableRow key={user.id}>
@@ -315,6 +319,7 @@ export default function RegisteredUsers() {
                                                         alt={user.fullName}
                                                     />
                                                 </div>
+
                                                 <div>
                                                     <p className="text-theme-sm font-medium text-gray-800 dark:text-white/90">
                                                         {user.fullName}
@@ -340,6 +345,20 @@ export default function RegisteredUsers() {
                                             </Badge>
                                         </TableCell>
 
+                                        {/* ✅ Status + дата */}
+                                        <TableCell className="py-3 text-theme-sm text-gray-500 dark:text-gray-400">
+                                            <div className="flex flex-col gap-1">
+                                                <Badge size="sm" color={isLocked ? "error" : "success"}>
+                                                    {isLocked ? "Blocked" : "Active"}
+                                                </Badge>
+                                                {isLocked && (
+                                                    <span className="text-xs text-gray-500 dark:text-gray-400">
+                            until: {formatLockoutEnd(user.lockoutEnd)}
+                          </span>
+                                                )}
+                                            </div>
+                                        </TableCell>
+
                                         <TableCell className="py-3">
                                             <button
                                                 className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-medium transition ${
@@ -351,20 +370,33 @@ export default function RegisteredUsers() {
                                                 disabled={roleChangingId === user.id}
                                                 title={isAdmin ? "Зняти роль Admin" : "Надати роль Admin"}
                                             >
-                                                {roleChangingId === user.id ? "Saving..." : isAdmin ? "Remove admin" : "Make admin"}
+                                                {roleChangingId === user.id
+                                                    ? "Saving..."
+                                                    : isAdmin
+                                                        ? "Remove admin"
+                                                        : "Make admin"}
                                             </button>
-
                                         </TableCell>
 
                                         <TableCell className="py-3 text-theme-sm text-gray-500 dark:text-gray-400">
+                                            {/* ✅ кнопка залежно від isLocked */}
                                             <button
-                                                className="inline-flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-theme-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 disabled:opacity-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200"
-                                                onClick={() => askDelete(user)}
-                                                disabled={deletingId === user.id}
+                                                className={`inline-flex items-center gap-2 rounded-lg border px-4 py-2.5 text-theme-sm font-medium shadow-theme-xs transition disabled:opacity-50
+                          ${
+                                                    isLocked
+                                                        ? "border-green-300 bg-white text-green-700 hover:bg-green-50 hover:text-green-800 dark:border-green-700 dark:bg-gray-800 dark:text-green-300 dark:hover:bg-white/[0.03]"
+                                                        : "border-red-300 bg-white text-red-700 hover:bg-red-50 hover:text-red-800 dark:border-red-700 dark:bg-gray-800 dark:text-red-300 dark:hover:bg-white/[0.03]"
+                                                }`}
+                                                onClick={() => askToggleLock(user)}
+                                                disabled={togglingLockId === user.id}
+                                                title={isLocked ? "Unblock user" : "Block user"}
                                             >
-                                                {deletingId === user.id ? "Deleting..." : "Delete"}
+                                                {togglingLockId === user.id
+                                                    ? "Saving..."
+                                                    : isLocked
+                                                        ? "Unblock"
+                                                        : "Block"}
                                             </button>
-
                                         </TableCell>
                                     </TableRow>
                                 );
@@ -405,24 +437,27 @@ export default function RegisteredUsers() {
                     )}
                 </div>
             )}
+
             <ConfirmModal
                 open={confirmOpen}
-                title="Delete user?"
+                title={selectedUser?.isLocked ? "Unblock user?" : "Block user?"}
                 description={
                     selectedUser
-                        ? `Are you sure you want to delete "${selectedUser.fullName}" (${selectedUser.email})? This action cannot be undone.`
-                        : "This action cannot be undone."
+                        ? selectedUser.isLocked
+                            ? `Unblock "${selectedUser.fullName}" (${selectedUser.email})?`
+                            : `Block "${selectedUser.fullName}" (${selectedUser.email}) for 1 month?`
+                        : "Are you sure?"
                 }
-                confirmText="Delete"
+                confirmText={selectedUser?.isLocked ? "Unblock" : "Block"}
                 cancelText="Cancel"
-                loading={!!deletingId}
+                loading={!!togglingLockId}
                 onClose={closeConfirm}
-                onConfirm={confirmDelete}
+                onConfirm={confirmToggleLock}
             />
-
         </div>
     );
 }
+
 type ConfirmModalProps = {
     open: boolean;
     title?: string;
@@ -438,7 +473,7 @@ function ConfirmModal({
                           open,
                           title = "Confirm action",
                           description = "Are you sure?",
-                          confirmText = "Delete",
+                          confirmText = "Confirm",
                           cancelText = "Cancel",
                           loading = false,
                           onClose,
@@ -448,20 +483,11 @@ function ConfirmModal({
 
     return (
         <div className="fixed inset-0 z-[9999] flex items-center justify-center">
-            {/* overlay */}
-            <div
-                className="absolute inset-0 bg-black/50"
-                onClick={() => !loading && onClose()}
-            />
+            <div className="absolute inset-0 bg-black/50" onClick={() => !loading && onClose()} />
 
-            {/* modal */}
             <div className="relative w-[92%] max-w-md rounded-2xl border border-gray-200 bg-white p-5 shadow-xl dark:border-gray-800 dark:bg-gray-900">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                    {title}
-                </h3>
-                <p className="mt-2 text-sm text-gray-600 dark:text-gray-300">
-                    {description}
-                </p>
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{title}</h3>
+                <p className="mt-2 text-sm text-gray-600 dark:text-gray-300">{description}</p>
 
                 <div className="mt-5 flex items-center justify-end gap-3">
                     <button
@@ -477,11 +503,10 @@ function ConfirmModal({
                         onClick={onConfirm}
                         disabled={loading}
                     >
-                        {loading ? "Deleting..." : confirmText}
+                        {loading ? "Saving..." : confirmText}
                     </button>
                 </div>
             </div>
         </div>
     );
 }
-

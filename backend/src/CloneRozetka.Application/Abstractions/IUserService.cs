@@ -12,5 +12,6 @@ namespace CloneRozetka.Application.Abstractions
         Task EditUserAsync(AdminUserEditModel model);
         Task DeleteUserAsync(string userId);
         Task ChangeUserRoleAsync(AdminUserEditModel model);
+        Task<(bool IsLocked, DateTimeOffset? LockoutEnd)>ToggleUserLockAsync(string userId);
     }
 }

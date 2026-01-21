@@ -242,7 +242,37 @@ namespace CloneRozetka.Infrastructure.Services.Users
                 }
             }
         }
+        //
+        public async Task<(bool IsLocked, DateTimeOffset? LockoutEnd)>ToggleUserLockAsync(string userId)
+        {
+            var user = await userManager.FindByIdAsync(userId);
+            if (user == null)
+                throw new Exception("User not found");
 
+            var now = DateTimeOffset.UtcNow;
+            var isLockedNow = user.LockoutEnd.HasValue && user.LockoutEnd > now;
 
+            if (isLockedNow)
+            {
+                await userManager.SetLockoutEndDateAsync(user, null);
+                await userManager.ResetAccessFailedCountAsync(user);
+
+                return (false, null);
+            }
+            else
+            {
+                await userManager.SetLockoutEnabledAsync(user, true);
+                var lockoutEnd = now.AddMonths(1);
+                await userManager.SetLockoutEndDateAsync(user, lockoutEnd);
+
+                return (true, lockoutEnd);
+            }
         }
+
+
+
+
+
+
+    }
 }

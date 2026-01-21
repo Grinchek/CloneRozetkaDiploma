@@ -26,6 +26,9 @@ import SignIn from "./admin/pages/AuthPages/SignIn.tsx";
 import SignUp from "./admin/pages/AuthPages/SignUp.tsx";
 import NotFound from "./admin/pages/OtherPage/NotFound.tsx";
 import MainLayout from "./layout/MainLayout.tsx";
+import RegisteredUsers from "./admin/components/ecommerce/RegisteredUsers.tsx";
+import AdminCategories from "./admin/components/ecommerce/AdminCategories.tsx";
+import AdminProducts from "./admin/components/ecommerce/AdminProducts.tsx";
 
 
 
@@ -46,7 +49,10 @@ export default function App() {
                     <Route index element={<Home />} />
 
                     {/* Others Page */}
-                    <Route path="profile" element={<UserProfiles />} />
+                    <Route path="registered-users" element={<RegisteredUsers />} />
+                    <Route path="admin-categories" element={<AdminCategories />} />
+                    <Route path="admin-products" element={<AdminProducts />} />
+                     <Route path="profile" element={<UserProfiles />} />
                     <Route path="calendar" element={<Calendar />} />
                     <Route path="blank" element={<Blank />} />
 

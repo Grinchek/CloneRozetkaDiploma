@@ -59,9 +59,18 @@ namespace CloneRozetka.Api.Controllers
             if (string.IsNullOrWhiteSpace(id))
                 return BadRequest("User Id is required");
 
-            await userService.DeleteUserAsync(id.ToString());
-            return Ok(new { message = "User deleted successfully" });
+            var result = await userService.ToggleUserLockAsync(id);
+
+            return Ok(new
+            {
+                message = result.IsLocked
+                    ? $"User blocked until {result.LockoutEnd:yyyy-MM-dd HH:mm}"
+                    : "User unblocked successfully",
+                isLocked = result.IsLocked,
+                lockoutEnd = result.LockoutEnd
+            });
         }
+
 
     }
 }
