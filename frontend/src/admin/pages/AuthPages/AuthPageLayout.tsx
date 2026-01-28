@@ -1,20 +1,31 @@
-import React from "react";
-import ThemeTogglerTwo from "../../components/common/ThemeTogglerTwo";
+import { ReactNode } from "react";
+import logoSmall from "@/assets/logo-small.svg";
 
-export default function AuthLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return (
-    <div className="relative p-6 bg-white z-1 dark:bg-gray-900 sm:p-0">
-      <div className="relative flex flex-col justify-center w-full h-screen lg:flex-row dark:bg-gray-900 sm:p-0">
-        {children}
+export default function AuthLayout({ children }: { children: ReactNode }) {
+    return (
+        <div className="min-h-screen bg-white">
+            {/* маленький логотип зверху */}
+            <div className="absolute left-8 top-8">
+                <img
+                    src={logoSmall}
+                    alt="ZORYA logo"
+                    className="h-[52px] w-[52px]"
+                />
+            </div>
 
-        <div className="fixed z-50 hidden bottom-6 right-6 sm:block">
-          <ThemeTogglerTwo />
+            <div className="mx-auto flex min-h-screen max-w-6xl items-center justify-between px-10">
+                {/* LEFT */}
+                <div className="hidden lg:flex">
+                    <div className="text-5xl font-bold tracking-wide text-amber-500">
+                        ZORYA
+                    </div>
+                </div>
+
+                {/* RIGHT */}
+                <div className="flex w-full justify-center lg:w-auto">
+                    {children}
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 }
