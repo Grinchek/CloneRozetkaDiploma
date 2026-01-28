@@ -1,72 +1,86 @@
-// src/components/Navbar.tsx
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
-import '../styles/navbar.css';
-import UserDropdown from "../admin/components/header/UserDropdown.tsx";
+const topLinks = ["Акції", "Тренди", "Для бізнесу", "Допомога"];
+const categories = [
+    "Дім і сад",
+    "Електроніка",
+    "Авто",
+    "Інструменти",
+    "Дитячі товари",
+    "Дитячі товари",
+    "Дитячі товари",
+    "Дитячі товари",
+    "Їжа",
+];
 
-type NavbarProps = {
-    onHomeClick?: () => void;
-};
-
-const Navbar = ({ onHomeClick }: NavbarProps) => {
-    const navigate = useNavigate();
-    const token = localStorage.getItem('token');
-
-
-
-
-
-
-
+export default function Navbar() {
     return (
-        <nav className="navbar">
-            <div className="navbar-logo">
-                Clone<span style={{ color: '#2563eb' }}>Rozetka</span>
+        <header className="w-full">
+            {/* TOP LINE */}
+            <div className="bg-[#404236] text-[#FFD89F]">
+                <div className="mx-auto flex h-10 max-w-7xl items-center justify-center gap-8 px-6 text-sm">
+                    {topLinks.map((l) => (
+                        <span key={l} className="cursor-pointer hover:opacity-80">
+              {l}
+            </span>
+                    ))}
+                </div>
             </div>
 
-            <div className="navbar-links">
-                <Link to="/" onClick={onHomeClick}>Головна</Link>
-                <Link to="/categories">Категорії</Link>
-                <Link to="/about">Про нас</Link>
-            </div>
-
-            <div className="navbar-actions">
-
-                {token ? (
-                    <>
-                        <UserDropdown />
-                    </>
-                ) : (
-
-                    <button
-                        className="flex items-center text-gray-700 dropdown-toggle dark:text-gray-400"
-                        onClick={() => navigate('/signin', { replace: true })}
-                    >
-
-                         <span className="mr-3 overflow-hidden rounded-full h-11 w-11">
-                             <svg
-                                 className="fill-gray-500 group-hover:fill-gray-700 dark:fill-gray-400 dark:group-hover:fill-gray-300"
-                                 width="45"
-                                 height="46"
-                                 viewBox="0 0 24 24"
-                                 fill="none"
-                                 xmlns="http://www.w3.org/2000/svg"
-                             >
-                        <path
-                            fillRule="evenodd"
-                            clipRule="evenodd"
-                            d="M4 22a8 8 0 1 1 16 0H4zm8-9c-3.315 0-6-2.685-6-6s2.685-6 6-6 6 2.685 6 6-2.685 6-6 6z"
-                            fill=""
+            {/* MAIN NAV */}
+            <div className="bg-[#404236]">
+                <div className="mx-auto flex h-16 max-w-7xl items-center gap-6 px-6">
+                    {/* Logo */}
+                    <div className="text-2xl font-bold text-[#F5A623]">
+                        <img
+                            src="/icons/ZORYA-LOGO.svg"
                         />
-                    </svg>
-                        </span>
+                    </div>
 
-                        <span>Увійти</span>
+                    {/* Burger */}
+                    <button className="text-[#F5A623] text-2xl">
+                        ☰
                     </button>
-                )}
-            </div>
-        </nav>
-    );
-};
 
-export default Navbar;
+                    {/* Search */}
+                    <div className="relative flex-1">
+                        <input
+                            placeholder="Пошук"
+                            className="
+                h-10 w-full rounded-full
+                bg-[#5A5A4A]
+                px-5 pr-12
+                text-sm text-white
+                placeholder:text-white/60
+                outline-none
+              "
+                        />
+                        <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#F5A623]">
+              🔍
+            </span>
+                    </div>
+
+                    {/* Icons */}
+                    <div className="flex items-center gap-5 text-[#F5A623] text-xl">
+                        <span>📍</span>
+                        <span>⚖️</span>
+                        <span>♡</span>
+                        <span>👤</span>
+                        <span>🛒</span>
+                    </div>
+                </div>
+            </div>
+
+            {/* CATEGORIES */}
+            <div className="bg-[#4E4B3D]">
+                <div className="mx-auto flex h-12 max-w-7xl items-center justify-center gap-10 px-6 text-sm text-[#F1F1F1]">
+                    {categories.map((c) => (
+                        <span key={c} className="cursor-pointer hover:text-[#F5A623]">
+              {c}
+            </span>
+                    ))}
+                </div>
+            </div>
+        </header>
+    );
+}

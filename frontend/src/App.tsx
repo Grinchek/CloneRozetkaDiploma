@@ -29,6 +29,7 @@ import MainLayout from "./layout/MainLayout.tsx";
 import RegisteredUsers from "./admin/components/ecommerce/RegisteredUsers.tsx";
 import AdminCategories from "./admin/components/ecommerce/AdminCategories.tsx";
 import AdminProducts from "./admin/components/ecommerce/AdminProducts.tsx";
+import Navbar from "./components/Navbar.tsx";
 
 
 
@@ -36,12 +37,14 @@ import AdminProducts from "./admin/components/ecommerce/AdminProducts.tsx";
 export default function App() {
     return (
         <>
+
             {/*<Navbar onHomeClick={() => setSelectedCategory(null)} />*/}
+            <MainLayout/>
             <Routes>
-                <Route path="/" element={<MainLayout/>}>
+                <Route path="/">
                     <Route index element={<HomePage/>}/>
 
-                    <Route path={"login"} element={<LoginPage/>}/>
+                    <Route path={"login"} element={ <LoginPage/>}/>
                     <Route path="/profile" element={<ProfilePage />} />
                 </Route>
                 <Route element={<RequireAdmin />}>
@@ -84,7 +87,7 @@ export default function App() {
                 <Route path="*" element={<NotFound />} />
 
             </Routes>
-            <Footer />
+            <Footer/>
         </>
 
     );

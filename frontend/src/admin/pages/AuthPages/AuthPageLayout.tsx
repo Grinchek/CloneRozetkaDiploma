@@ -4,6 +4,7 @@ import logoSmall from "@/assets/logo-small.svg";
 export default function AuthLayout({ children }: { children: ReactNode }) {
     return (
         <div className="min-h-screen bg-white">
+            <div className="relative pt-24">
             {/* маленький логотип зверху */}
             <div className="absolute left-8 top-8">
                 <img
@@ -25,6 +26,7 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
                 <div className="flex w-full justify-center lg:w-auto">
                     {children}
                 </div>
+            </div>
             </div>
         </div>
     );
