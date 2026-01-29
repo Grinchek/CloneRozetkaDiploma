@@ -7,7 +7,6 @@ import {
     useRegisterMutation,
 } from '../../../features/account/apiAccount';
 import '../../auth/auth.css';
-import MainLayout from "../../../layout/MainLayout.tsx";
 
 const AuthPage = () => {
     const navigate = useNavigate();

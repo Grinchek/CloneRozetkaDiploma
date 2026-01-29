@@ -1,12 +1,10 @@
 import "./styles.css";
 import {Route, Routes} from "react-router-dom";
 import HomePage from "./pages/HomePage";
-import LoginPage from "./pages/auth/LoginPage";
 import ProfilePage from "./pages/ProfilePage";
-// import AdminPage from './pages/AdminPage';
  import RequireAdmin from './components/RequireAdmin';
-// import Navbar from "./components/Navbar.tsx";
-import Footer from "./components/Footer";
+
+
 import AppLayout from "./admin/layout/AppLayout.tsx";
 import Home from "./admin/pages/Dashboard/Home.tsx";
 import UserProfiles from "./admin/pages/UserProfiles.tsx";
@@ -29,7 +27,6 @@ import MainLayout from "./layout/MainLayout.tsx";
 import RegisteredUsers from "./admin/components/ecommerce/RegisteredUsers.tsx";
 import AdminCategories from "./admin/components/ecommerce/AdminCategories.tsx";
 import AdminProducts from "./admin/components/ecommerce/AdminProducts.tsx";
-import Navbar from "./components/Navbar.tsx";
 
 
 
@@ -44,7 +41,7 @@ export default function App() {
                 <Route path="/">
                     <Route index element={<HomePage/>}/>
 
-                    <Route path={"login"} element={ <LoginPage/>}/>
+                    <Route path={"login"} element={ <SignIn/>}/>
                     <Route path="/profile" element={<ProfilePage />} />
                 </Route>
                 <Route element={<RequireAdmin />}>
@@ -87,7 +84,7 @@ export default function App() {
                 <Route path="*" element={<NotFound />} />
 
             </Routes>
-            <Footer/>
+
         </>
 
     );
