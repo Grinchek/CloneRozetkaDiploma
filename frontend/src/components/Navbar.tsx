@@ -44,10 +44,11 @@ export default function Navbar() {
                     </div>
 
                     {/* Burger */}
-                    <button className="text-[#F5A623] text-2xl">
+                    <button >
                         <img
                             src="/icons/navbar-burger.svg"
                         />
+
                     </button>
 
                     {/* Search */}
