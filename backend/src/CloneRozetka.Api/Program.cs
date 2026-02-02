@@ -30,7 +30,6 @@ builder.Services.AddInfrastructure(
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddValidatorsFromAssemblyContaining<CategoryCreateValidator>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
-
 // Quartz 
 builder.Services.AddQuartz(q =>
 {

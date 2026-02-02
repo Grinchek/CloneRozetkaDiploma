@@ -3,6 +3,9 @@ import CategoryTree from "../../features/categories/components/CategoryTree.tsx"
 import ProductGrid from "../../features/products/components/ProductGrid";
 import type { CategoryNode } from "../../features/categories/utils/buildTree";
 
+import Navbar from "../../components/Navbar.tsx";
+import Footer from "../../components/Footer.tsx";
+
 type SelectedCategory = { id: number; name: string } | null;
 
 const STORAGE_KEY = "selectedCategory";
@@ -44,7 +47,7 @@ const HomePage = () => {
     return (
         <>
 
-
+            <Navbar  />
             <div className="layout">
                 <aside className="layout-sidebar">
                     <CategoryTree
@@ -72,6 +75,7 @@ const HomePage = () => {
                     />
                 </main>
             </div>
+            <Footer/>
         </>
     );
 };

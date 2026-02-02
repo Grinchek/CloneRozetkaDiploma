@@ -18,18 +18,22 @@ namespace CloneRozetka.Api.Controllers
         private readonly SignInManager<AppUser> _signIn;
         private readonly IJwtTokenService _jwt;
         private readonly IAccountService accountService;
+        private readonly IWebHostEnvironment _env;
+        private readonly IImageService _imageService;
 
 
-        public AuthController(UserManager<AppUser> userManager, SignInManager<AppUser> signIn, IJwtTokenService jwt, IAccountService accountService )
+        public AuthController(UserManager<AppUser> userManager, SignInManager<AppUser> signIn, IJwtTokenService jwt, IWebHostEnvironment env, IAccountService accountService, IImageService imageService)
         {
             _userManager = userManager;
             _signIn = signIn;
             _jwt = jwt;
+            _env = env;
+            _imageService = imageService;
             this.accountService = accountService;
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register([FromBody] RegisterDto dto)
+        public async Task<IActionResult> Register([FromForm] RegisterDto dto)
         {
             var user = new AppUser
             {
@@ -42,9 +46,29 @@ namespace CloneRozetka.Api.Controllers
             if (!result.Succeeded)
                 return BadRequest(new { errors = result.Errors.Select(e => e.Description) });
 
-            var token = await _jwt.CreateTokenAsync(user); 
+            if (dto.Avatar != null && dto.Avatar.Length > 0)
+            {
+                if (!dto.Avatar.ContentType.StartsWith("image/"))
+                    return BadRequest(new { errors = new[] { "Avatar має бути зображенням." } });
+
+                try
+                {
+
+                    var imageName = await _imageService.SaveImageAsync(dto.Avatar);
+
+                    user.AvatarUrl = imageName;
+                    await _userManager.UpdateAsync(user);
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(new { errors = new[] { $"Не вдалося зберегти аватар: {ex.Message}" } });
+                }
+            }
+
+            var token = await _jwt.CreateTokenAsync(user);
             return Ok(new { token });
         }
+
 
         [HttpPost]
         public async Task<IActionResult> Login([FromBody] LoginDto dto)

@@ -8,6 +8,7 @@ namespace CloneRozetka.Application.Categories.Interfaces;
 public interface ICategoryService
 {
     Task<IReadOnlyList<CategoryDto>> ListAsync();
+    Task<PagedResponse<CategoryDto>> ListPagedAsync(int page, int pageSize);
     Task<CategoryDto?> GetAsync(int id);
     Task<int> CreateAsync(CategoryCreateRequest req);
     Task UpdateAsync(CategoryUpdateRequest req);

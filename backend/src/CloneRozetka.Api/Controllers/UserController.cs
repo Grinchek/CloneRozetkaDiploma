@@ -1,5 +1,6 @@
 ﻿using CloneRozetka.Application.Abstractions;
 using CloneRozetka.Application.Search.Params;
+using CloneRozetka.Application.Users.DTOs.AdminUser;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -28,6 +29,48 @@ namespace CloneRozetka.Api.Controllers
             Console.WriteLine("-----------Elapsed Time------------: " + elapsedTime);
             return Ok(result);
         }
+        [HttpGet]
+        public async Task<IActionResult> GetAll([FromQuery] int page = 1, [FromQuery] int itemsPerPage = 10)
+        {
+            var result = await userService.GetAllUsersAsync(page, itemsPerPage);
+            return Ok(result);
+        }
+        [HttpPut]
+        public async Task<IActionResult> Edit([FromBody] AdminUserEditModel model)
+        {
+            if (model == null)
+                return BadRequest("User Id is required");
+
+            await userService.EditUserAsync(model);
+            return Ok(new { message = "User updated successfully" });
+        }
+        [HttpPut]
+        [Route("change-role")]
+        public async Task<IActionResult> ChangeRole([FromBody] AdminUserEditModel model)
+        {
+            if (model == null)
+                return BadRequest("User Id and Role are required");
+            await userService.ChangeUserRoleAsync(model);
+            return Ok(new { message = "User role changed successfully" });
+        }
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete([FromRoute] string id)
+        {
+            if (string.IsNullOrWhiteSpace(id))
+                return BadRequest("User Id is required");
+
+            var result = await userService.ToggleUserLockAsync(id);
+
+            return Ok(new
+            {
+                message = result.IsLocked
+                    ? $"User blocked until {result.LockoutEnd:yyyy-MM-dd HH:mm}"
+                    : "User unblocked successfully",
+                isLocked = result.IsLocked,
+                lockoutEnd = result.LockoutEnd
+            });
+        }
+
 
     }
 }

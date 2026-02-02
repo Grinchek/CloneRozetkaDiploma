@@ -5,10 +5,8 @@ using CloneRozetka.Infrastructure.Repositories;
 using CloneRozetka.Infrastructure.Services;
 using CloneRozetka.Infrastructure.Services.Users;
 using CloneRozetka.Infrastructure.Identity;
-using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.DataProtection;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -105,6 +103,8 @@ public static class DependencyInjection
         services.AddScoped<IAccountService, AccountService>();
         services.AddScoped<ISmtpService, SmtpService>();
         services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IProductService, ProductService>();
+
 
         return services;
     }

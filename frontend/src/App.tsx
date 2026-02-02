@@ -1,12 +1,10 @@
 import "./styles.css";
 import {Route, Routes} from "react-router-dom";
 import HomePage from "./pages/HomePage";
-import LoginPage from "./pages/auth/LoginPage";
 import ProfilePage from "./pages/ProfilePage";
-// import AdminPage from './pages/AdminPage';
-// import RequireAdmin from './components/RequireAdmin';
-// import Navbar from "./components/Navbar.tsx";
-import Footer from "./components/Footer";
+ import RequireAdmin from './components/RequireAdmin';
+
+
 import AppLayout from "./admin/layout/AppLayout.tsx";
 import Home from "./admin/pages/Dashboard/Home.tsx";
 import UserProfiles from "./admin/pages/UserProfiles.tsx";
@@ -26,6 +24,9 @@ import SignIn from "./admin/pages/AuthPages/SignIn.tsx";
 import SignUp from "./admin/pages/AuthPages/SignUp.tsx";
 import NotFound from "./admin/pages/OtherPage/NotFound.tsx";
 import MainLayout from "./layout/MainLayout.tsx";
+import RegisteredUsers from "./admin/components/ecommerce/RegisteredUsers.tsx";
+import AdminCategories from "./admin/components/ecommerce/AdminCategories.tsx";
+import AdminProducts from "./admin/components/ecommerce/AdminProducts.tsx";
 
 
 
@@ -33,27 +34,25 @@ import MainLayout from "./layout/MainLayout.tsx";
 export default function App() {
     return (
         <>
+
             {/*<Navbar onHomeClick={() => setSelectedCategory(null)} />*/}
+            <MainLayout/>
             <Routes>
-                <Route path="/" element={<MainLayout/>}>
+                <Route path="/">
                     <Route index element={<HomePage/>}/>
 
-                    <Route path={"login"} element={<LoginPage/>}/>
+                    <Route path={"login"} element={ <SignIn/>}/>
                     <Route path="/profile" element={<ProfilePage />} />
                 </Route>
-                {/*<Route*/}
-                {/*    path="/admin"*/}
-                {/*    element={*/}
-                {/*        <RequireAdmin>*/}
-                {/*            <AdminPage />*/}
-                {/*        </RequireAdmin>*/}
-                {/*    }*/}
-                {/*/>*/}
+                <Route element={<RequireAdmin />}>
                 <Route  path="admin"  element={<AppLayout />}>
                     <Route index element={<Home />} />
 
                     {/* Others Page */}
-                    <Route path="profile" element={<UserProfiles />} />
+                    <Route path="registered-users" element={<RegisteredUsers />} />
+                    <Route path="admin-categories" element={<AdminCategories />} />
+                    <Route path="admin-products" element={<AdminProducts />} />
+                     <Route path="profile" element={<UserProfiles />} />
                     <Route path="calendar" element={<Calendar />} />
                     <Route path="blank" element={<Blank />} />
 
@@ -75,6 +74,7 @@ export default function App() {
                     <Route path="line-chart" element={<LineChart />} />
                     <Route path="bar-chart" element={<BarChart />} />
                 </Route>
+                </Route>
 
                 {/* Auth Layout */}
                 <Route path="/signin" element={<SignIn />} />
@@ -84,7 +84,7 @@ export default function App() {
                 <Route path="*" element={<NotFound />} />
 
             </Routes>
-            <Footer />
+
         </>
 
     );

@@ -15,6 +15,13 @@ public class CategoriesController(
     [HttpGet]
     public async Task<ActionResult<IEnumerable<CategoryDto>>> List() =>
         Ok(await service.ListAsync());
+    [HttpGet("paged")]
+    public async Task<ActionResult<PagedResponse<CategoryDto>>> GetPaged(
+    [FromQuery] int page = 1,
+    [FromQuery] int pageSize = 10)
+    {
+        return Ok(await service.ListPagedAsync(page, pageSize));
+    }
 
     [HttpGet("{id:int}")]
     public async Task<ActionResult<CategoryDto>> Get(int id)
