@@ -65,7 +65,7 @@ function TreeRow({ node, depth, isActive, onSelect, isOpen, onToggle }: TreeRowP
                 <CategoryIcon image={node.image} />
                 <span className="text-[13px] font-medium text-gray-800 truncate">{node.name}</span>
             </div>
-            <ChevronRight size={14} className="text-gray-500 shrink-0 opacity-70 group-hover:opacity-100" />
+
         </>
     );
 
