@@ -1,0 +1,73 @@
+/* Animations */
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-in-down {
+    animation: fadeInDown 1s ease-out forwards;
+}
+
+.category-card {
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.product-card {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.home-section-title {
+    position: relative;
+    padding-bottom: 20px;
+}
+
+/* Product Grid Adjustments for Home Page */
+.home-page-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 32px;
+}
+
+.featured-header {
+    margin-bottom: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Glassmorphism elements if needed */
+.glass-effect {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Головна сторінка — контейнер та секції */
+.home-page .featured-header h2 {
+    letter-spacing: -0.02em;
+}
+
+.home-page .rounded-\[40px\] {
+    border-radius: 40px;
+}
+
+@media (max-width: 1024px) {
+    .home-page .home-top-section {
+        flex-direction: column;
+        height: auto;
+        min-height: 400px;
+    }
+
+    .home-page .home-top-section .home-sidebar,
+    .home-page .home-top-section .home-category-lists {
+        width: 100%;
+        max-width: 100%;
+    }
+}

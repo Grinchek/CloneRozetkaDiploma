@@ -1,0 +1,30 @@
+/* Сторінка каталогу */
+
+.catalog-page .catalog-product-count {
+    white-space: nowrap;
+}
+
+.catalog-page .catalog-sort {
+    min-width: 180px;
+}
+
+.catalog-page .catalog-load-more {
+    letter-spacing: 0.15em;
+}
+
+/* Сітка товарів на сторінці каталогу — 4 колонки */
+.catalog-page .products-grid {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+@media (min-width: 768px) {
+    .catalog-page .products-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    .catalog-page .products-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}

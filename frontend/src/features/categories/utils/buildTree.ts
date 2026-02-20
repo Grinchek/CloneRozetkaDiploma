@@ -21,7 +21,7 @@ export function buildCategoryTree(flat: CategoryDto[]): CategoryNode[] {
   }
 
   const sortRec = (nodes: CategoryNode[]) => {
-    nodes.sort((a, b) => a.priority - b.priority || a.name.localeCompare(b.name));
+    nodes.sort((a, b) => (a.priority ?? 0) - (b.priority ?? 0) || a.name.localeCompare(b.name));
     nodes.forEach(n => sortRec(n.children));
   };
   sortRec(roots);

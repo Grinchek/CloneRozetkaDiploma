@@ -30,6 +30,7 @@ import AdminProducts from "./admin/components/ecommerce/AdminProducts.tsx";
 
 import ProductPage from "./pages/ProductPage/index.tsx";
 import CartPage from "./pages/CartPage/index.tsx";
+import CatalogPage from "./pages/CatalogPage/index.tsx";
 
 
 export default function App() {
@@ -42,6 +43,7 @@ export default function App() {
                     <Route path="profile" element={<ProfilePage />} />
                     <Route path="product/:id" element={<ProductPage />} />
                     <Route path="cart" element={<CartPage />} />
+                    <Route path="category/:id" element={<CatalogPage />} />
                 </Route>
                 <Route element={<RequireAdmin />}>
                     <Route path="admin" element={<AppLayout />}>

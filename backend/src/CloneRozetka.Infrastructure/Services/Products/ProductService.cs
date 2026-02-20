@@ -1,4 +1,4 @@
-﻿using CloneRozetka.Application.Abstractions;
+using CloneRozetka.Application.Abstractions;
 using CloneRozetka.Application.Products.DTOs;
 using CloneRozetka.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -17,6 +17,26 @@ public class ProductService : IProductService
         _products = products;
         _images = images;
         _imageService = imageService;
+    }
+
+    public async Task<IReadOnlyList<ProductListItemDto>> ListAllAsync(CancellationToken ct = default)
+    {
+        var query = _products.Query(asNoTracking: true)
+            .OrderBy(p => p.Id)
+            .Select(p => new ProductListItemDto
+            {
+                Id = p.Id,
+                Name = p.Name,
+                Price = p.Price,
+                Slug = p.Slug,
+                CategoryId = p.CategoryId,
+                MainImageUrl = _images.Query(true)
+                    .Where(i => i.ProductId == p.Id)
+                    .OrderBy(i => i.Priority)
+                    .Select(i => i.Name)
+                    .FirstOrDefault()
+            });
+        return await _products.ToListAsync(query, ct);
     }
 
     public async Task<SearchResult<ProductListItemDto>> ListPagedAsync(int page, int itemsPerPage, CancellationToken ct = default)

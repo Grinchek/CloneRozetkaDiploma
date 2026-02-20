@@ -2,11 +2,11 @@ import { useMemo, useState } from 'react';
 import { useMeQuery } from '../features/account/apiAccount';
 import { buildAvatarCandidates } from '../utils/image';
 import '../styles/profile.css';
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const ProfilePage = () => {
     const token = localStorage.getItem('token');
-    const { data: me, isLoading } = useMeQuery(undefined, { skip: !token });
+    const { data: me, isLoading, error } = useMeQuery(undefined, { skip: !token });
 
     const candidates = useMemo(
         () => buildAvatarCandidates(me?.avatarUrl),
@@ -16,7 +16,7 @@ const ProfilePage = () => {
     const src = candidates[idx];
     const handleLogout = () => {
         localStorage.removeItem('token');
-
+        window.location.href = '/';
     };
 
     if (isLoading) {
@@ -27,11 +27,30 @@ const ProfilePage = () => {
         );
     }
 
-    if (!me) {
+    // Handle authentication error (e.g. 401)
+    if (error || !me) {
+        const isAuthError = (error as any)?.status === 401;
+
         return (
-            <div className="profile-page">
-                <div className="profile-card">
-                    <p>Не вдалося завантажити дані профілю 🙁</p>
+            <div className="profile-page h-[60vh] flex items-center justify-center">
+                <div className="profile-card text-center max-w-md p-8 bg-white rounded-3xl shadow-xl border border-gray-100">
+                    <div className="text-5xl mb-4">
+                        {isAuthError ? '🔒' : '🙁'}
+                    </div>
+                    <h2 className="text-xl font-bold text-gray-800 mb-2">
+                        {isAuthError ? 'Сесія завершена' : 'Помилка завантаження'}
+                    </h2>
+                    <p className="text-gray-500 mb-6">
+                        {isAuthError
+                            ? 'Будь ласка, увійдіть в акаунт знову, щоб переглянути свій профіль.'
+                            : 'Не вдалося завантажити дані профілю. Спробуйте пізніше.'}
+                    </p>
+                    <Link
+                        to="/login"
+                        className="inline-block px-8 py-3 bg-[#F5A623] text-white rounded-xl font-semibold hover:bg-[#D48D1C] transition-colors shadow-lg shadow-[#F5A623]/20"
+                    >
+                        {isAuthError ? 'Увійти' : 'На головну'}
+                    </Link>
                 </div>
             </div>
         );
@@ -67,16 +86,16 @@ const ProfilePage = () => {
                             <p className="profile-email">{me.email}</p>
 
                             <div className="profile-badges">
-              <span
-                  className={
-                      'badge ' +
-                      (me.isEmailVarified ? 'badge-success' : 'badge-warning')
-                  }
-              >
-                {me.isEmailVarified
-                    ? 'Email підтверджений'
-                    : 'Email не підтверджений'}
-              </span>
+                                <span
+                                    className={
+                                        'badge ' +
+                                        (me.isEmailVarified ? 'badge-success' : 'badge-warning')
+                                    }
+                                >
+                                    {me.isEmailVarified
+                                        ? 'Email підтверджений'
+                                        : 'Email не підтверджений'}
+                                </span>
                                 {me.googleId && (
                                     <span className="badge badge-light">Google акаунт</span>
                                 )}
