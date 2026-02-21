@@ -1,82 +1,52 @@
-import { useEffect, useState } from "react";
-import CategoryTree from "../../features/categories/components/CategoryTree.tsx";
-import ProductGrid from "../../features/products/components/ProductGrid";
-import type { CategoryNode } from "../../features/categories/utils/buildTree";
-
-import Navbar from "../../components/Navbar.tsx";
-import Footer from "../../components/Footer.tsx";
-
-type SelectedCategory = { id: number; name: string } | null;
-
-const STORAGE_KEY = "selectedCategory";
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { useGetCategoriesQuery } from "../../features/categories/api/categoryApi";
+import { buildCategoryTree } from "../../features/categories/utils/buildTree";
+import HomeTopContainer from "./components/HomeTopContainer";
+import CategoryGrid from "./components/CategoryGrid";
+import HomeCategoryProducts from "./components/HomeCategoryProducts";
+import "../../styles/home.css";
 
 const HomePage = () => {
-    const [selectedCategory, setSelectedCategory] = useState<SelectedCategory>(() => {
-        try {
-            const raw = localStorage.getItem(STORAGE_KEY);
-            if (!raw) return null;
-            const parsed = JSON.parse(raw);
-            if (
-                parsed &&
-                typeof parsed.id === "number" &&
-                typeof parsed.name === "string"
-            ) {
-                return { id: parsed.id, name: parsed.name };
-            }
-        } catch {
-            // ignore
-        }
-        return null;
-    });
-
-    // 👇 тут зберііаємо дерево категорій
-    const [categories, setCategories] = useState<CategoryNode[]>([]);
+    const { data: categoriesFlat } = useGetCategoriesQuery();
+    const categoryTree = categoriesFlat ? buildCategoryTree(categoriesFlat) : [];
+    const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null);
 
     useEffect(() => {
-        if (selectedCategory) {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(selectedCategory));
-        } else {
-            localStorage.removeItem(STORAGE_KEY);
+        if (categoryTree.length > 0 && selectedCategoryId === null) {
+            setSelectedCategoryId(categoryTree[0].id);
         }
-    }, [selectedCategory]);
-
-    const handleSelectCategory = (node: CategoryNode) => {
-        setSelectedCategory({ id: node.id, name: node.name });
-    };
+    }, [categoryTree, selectedCategoryId]);
 
     return (
-        <>
+        <div className="home-page bg-[#F8F8F8] min-h-screen">
+            {/* 1. Верхній блок: сайдбар категорій + банер + списки категорій */}
+            <HomeTopContainer
+                selectedCategoryId={selectedCategoryId}
+                onSelectCategory={(node) => setSelectedCategoryId(node.id)}
+            />
 
-            <Navbar  />
-            <div className="layout">
-                <aside className="layout-sidebar">
-                    <CategoryTree
-                        onSelectCategory={handleSelectCategory}
-                        activeCategoryId={selectedCategory?.id ?? null}
-                        onCategoriesLoaded={setCategories}
-                    />
-                </aside>
+            {/* 2. Карусель категорій — клік обирає категорію і скролить до товарів */}
+            <CategoryGrid
+                onSelectCategory={setSelectedCategoryId}
+                scrollToSectionId="products-section"
+            />
 
-                <main className="layout-content">
-                    <div style={{ marginBottom: 12, fontSize: 14 }}>
-                        {selectedCategory ? (
-                            <>
-                                Категорія:{" "}
-                                <strong>{selectedCategory.name}</strong>
-                            </>
-                        ) : (
-                            <>Всі товари</>
-                        )}
-                    </div>
+            {/* 3. Товари обраної категорії (з сітки вище) */}
+            <HomeCategoryProducts categoryId={selectedCategoryId} categories={categoryTree} />
 
-                    <ProductGrid
-                        categoryId={selectedCategory?.id ?? null}
-                        categories={categories}
-                    />
-                </main>
+            {/* 4. Кнопка «Дивитись ще» */}
+            <div className="mx-auto max-w-7xl px-6 pb-24 text-center">
+                {selectedCategoryId != null && (
+                    <Link
+                        to={`/category/${selectedCategoryId}`}
+                        className="inline-block rounded-2xl border-2 border-gray-200 bg-white px-12 py-4 font-black text-gray-700 uppercase tracking-widest text-sm transition-all hover:bg-gray-50 active:scale-95 shadow-sm"
+                    >
+                        Дивитись ще
+                    </Link>
+                )}
             </div>
-            <Footer/>
-        </>
+        </div>
     );
 };
 

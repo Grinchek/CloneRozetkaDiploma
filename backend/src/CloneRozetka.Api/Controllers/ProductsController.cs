@@ -1,4 +1,4 @@
-﻿using CloneRozetka.Application.Products.DTOs;
+using CloneRozetka.Application.Products.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CloneRozetka.WebApi.Controllers
@@ -7,6 +7,10 @@ namespace CloneRozetka.WebApi.Controllers
     [Route("api/[controller]")]
     public class ProductsController(IProductService productService) : ControllerBase
     {
+        [HttpGet("list")]
+        public async Task<ActionResult<IReadOnlyList<ProductListItemDto>>> GetAll(CancellationToken ct = default)
+            => Ok(await productService.ListAllAsync(ct));
+
         [HttpGet("paged")]
         public async Task<ActionResult<SearchResult<ProductListItemDto>>> GetPaged(
             [FromQuery] int page = 1,

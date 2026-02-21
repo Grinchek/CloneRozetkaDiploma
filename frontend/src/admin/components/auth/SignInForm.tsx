@@ -119,8 +119,7 @@ export default function SignInForm() {
                             value={form.userNameOrEmail}
                             onChange={onChange("userNameOrEmail")}
                             disabled={isSubmitting}
-                            // Якщо твій InputField підтримує className — буде 1:1 як у макеті.
-                            className="mt-2 h-12 w-full rounded-xl bg-[#CFCFCF] px-4 text-sm text-gray-800 placeholder:text-gray-500 focus:outline-none disabled:opacity-70"
+                            className="mt-2 h-12 w-full rounded-xl bg-white/10 px-4 text-sm text-white placeholder:text-white/40 border border-white/20 focus:border-[#F5A623] outline-none disabled:opacity-70 transition-colors"
                         />
                     </div>
 
@@ -137,7 +136,7 @@ export default function SignInForm() {
                                 value={form.password}
                                 onChange={onChange("password")}
                                 disabled={isSubmitting}
-                                className="h-12 w-full rounded-xl bg-[#CFCFCF] px-4 pr-12 text-sm text-gray-800 placeholder:text-gray-500 focus:outline-none disabled:opacity-70"
+                                className="h-12 w-full rounded-xl bg-white/10 px-4 pr-12 text-sm text-white placeholder:text-white/40 border border-white/20 focus:border-[#F5A623] outline-none disabled:opacity-70 transition-colors"
                             />
 
                             <button
@@ -147,14 +146,14 @@ export default function SignInForm() {
                                 aria-label={showPassword ? "Приховати пароль" : "Показати пароль"}
                             >
                                 {showPassword ? (
-                                    <EyeIcon className="size-5 fill-gray-600" />
+                                    <EyeIcon className="size-5 fill-[#F5A623]" />
                                 ) : (
-                                    <EyeCloseIcon className="size-5 fill-gray-600" />
+                                    <EyeCloseIcon className="size-5 fill-[#F5A623]" />
                                 )}
                             </button>
                         </div>
 
-                        <div className="mt-2 text-[11px] text-white/50">Не пам’ятаю пароль</div>
+                        <div className="mt-2 text-[11px] text-[#FFD89F] cursor-pointer hover:underline">Не пам’ятаю пароль</div>
                     </div>
 
                     {/* Policy checkbox */}
@@ -172,7 +171,7 @@ export default function SignInForm() {
                     {/* Submit */}
                     <div className="pt-2">
                         <Button
-                            className="h-12 w-full rounded-xl bg-[#CFCFCF] text-white hover:bg-[#CFCFCF]"
+                            className="h-12 w-full rounded-xl bg-[#F5A623] text-white hover:bg-[#D48D1C] font-semibold transition-all active:scale-[0.98] shadow-lg shadow-[#F5A623]/20"
                             size="sm"
                             disabled={isSubmitting}
                         >
@@ -217,7 +216,7 @@ export default function SignInForm() {
                         title="Apple"
                     >
                         <svg width="30" height="30" viewBox="0 0 24 24" fill="black" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M16.365 1.43c0 1.14-.468 2.203-1.24 3.02-.84.89-2.228 1.58-3.43 1.48-.16-1.11.33-2.24 1.08-3.06.83-.92 2.27-1.59 3.59-1.44ZM20.5 17.2c-.54 1.23-.8 1.78-1.49 2.87-.96 1.5-2.32 3.37-4.01 3.38-1.5.01-1.88-.98-3.91-.98-2.03 0-2.45.96-3.92.99-1.69.02-2.98-1.7-3.94-3.2-2.7-4.2-2.98-9.12-1.32-11.68 1.17-1.8 3.03-2.85 4.78-2.85 1.78 0 2.9.99 4.38.99 1.44 0 2.31-1 4.36-1 1.56 0 3.22.85 4.39 2.32-3.86 2.11-3.24 7.6.68 9.16Z"/>
+                            <path d="M16.365 1.43c0 1.14-.468 2.203-1.24 3.02-.84.89-2.228 1.58-3.43 1.48-.16-1.11.33-2.24 1.08-3.06.83-.92 2.27-1.59 3.59-1.44ZM20.5 17.2c-.54 1.23-.8 1.78-1.49 2.87-.96 1.5-2.32 3.37-4.01 3.38-1.5.01-1.88-.98-3.91-.98-2.03 0-2.45.96-3.92.99-1.69.02-2.98-1.7-3.94-3.2-2.7-4.2-2.98-9.12-1.32-11.68 1.17-1.8 3.03-2.85 4.78-2.85 1.78 0 2.9.99 4.38.99 1.44 0 2.31-1 4.36-1 1.56 0 3.22.85 4.39 2.32-3.86 2.11-3.24 7.6.68 9.16Z" />
                         </svg>
                     </button>
 
@@ -229,7 +228,7 @@ export default function SignInForm() {
                         title="Facebook"
                     >
                         <svg width="30" height="30" viewBox="0 0 24 24" fill="#1877F2" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M22 12.07C22 6.48 17.52 2 11.93 2S1.86 6.48 1.86 12.07c0 5.05 3.66 9.24 8.44 10.05v-7.1H7.9v-2.95h2.4V9.82c0-2.37 1.41-3.68 3.58-3.68 1.04 0 2.13.18 2.13.18v2.34h-1.2c-1.18 0-1.55.73-1.55 1.48v1.78h2.64l-.42 2.95h-2.22v7.1c4.78-.81 8.44-5 8.44-10.05Z"/>
+                            <path d="M22 12.07C22 6.48 17.52 2 11.93 2S1.86 6.48 1.86 12.07c0 5.05 3.66 9.24 8.44 10.05v-7.1H7.9v-2.95h2.4V9.82c0-2.37 1.41-3.68 3.58-3.68 1.04 0 2.13.18 2.13.18v2.34h-1.2c-1.18 0-1.55.73-1.55 1.48v1.78h2.64l-.42 2.95h-2.22v7.1c4.78-.81 8.44-5 8.44-10.05Z" />
                         </svg>
                     </button>
                 </div>

@@ -1,8 +1,8 @@
 import "./styles.css";
-import {Route, Routes} from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import ProfilePage from "./pages/ProfilePage";
- import RequireAdmin from './components/RequireAdmin';
+import RequireAdmin from './components/RequireAdmin';
 
 
 import AppLayout from "./admin/layout/AppLayout.tsx";
@@ -28,52 +28,53 @@ import RegisteredUsers from "./admin/components/ecommerce/RegisteredUsers.tsx";
 import AdminCategories from "./admin/components/ecommerce/AdminCategories.tsx";
 import AdminProducts from "./admin/components/ecommerce/AdminProducts.tsx";
 
-
+import ProductPage from "./pages/ProductPage/index.tsx";
+import CartPage from "./pages/CartPage/index.tsx";
+import CatalogPage from "./pages/CatalogPage/index.tsx";
 
 
 export default function App() {
     return (
         <>
-
-            {/*<Navbar onHomeClick={() => setSelectedCategory(null)} />*/}
-            <MainLayout/>
             <Routes>
-                <Route path="/">
-                    <Route index element={<HomePage/>}/>
-
-                    <Route path={"login"} element={ <SignIn/>}/>
-                    <Route path="/profile" element={<ProfilePage />} />
+                <Route path="/" element={<MainLayout />}>
+                    <Route index element={<HomePage />} />
+                    <Route path="login" element={<SignIn />} />
+                    <Route path="profile" element={<ProfilePage />} />
+                    <Route path="product/:id" element={<ProductPage />} />
+                    <Route path="cart" element={<CartPage />} />
+                    <Route path="category/:id" element={<CatalogPage />} />
                 </Route>
                 <Route element={<RequireAdmin />}>
-                <Route  path="admin"  element={<AppLayout />}>
-                    <Route index element={<Home />} />
+                    <Route path="admin" element={<AppLayout />}>
+                        <Route index element={<Home />} />
 
-                    {/* Others Page */}
-                    <Route path="registered-users" element={<RegisteredUsers />} />
-                    <Route path="admin-categories" element={<AdminCategories />} />
-                    <Route path="admin-products" element={<AdminProducts />} />
-                     <Route path="profile" element={<UserProfiles />} />
-                    <Route path="calendar" element={<Calendar />} />
-                    <Route path="blank" element={<Blank />} />
+                        {/* Others Page */}
+                        <Route path="registered-users" element={<RegisteredUsers />} />
+                        <Route path="admin-categories" element={<AdminCategories />} />
+                        <Route path="admin-products" element={<AdminProducts />} />
+                        <Route path="profile" element={<UserProfiles />} />
+                        <Route path="calendar" element={<Calendar />} />
+                        <Route path="blank" element={<Blank />} />
 
-                    {/* Forms */}
-                    <Route path="form-elements" element={<FormElements />} />
+                        {/* Forms */}
+                        <Route path="form-elements" element={<FormElements />} />
 
-                    {/* Tables */}
-                    <Route path="basic-tables" element={<BasicTables />} />
+                        {/* Tables */}
+                        <Route path="basic-tables" element={<BasicTables />} />
 
-                    {/* Ui Elements */}
-                    <Route path="alerts" element={<Alerts />} />
-                    <Route path="avatars" element={<Avatars />} />
-                    <Route path="badge" element={<Badges />} />
-                    <Route path="buttons" element={<Buttons />} />
-                    <Route path="images" element={<Images />} />
-                    <Route path="videos" element={<Videos />} />
+                        {/* Ui Elements */}
+                        <Route path="alerts" element={<Alerts />} />
+                        <Route path="avatars" element={<Avatars />} />
+                        <Route path="badge" element={<Badges />} />
+                        <Route path="buttons" element={<Buttons />} />
+                        <Route path="images" element={<Images />} />
+                        <Route path="videos" element={<Videos />} />
 
-                    {/* Charts */}
-                    <Route path="line-chart" element={<LineChart />} />
-                    <Route path="bar-chart" element={<BarChart />} />
-                </Route>
+                        {/* Charts */}
+                        <Route path="line-chart" element={<LineChart />} />
+                        <Route path="bar-chart" element={<BarChart />} />
+                    </Route>
                 </Route>
 
                 {/* Auth Layout */}

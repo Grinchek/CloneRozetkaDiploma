@@ -21,6 +21,16 @@ export interface ProductListItemDto {
     mainImageUrl?: string | null;
 }
 
+export interface ProductDetailsDto {
+    id: number;
+    name: string;
+    price: number;
+    description?: string;
+    categoryId: number;
+    mainImageUrl?: string | null;
+    imageUrls?: string[];
+}
+
 const API_URL = import.meta.env.VITE_API_BASE + "/api";
 
 export const productApi = createApi({
@@ -49,6 +59,11 @@ export const productApi = createApi({
                     : [{ type: "Products" as const, id: "LIST" }],
         }),
 
+        getProductById: builder.query<ProductDetailsDto, number>({
+            query: (id) => `products/${id}`,
+            providesTags: (_r, _e, id) => [{ type: "Products", id }],
+        }),
+
         deleteProduct: builder.mutation<void, number>({
             query: (id) => ({
                 url: `products/${id}`,
@@ -62,4 +77,4 @@ export const productApi = createApi({
     }),
 });
 
-export const { useGetProductsPagedQuery, useDeleteProductMutation } = productApi;
+export const { useGetProductsPagedQuery, useGetProductByIdQuery, useDeleteProductMutation } = productApi;

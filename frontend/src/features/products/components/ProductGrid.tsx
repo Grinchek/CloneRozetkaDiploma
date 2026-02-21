@@ -1,13 +1,19 @@
 import { useEffect, useMemo, useState } from "react";
-
+import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../../store/cartSlice";
+import ProductImage from "./ProductImage";
 import "../../../styles/products.css";
 import type { CategoryNode } from "../../categories/utils/buildTree";
-const API_BASE = import.meta.env.VITE_API_BASE ;
+
+const API_BASE = import.meta.env.VITE_API_BASE;
 const PAGE_SIZE = 16;
 
 export type ProductGridProps = {
     categoryId?: number | null;
     categories?: CategoryNode[];
+    /** При true не показує заголовок "Товари" (для блоку на головній) */
+    hideHeader?: boolean;
 };
 
 type Product = {
@@ -18,31 +24,8 @@ type Product = {
     categoryId: number;
 };
 
-type CategoryTree = {
-    id: number;
-    parentId: number | null;
-    children?: CategoryTree[];
-};
-
-const buildProductImageSrc = (value?: string | null): string | null => {
-    if (!value) return null;
-
-    if (value.startsWith("http://") || value.startsWith("https://")) {
-        return value;
-    }
-
-    if (value.startsWith("/")) {
-        return `${API_BASE}${value}`;
-    }
-
-    return `${API_BASE}/Images/200_${value}`;
-};
-
 // ⭐ хелпери для дерева
-function findCategoryNode(
-    categories: CategoryNode[],
-    id: number
-): CategoryNode | null {
+function findCategoryNode(categories: CategoryNode[], id: number): CategoryNode | null {
     for (const c of categories) {
         if (c.id === id) return c;
         if (c.children && c.children.length) {
@@ -53,38 +36,39 @@ function findCategoryNode(
     return null;
 }
 
-function collectCategoryIds(
-    category: CategoryNode,
-    acc: number[] = []
-): number[] {
+function collectCategoryIds(category: CategoryNode, acc: number[] = []): number[] {
     acc.push(category.id);
-
     if (category.children && category.children.length) {
         for (const child of category.children) {
             collectCategoryIds(child, acc);
         }
     }
-
     return acc;
 }
 
-export default function ProductGrid({ categoryId, categories }: ProductGridProps) {
+export default function ProductGrid({ categoryId, categories, hideHeader }: ProductGridProps) {
+    const dispatch = useDispatch();
     const [items, setItems] = useState<Product[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [page, setPage] = useState(1);
+
+    const handleAddToCart = (p: Product) => {
+        dispatch(addToCart({
+            id: p.id,
+            name: p.name,
+            price: p.price,
+            mainImageUrl: p.mainImageUrl
+        }));
+    };
 
     useEffect(() => {
         const load = async () => {
             try {
                 setLoading(true);
                 setError(null);
-
-                const res = await fetch(`${API_BASE}/api/products`);
-                if (!res.ok) {
-                    throw new Error(`HTTP ${res.status}`);
-                }
-
+                const res = await fetch(`${API_BASE}/api/products/list`);
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
                 const data: Product[] = await res.json();
                 setItems(data);
             } catch (e: any) {
@@ -93,42 +77,24 @@ export default function ProductGrid({ categoryId, categories }: ProductGridProps
                 setLoading(false);
             }
         };
-
         load();
     }, []);
 
-    // при зміні категорії — повертаємося на першу сторінку
     useEffect(() => {
         setPage(1);
     }, [categoryId]);
 
     const filtered = useMemo(() => {
         if (!categoryId) return items;
-
-        if (!categories || categories.length === 0) {
-            // fallback: тільки прямі товари
-            return items.filter((p) => p.categoryId === categoryId);
-        }
-
+        if (!categories || categories.length === 0) return items.filter((p) => p.categoryId === categoryId);
         const root = findCategoryNode(categories, categoryId);
-
-        if (!root) {
-            return items.filter((p) => p.categoryId === categoryId);
-        }
-
+        if (!root) return items.filter((p) => p.categoryId === categoryId);
         const allowedIds = collectCategoryIds(root);
-
         return items.filter((p) => allowedIds.includes(p.categoryId));
     }, [items, categoryId, categories]);
-    // ⭐ додали categories в залежності
 
-    const totalPages = useMemo(
-        () => (filtered.length === 0 ? 1 : Math.ceil(filtered.length / PAGE_SIZE)),
-        [filtered.length]
-    );
-
+    const totalPages = useMemo(() => (filtered.length === 0 ? 1 : Math.ceil(filtered.length / PAGE_SIZE)), [filtered.length]);
     const safePage = Math.min(Math.max(page, 1), totalPages);
-
     const pageItems = useMemo(() => {
         const start = (safePage - 1) * PAGE_SIZE;
         return filtered.slice(start, start + PAGE_SIZE);
@@ -139,118 +105,59 @@ export default function ProductGrid({ categoryId, categories }: ProductGridProps
         setPage(next);
     };
 
-    if (loading) {
-        return (
-            <section className="products">
-                <div className="products-header">Товари</div>
-                <div className="products-muted">Завантаження товарів…</div>
-            </section>
-        );
-    }
+    const headerFragment = !hideHeader && (
+        <div className="products-header">Товари</div>
+    );
 
-    if (error) {
-        return (
-            <section className="products">
-                <div className="products-header">Товари</div>
-                <div className="products-error">Помилка: {error}</div>
-            </section>
-        );
-    }
-
-    if (filtered.length === 0) {
-        return (
-            <section className="products">
-                <div className="products-header">Товари</div>
-                <div className="products-muted">
-                    Для цієї категорії товарів поки немає
-                </div>
-            </section>
-        );
-    }
+    if (loading) return <section className="products">{headerFragment}<div className="products-muted">Завантаження товарів…</div></section>;
+    if (error) return <section className="products">{headerFragment}<div className="products-error">Помилка: {error}</div></section>;
+    if (filtered.length === 0) return <section className="products">{headerFragment}<div className="products-muted">Для цієї категорії товарів поки немає</div></section>;
 
     return (
         <section className="products">
-            <div className="products-header">Товари</div>
-
+            {headerFragment}
             <div className="products-grid">
-                {pageItems.map((p) => {
-                    const imgSrc = buildProductImageSrc(p.mainImageUrl);
-
-                    return (
-                        <article key={p.id} className="product-card text-black">
-                            <div className="product-card-image-wrap">
-                                {imgSrc ? (
-                                    <img
-                                        src={imgSrc}
-                                        alt={p.name}
-                                        className="product-card-image"
-                                        loading="lazy"
-                                    />
-                                ) : (
-                                    <div className="product-card-image-fallback">
-                                        Без фото
-                                    </div>
-                                )}
-                            </div>
-
-                            <div className="product-card-body">
-                                <h3 className="product-card-title text-black" title={p.name}>
+                {pageItems.map((p) => (
+                        <article key={p.id} className="group product-card bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm transition-all duration-300 hover:shadow-lg flex flex-col">
+                            <Link to={`/product/${p.id}`} className="relative aspect-square overflow-hidden bg-gray-50 flex-shrink-0">
+                                <ProductImage
+                                    mainImageUrl={p.mainImageUrl}
+                                    alt={p.name}
+                                    className="h-full w-full object-contain"
+                                    loading="lazy"
+                                    fallback={<div className="flex h-full items-center justify-center text-gray-300 text-sm italic">Немає зображення</div>}
+                                />
+                            </Link>
+                            <div className="flex flex-col flex-1 p-4">
+                                <Link
+                                    to={`/product/${p.id}`}
+                                    className="text-[14px] font-medium text-gray-800 hover:text-[#F5A623] transition-colors line-clamp-2 leading-tight mb-2"
+                                >
                                     {p.name}
-                                </h3>
-
-                                <div className="product-card-bottom">
-                                    <div className="product-card-price">
+                                </Link>
+                                <div className="mt-auto flex items-center justify-between gap-2 flex-wrap">
+                                    <span className="text-lg font-bold text-[#404236]">
                                         {p.price.toLocaleString("uk-UA")} ₴
-                                    </div>
-
+                                    </span>
                                     <button
                                         type="button"
-                                        className="product-card-btn"
+                                        onClick={() => handleAddToCart(p)}
+                                        className="rounded-xl bg-[#404236] text-white px-4 py-2 text-sm font-medium hover:bg-[#F5A623] transition-colors shrink-0"
                                     >
-                                        До товару
+                                        Купити
                                     </button>
                                 </div>
                             </div>
                         </article>
-                    );
-                })}
+                ))}
             </div>
-
             <div className="products-pagination">
-                <button
-                    type="button"
-                    className="products-page-btn"
-                    disabled={safePage === 1}
-                    onClick={() => handlePageChange(safePage - 1)}
-                >
-                    ‹
-                </button>
-
+                <button type="button" className="products-page-btn" disabled={safePage === 1} onClick={() => handlePageChange(safePage - 1)}>‹</button>
                 {Array.from({ length: totalPages }, (_, idx) => {
                     const num = idx + 1;
-                    return (
-                        <button
-                            key={num}
-                            type="button"
-                            className={
-                                "products-page-btn" +
-                                (num === safePage ? " is-active" : "")
-                            }
-                            onClick={() => handlePageChange(num)}
-                        >
-                            {num}
-                        </button>
-                    );
+                    return <button key={num} type="button" className={"products-page-btn" + (num === safePage ? " is-active" : "")} onClick={() => handlePageChange(num)}>{num}</button>;
                 })}
-
-                <button
-                    type="button"
-                    className="products-page-btn"
-                    disabled={safePage === totalPages}
-                    onClick={() => handlePageChange(safePage + 1)}
-                >
-                    ›
-                </button>
+                <button type="button" className="products-page-btn" disabled={safePage === totalPages} onClick={() => handlePageChange(safePage + 1)}>›</button>
             </div>
         </section>
     );

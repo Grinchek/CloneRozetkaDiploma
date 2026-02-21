@@ -1,7 +1,8 @@
-﻿using CloneRozetka.Application.Products.DTOs;
+using CloneRozetka.Application.Products.DTOs;
 
 public interface IProductService
 {
+    Task<IReadOnlyList<ProductListItemDto>> ListAllAsync(CancellationToken ct = default);
     Task<SearchResult<ProductListItemDto>> ListPagedAsync(int page, int itemsPerPage, CancellationToken ct = default);
     Task<ProductDetailsDto> GetByIdAsync(long id, CancellationToken ct = default);
 
