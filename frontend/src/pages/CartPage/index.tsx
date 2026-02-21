@@ -96,9 +96,9 @@ export default function CartPage() {
                                 <span className="text-2xl font-bold text-[#F5A623]">{totalPrice.toLocaleString("uk-UA")} ₴</span>
                             </div>
                         </div>
-                        <button className="w-full bg-[#f5a623] text-white font-bold py-4 rounded-full mt-8 hover:bg-[#ffb945] transition-colors shadow-lg active:scale-95 duration-75">
+                        <Link to="/checkout" className="block w-full bg-[#f5a623] text-white font-bold py-4 rounded-full mt-8 hover:bg-[#ffb945] transition-colors shadow-lg active:scale-95 duration-75 text-center">
                             Оформити замовлення
-                        </button>
+                        </Link>
                     </div>
                 </div>
             </div>
