@@ -1,8 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useGetProductByIdQuery } from "../api/productApi";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { addToCart } from "../../../store/cartSlice";
+import { useAddCartItemMutation } from "../../../features/cart/api/cartApi";
 
 const API_BASE = import.meta.env.VITE_API_BASE;
 
@@ -11,16 +10,11 @@ export default function ProductDetails() {
     const productId = Number(id);
     const { data: product, isLoading, error } = useGetProductByIdQuery(productId);
     const [mainImageIdx, setMainImageIdx] = useState(0);
-    const dispatch = useDispatch();
+    const [addToCart, { isLoading: isAdding }] = useAddCartItemMutation();
 
     const handleAddToCart = () => {
         if (!product) return;
-        dispatch(addToCart({
-            id: product.id,
-            name: product.name,
-            price: product.price,
-            mainImageUrl: product.mainImageUrl
-        }));
+        addToCart({ productId: product.id, quantity: 1 });
     };
 
     const buildImageSrc = (value?: string | null): string => {
@@ -74,9 +68,10 @@ export default function ProductDetails() {
 
                     <button
                         onClick={handleAddToCart}
-                        className="bg-[#F5A623] hover:bg-[#e6951d] text-white font-bold py-4 px-8 rounded-full transition-colors text-lg shadow-lg active:scale-95 duration-75"
+                        disabled={isAdding}
+                        className="bg-[#F5A623] hover:bg-[#e6951d] text-white font-bold py-4 px-8 rounded-full transition-colors text-lg shadow-lg active:scale-95 duration-75 disabled:opacity-70"
                     >
-                        Купити
+                        {isAdding ? "Додаємо…" : "Купити"}
                     </button>
 
                     <div className="mt-8">

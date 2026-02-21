@@ -4,6 +4,7 @@ import { categoryApi } from '../features/categories/api/categoryApi.ts';
 import { productApi } from "../features/products/api/productApi";
 import { ordersApi } from "../features/orders/api/ordersApi";
 import { shippingApi } from "../features/shipping/api/shippingApi";
+import { cartApi } from "../features/cart/api/cartApi";
 import cartReducer from "./cartSlice";
 
 export const store = configureStore({
@@ -13,6 +14,7 @@ export const store = configureStore({
         [productApi.reducerPath]: productApi.reducer,
         [ordersApi.reducerPath]: ordersApi.reducer,
         [shippingApi.reducerPath]: shippingApi.reducer,
+        [cartApi.reducerPath]: cartApi.reducer,
         cart: cartReducer,
     },
 
@@ -22,7 +24,8 @@ export const store = configureStore({
             .concat(categoryApi.middleware)
             .concat(productApi.middleware)
             .concat(ordersApi.middleware)
-            .concat(shippingApi.middleware),
+            .concat(shippingApi.middleware)
+            .concat(cartApi.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

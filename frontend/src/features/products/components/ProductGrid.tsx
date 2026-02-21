@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { addToCart } from "../../../store/cartSlice";
+import { useAddCartItemMutation } from "../../../features/cart/api/cartApi";
 import ProductImage from "./ProductImage";
 import "../../../styles/products.css";
 import type { CategoryNode } from "../../categories/utils/buildTree";
@@ -47,19 +46,14 @@ function collectCategoryIds(category: CategoryNode, acc: number[] = []): number[
 }
 
 export default function ProductGrid({ categoryId, categories, hideHeader }: ProductGridProps) {
-    const dispatch = useDispatch();
+    const [addCartItem] = useAddCartItemMutation();
     const [items, setItems] = useState<Product[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [page, setPage] = useState(1);
 
     const handleAddToCart = (p: Product) => {
-        dispatch(addToCart({
-            id: p.id,
-            name: p.name,
-            price: p.price,
-            mainImageUrl: p.mainImageUrl
-        }));
+        addCartItem({ productId: p.id, quantity: 1 });
     };
 
     useEffect(() => {

@@ -1,8 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
 import { Heart, ShoppingCart } from "lucide-react";
-import { addToCart } from "../../../store/cartSlice";
+import { useAddCartItemMutation } from "../../../features/cart/api/cartApi";
 import ProductImage from "../../../features/products/components/ProductImage";
 import type { CategoryNode } from "../../../features/categories/utils/buildTree";
 
@@ -41,7 +40,7 @@ type Props = {
 };
 
 export default function HomeCategoryProducts({ categoryId, categories }: Props) {
-    const dispatch = useDispatch();
+    const [addCartItem] = useAddCartItemMutation();
     const [items, setItems] = useState<Product[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -74,12 +73,7 @@ export default function HomeCategoryProducts({ categoryId, categories }: Props) 
     }, [items, categoryId, categories]);
 
     const handleAddToCart = (p: Product) => {
-        dispatch(addToCart({
-            id: p.id,
-            name: p.name,
-            price: p.price,
-            mainImageUrl: p.mainImageUrl,
-        }));
+        addCartItem({ productId: p.id, quantity: 1 });
     };
 
     if (!categoryId) {

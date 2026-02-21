@@ -1,14 +1,10 @@
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import type { RootState } from "../../store";
-import { clearCart, type CartItem } from "../../store/cartSlice";
+import { useGetCartQuery } from "../../features/cart/api/cartApi";
 import { useCreateOrderMutation } from "../../features/orders/api/ordersApi";
 import { useLazyGetNpCitiesQuery, useLazyGetNpWarehousesQuery } from "../../features/shipping/api/shippingApi";
 import { useMeQuery } from "../../features/account/apiAccount";
 import type { NpCity, NpWarehouse } from "../../features/shipping/api/shippingApi";
-
-const API_BASE = import.meta.env.VITE_API_BASE;
 
 const DEBOUNCE_MS = 400;
 
@@ -21,22 +17,17 @@ function useDebounce<T>(value: T, delay: number): T {
     return debouncedValue;
 }
 
-function buildImageSrc(value?: string | null): string {
-    if (!value) return "/icons/ZORYA-LOGO.svg";
-    if (value.startsWith("http")) return value;
-    return `${API_BASE}${value.startsWith("/") ? "" : "/"}${value}`;
-}
-
 export default function CheckoutPage() {
-    const { items } = useSelector((state: RootState) => state.cart);
-    const dispatch = useDispatch();
+    const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+    const { data: cart, isLoading: cartLoading } = useGetCartQuery(undefined, { skip: !token });
     const navigate = useNavigate();
     const [createOrder, { isLoading: isSubmitting }] = useCreateOrderMutation();
     const [fetchCities, { data: cities = [], isFetching: citiesLoading }] = useLazyGetNpCitiesQuery();
     const [fetchWarehouses, { data: warehouses = [], isFetching: warehousesLoading }] = useLazyGetNpWarehousesQuery();
 
     const { data: me, isSuccess: isAuth } = useMeQuery();
-    const totalPrice = items.reduce((sum: number, item: CartItem) => sum + item.price * item.quantity, 0);
+    const items = cart?.items ?? [];
+    const totalPrice = cart?.totalPrice ?? 0;
 
     const [recipientName, setRecipientName] = useState("");
     const [recipientPhone, setRecipientPhone] = useState("");
@@ -52,11 +43,11 @@ export default function CheckoutPage() {
 
     useEffect(() => {
         if (!isAuth) return;
-        if (items.length === 0) {
+        if (!cartLoading && cart && items.length === 0) {
             navigate("/cart", { replace: true });
             return;
         }
-    }, [isAuth, items.length, navigate]);
+    }, [isAuth, cartLoading, cart, items.length, navigate]);
 
     useEffect(() => {
         if (debouncedCityQuery.trim().length >= 2) fetchCities(debouncedCityQuery.trim());
@@ -93,9 +84,7 @@ export default function CheckoutPage() {
                 npWarehouseRef: selectedWarehouse.ref,
                 npWarehouseName: selectedWarehouse.name,
                 comment: comment.trim() || undefined,
-                items: items.map((x) => ({ productId: x.id, quantity: x.quantity })),
             }).unwrap();
-            dispatch(clearCart());
             navigate(`/orders/${res.orderId}`, { replace: true });
         } catch (err: unknown) {
             const msg = err && typeof err === "object" && "data" in err
@@ -111,6 +100,14 @@ export default function CheckoutPage() {
                 <h1 className="text-2xl font-bold mb-4">Увійдіть в акаунт</h1>
                 <p className="text-gray-500 mb-6">Щоб оформити замовлення, потрібно авторизуватися.</p>
                 <Link to="/login" className="bg-[#F5A623] text-white px-8 py-3 rounded-full font-bold">Увійти</Link>
+            </div>
+        );
+    }
+
+    if (cartLoading || (isAuth && items.length === 0 && cart)) {
+        return (
+            <div className="max-w-7xl mx-auto px-6 py-20 text-center text-gray-500">
+                Завантаження…
             </div>
         );
     }
@@ -244,8 +241,8 @@ export default function CheckoutPage() {
                         <h2 className="text-xl font-bold mb-6">Ваше замовлення</h2>
                         <ul className="space-y-3 mb-6 max-h-48 overflow-auto">
                             {items.map((item) => (
-                                <li key={item.id} className="flex justify-between text-sm">
-                                    <span className="truncate max-w-[140px]">{item.name}</span>
+                                <li key={item.productId} className="flex justify-between text-sm">
+                                    <span className="truncate max-w-[140px]">{item.productName}</span>
                                     <span>{item.quantity} × {item.price.toLocaleString("uk-UA")} ₴</span>
                                 </li>
                             ))}

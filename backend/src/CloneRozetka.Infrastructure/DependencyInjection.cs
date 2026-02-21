@@ -1,7 +1,9 @@
 using CloneRozetka.Application.Abstractions;
+using CloneRozetka.Application.Cart;
 using CloneRozetka.Application.Orders;
 using CloneRozetka.Application.Users.Interfaces;
 using CloneRozetka.Infrastructure.Persistence;
+using CloneRozetka.Infrastructure.Services.Cart;
 using CloneRozetka.Infrastructure.Services.Orders;
 using CloneRozetka.Infrastructure.Repositories;
 using CloneRozetka.Infrastructure.Services;
@@ -107,6 +109,7 @@ public static class DependencyInjection
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IProductService, ProductService>();
         services.AddScoped<IOrderService, OrderService>();
+        services.AddScoped<ICartService, CartService>();
 
         return services;
     }

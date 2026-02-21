@@ -17,10 +17,13 @@ public class OrderService : IOrderService
 
     public async Task<CreateOrderResponse> CreateOrderAsync(int userId, CreateOrderRequest request, CancellationToken ct = default)
     {
-        if (request.Items == null || request.Items.Count == 0)
+        var cartItems = await _db.CartItems
+            .Where(c => c.UserId == userId)
+            .ToListAsync(ct);
+        if (cartItems.Count == 0)
             throw new InvalidOperationException("Cart is empty.");
 
-        var productIds = request.Items.Select(x => x.ProductId).Distinct().ToList();
+        var productIds = cartItems.Select(x => x.ProductId).Distinct().ToList();
         var products = await _db.Products
             .AsNoTracking()
             .Where(p => productIds.Contains(p.Id) && !p.IsDeleted)
@@ -53,21 +56,21 @@ public class OrderService : IOrderService
         };
 
         decimal totalPrice = 0;
-        foreach (var item in request.Items)
+        foreach (var cartItem in cartItems)
         {
-            if (item.Quantity < 1)
+            if (cartItem.Quantity < 1)
                 continue;
-            if (!products.TryGetValue(item.ProductId, out var product))
-                throw new InvalidOperationException($"Product {item.ProductId} not found or unavailable.");
+            if (!products.TryGetValue(cartItem.ProductId, out var product))
+                throw new InvalidOperationException($"Product {cartItem.ProductId} not found or unavailable.");
             var price = product.Price;
-            var lineTotal = price * item.Quantity;
+            var lineTotal = price * cartItem.Quantity;
             totalPrice += lineTotal;
             order.Items.Add(new OrderItemEntity
             {
                 ProductId = product.Id,
                 ProductName = product.Name,
                 Price = price,
-                Quantity = item.Quantity,
+                Quantity = cartItem.Quantity,
                 ImageUrl = product.MainImageName,
                 LineTotal = lineTotal
             });
@@ -77,8 +80,20 @@ public class OrderService : IOrderService
             throw new InvalidOperationException("No valid items in cart.");
 
         order.TotalPrice = totalPrice;
-        _db.Orders.Add(order);
-        await _db.SaveChangesAsync(ct);
+
+        using var transaction = await _db.Database.BeginTransactionAsync(ct);
+        try
+        {
+            _db.Orders.Add(order);
+            _db.CartItems.RemoveRange(cartItems);
+            await _db.SaveChangesAsync(ct);
+            await transaction.CommitAsync(ct);
+        }
+        catch
+        {
+            await transaction.RollbackAsync(ct);
+            throw;
+        }
 
         return new CreateOrderResponse
         {

@@ -1,7 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useMeQuery } from '../features/account/apiAccount';
-import { useSelector } from 'react-redux';
-import { type RootState } from '../store';
+import { useGetCartQuery } from '../features/cart/api/cartApi';
 
 const topLinks = ["Акції", "Тренди", "Для бізнесу", "Допомога"];
 const categories = [
@@ -15,13 +14,11 @@ const categories = [
 
 export default function Navbar() {
     const navigate = useNavigate();
-    const token = localStorage.getItem('token');
+    const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
     const { data: me } = useMeQuery(undefined, { skip: !token });
     const isAdmin = me?.role === 'Admin';
-
-    const cartCount = useSelector((state: RootState) =>
-        state.cart.items.reduce((sum: number, item: any) => sum + item.quantity, 0)
-    );
+    const { data: cart } = useGetCartQuery(undefined, { skip: !token });
+    const cartCount = cart?.totalQuantity ?? 0;
 
     return (
         <header className="w-full">

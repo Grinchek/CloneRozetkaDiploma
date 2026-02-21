@@ -2,11 +2,6 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 const API_URL = import.meta.env.VITE_API_BASE + "/api";
 
-export interface CreateOrderItemRequest {
-    productId: number;
-    quantity: number;
-}
-
 export interface CreateOrderRequest {
     recipientName: string;
     recipientPhone: string;
@@ -15,7 +10,6 @@ export interface CreateOrderRequest {
     npWarehouseRef: string;
     npWarehouseName: string;
     comment?: string;
-    items: CreateOrderItemRequest[];
 }
 
 export interface CreateOrderResponse {
@@ -67,11 +61,11 @@ const baseQuery = fetchBaseQuery({
 export const ordersApi = createApi({
     reducerPath: "ordersApi",
     baseQuery,
-    tagTypes: ["Orders"],
+    tagTypes: ["Orders", "Cart"],
     endpoints: (builder) => ({
         createOrder: builder.mutation<CreateOrderResponse, CreateOrderRequest>({
             query: (body) => ({ url: "/orders", method: "POST", body }),
-            invalidatesTags: [{ type: "Orders", id: "LIST" }],
+            invalidatesTags: [{ type: "Orders", id: "LIST" }, { type: "Cart", id: "CART" }],
         }),
         getMyOrders: builder.query<OrderListItem[], void>({
             query: () => "/orders/my",

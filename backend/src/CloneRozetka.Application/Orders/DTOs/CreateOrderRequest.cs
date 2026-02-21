@@ -1,5 +1,8 @@
 namespace CloneRozetka.Application.Orders.DTOs;
 
+/// <summary>
+/// Order is created from the server-side cart (DB). Items are not sent from the client.
+/// </summary>
 public class CreateOrderRequest
 {
     public string RecipientName { get; set; } = string.Empty;
@@ -9,11 +12,4 @@ public class CreateOrderRequest
     public string NpWarehouseRef { get; set; } = string.Empty;
     public string NpWarehouseName { get; set; } = string.Empty;
     public string? Comment { get; set; }
-    public List<CreateOrderItemRequest> Items { get; set; } = new();
-}
-
-public class CreateOrderItemRequest
-{
-    public long ProductId { get; set; }
-    public int Quantity { get; set; }
 }
