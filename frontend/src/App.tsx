@@ -31,6 +31,9 @@ import AdminProducts from "./admin/components/ecommerce/AdminProducts.tsx";
 import ProductPage from "./pages/ProductPage/index.tsx";
 import CartPage from "./pages/CartPage/index.tsx";
 import CatalogPage from "./pages/CatalogPage/index.tsx";
+import CheckoutPage from "./pages/CheckoutPage/index.tsx";
+import OrdersPage from "./pages/OrdersPage/index.tsx";
+import OrderDetailsPage from "./pages/OrderDetailsPage/index.tsx";
 
 
 export default function App() {
@@ -43,6 +46,9 @@ export default function App() {
                     <Route path="profile" element={<ProfilePage />} />
                     <Route path="product/:id" element={<ProductPage />} />
                     <Route path="cart" element={<CartPage />} />
+                    <Route path="checkout" element={<CheckoutPage />} />
+                    <Route path="orders" element={<OrdersPage />} />
+                    <Route path="orders/:id" element={<OrderDetailsPage />} />
                     <Route path="category/:id" element={<CatalogPage />} />
                 </Route>
                 <Route element={<RequireAdmin />}>

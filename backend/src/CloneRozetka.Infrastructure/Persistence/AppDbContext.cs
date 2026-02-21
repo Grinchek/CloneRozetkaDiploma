@@ -1,4 +1,4 @@
-﻿using CloneRozetka.Domain.Entities;
+using CloneRozetka.Domain.Entities;
 using CloneRozetka.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -14,6 +14,8 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, int,
     public DbSet<CategoryEntity> Categories => Set<CategoryEntity>();
     public DbSet<ProductEntity> Products => Set<ProductEntity>();
     public DbSet<ProductImageEntity> ProductImages => Set<ProductImageEntity>();
+    public DbSet<OrderEntity> Orders => Set<OrderEntity>();
+    public DbSet<OrderItemEntity> OrderItems => Set<OrderItemEntity>();
 
     protected override void OnModelCreating(ModelBuilder b)
     {
@@ -46,6 +48,28 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, int,
                 .WithMany(u => u.UserLogins)
                 .HasForeignKey(l => l.UserId)
                 .IsRequired();
+        });
+
+        b.Entity<OrderEntity>(e =>
+        {
+            e.ToTable("tblOrders");
+            e.HasKey(x => x.Id);
+            e.HasIndex(x => new { x.UserId, x.CreatedAt });
+            e.HasMany(x => x.Items)
+                .WithOne(x => x.Order)
+                .HasForeignKey(x => x.OrderId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        b.Entity<OrderItemEntity>(e =>
+        {
+            e.ToTable("tblOrderItems");
+            e.HasKey(x => x.Id);
+            e.HasIndex(x => x.OrderId);
+            e.HasOne(x => x.Product)
+                .WithMany()
+                .HasForeignKey(x => x.ProductId)
+                .OnDelete(DeleteBehavior.Restrict);
         });
     }
 }

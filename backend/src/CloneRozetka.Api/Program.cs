@@ -29,6 +29,7 @@ builder.Services.AddInfrastructure(
 // Application
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddValidatorsFromAssemblyContaining<CategoryCreateValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<CloneRozetka.Application.Orders.Validators.CreateOrderRequestValidator>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 // Quartz 
 builder.Services.AddQuartz(q =>
@@ -54,6 +55,16 @@ builder.Services.AddCors(options =>
             .AllowCredentials();
     });
 });
+builder.Services.AddMemoryCache();
+builder.Services.Configure<CloneRozetka.Infrastructure.Services.NovaPoshta.NovaPoshtaOptions>(options =>
+{
+    options.ApiKey = Environment.GetEnvironmentVariable("NOVA_POSHTA_API_KEY")
+        ?? builder.Configuration["NovaPoshta:ApiKey"]
+        ?? "";
+});
+builder.Services.AddHttpClient(CloneRozetka.Infrastructure.Services.NovaPoshta.NovaPoshtaService.HttpClientName);
+builder.Services.AddScoped<CloneRozetka.Application.Shipping.NovaPoshta.INovaPoshtaService, CloneRozetka.Infrastructure.Services.NovaPoshta.NovaPoshtaService>();
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

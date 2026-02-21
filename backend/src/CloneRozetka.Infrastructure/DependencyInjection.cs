@@ -1,6 +1,8 @@
-﻿using CloneRozetka.Application.Abstractions;
+using CloneRozetka.Application.Abstractions;
+using CloneRozetka.Application.Orders;
 using CloneRozetka.Application.Users.Interfaces;
 using CloneRozetka.Infrastructure.Persistence;
+using CloneRozetka.Infrastructure.Services.Orders;
 using CloneRozetka.Infrastructure.Repositories;
 using CloneRozetka.Infrastructure.Services;
 using CloneRozetka.Infrastructure.Services.Users;
@@ -104,7 +106,7 @@ public static class DependencyInjection
         services.AddScoped<ISmtpService, SmtpService>();
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IProductService, ProductService>();
-
+        services.AddScoped<IOrderService, OrderService>();
 
         return services;
     }
