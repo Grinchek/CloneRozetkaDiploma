@@ -1,4 +1,4 @@
-﻿namespace CloneRozetka.Application.Categories.DTOs;
+namespace CloneRozetka.Application.Categories.DTOs;
 
 public record CategoryDto(
     int Id,
@@ -6,5 +6,6 @@ public record CategoryDto(
     int Priority,
     string UrlSlug,
     int? ParentId,
-    string? Image
+    string? Image,
+    bool IsDeleted
 );

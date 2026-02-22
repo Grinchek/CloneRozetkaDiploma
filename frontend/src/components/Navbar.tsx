@@ -1,6 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useMeQuery } from '../features/account/apiAccount';
 import { useGetCartQuery } from '../features/cart/api/cartApi';
+import { useGetFavoritesQuery } from '../features/favorites/api/favoritesApi';
 
 const topLinks = ["Акції", "Тренди", "Для бізнесу", "Допомога"];
 const categories = [
@@ -18,7 +19,9 @@ export default function Navbar() {
     const { data: me } = useMeQuery(undefined, { skip: !token });
     const isAdmin = me?.role === 'Admin';
     const { data: cart } = useGetCartQuery(undefined, { skip: !token });
+    const { data: favorites = [] } = useGetFavoritesQuery(undefined, { skip: !token });
     const cartCount = cart?.totalQuantity ?? 0;
+    const favoritesCount = favorites.length;
 
     return (
         <header className="w-full">
@@ -55,7 +58,14 @@ export default function Navbar() {
                     <div className="flex items-center gap-5 text-[#F5A623] text-xl">
                         <span><img src="/icons/navbar-location-line.svg" alt="Location" /></span>
                         <span><img src="/icons/navbar-ri_scales.svg" alt="Compare" /></span>
-                        <span><img src="/icons/navbar-ion_eye-off.svg" alt="Wishlist" /></span>
+                        <Link to="/favorites" className="relative" title="Улюблене">
+                            <img src="/icons/navbar-ion_eye-off.svg" alt="Улюблене" />
+                            {favoritesCount > 0 && (
+                                <span className="absolute -top-2 -right-2 bg-[#F5A623] text-[#404236] text-[10px] font-bold px-1.5 py-0.5 rounded-full border-2 border-[#404236] min-w-[18px] text-center">
+                                    {favoritesCount > 99 ? "99+" : favoritesCount}
+                                </span>
+                            )}
+                        </Link>
 
                         <div className="navbar-actions">
                             {token ? (

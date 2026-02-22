@@ -1,34 +1,55 @@
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { useGetProductByIdQuery } from "../api/productApi";
 import { useState } from "react";
+import { Heart } from "lucide-react";
 import { useAddCartItemMutation } from "../../../features/cart/api/cartApi";
+import {
+    useGetFavoriteIdsQuery,
+    useAddFavoriteMutation,
+    useRemoveFavoriteMutation,
+} from "../../../features/favorites/api/favoritesApi";
 
 const API_BASE = import.meta.env.VITE_API_BASE;
+
+/** Сервер зберігає зображення з префіксом розміру (200_xxx.webp, 800_xxx.webp). */
+function buildImageSrc(value?: string | null, size: number = 800): string {
+    if (!value) return "/icons/ZORYA-LOGO.svg";
+    if (value.startsWith("http")) return value;
+    const name = value.startsWith("/") ? value.slice(1) : value;
+    const hasSizePrefix = /^\d+_/.test(name);
+    const fileName = hasSizePrefix ? name : `${size}_${name}`;
+    return `${API_BASE}/Images/${fileName}`;
+}
 
 export default function ProductDetails() {
     const { id } = useParams<{ id: string }>();
     const productId = Number(id);
     const { data: product, isLoading, error } = useGetProductByIdQuery(productId);
+    const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
     const [mainImageIdx, setMainImageIdx] = useState(0);
     const [addToCart, { isLoading: isAdding }] = useAddCartItemMutation();
+    const [addFavorite] = useAddFavoriteMutation();
+    const [removeFavorite] = useRemoveFavoriteMutation();
+    const { data: favoriteIds = [] } = useGetFavoriteIdsQuery(undefined, { skip: !token });
+    const isInFavorites = productId > 0 && favoriteIds.includes(productId);
 
     const handleAddToCart = () => {
         if (!product) return;
         addToCart({ productId: product.id, quantity: 1 });
     };
 
-    const buildImageSrc = (value?: string | null): string => {
-        if (!value) return "/icons/ZORYA-LOGO.svg";
-        if (value.startsWith("http")) return value;
-        return `${API_BASE}${value.startsWith("/") ? "" : "/"}${value}`;
+    const handleToggleFavorite = () => {
+        if (!token) return;
+        if (isInFavorites) removeFavorite(productId);
+        else addFavorite(productId);
     };
 
     if (isLoading) return <div className="p-8 text-center">Завантаження...</div>;
     if (error || !product) return <div className="p-8 text-center text-red-500">Товар не знайдено</div>;
 
-    const images = product.imageUrls && product.imageUrls.length > 0
+    const images = product.imageUrls?.length
         ? product.imageUrls
-        : [product.mainImageUrl].filter(Boolean) as string[];
+        : [];
 
     return (
         <div className="max-w-7xl mx-auto px-6 py-10">
@@ -36,7 +57,7 @@ export default function ProductDetails() {
                 <div className="space-y-4">
                     <div className="aspect-square bg-gray-100 rounded-2xl overflow-hidden border border-gray-200">
                         <img
-                            src={buildImageSrc(images[mainImageIdx])}
+                            src={buildImageSrc(images[mainImageIdx] ?? null, 800)}
                             alt={product.name}
                             className="w-full h-full object-contain"
                         />
@@ -49,7 +70,7 @@ export default function ProductDetails() {
                                     onClick={() => setMainImageIdx(idx)}
                                     className={`w-20 h-20 border-2 rounded-lg overflow-hidden flex-shrink-0 ${mainImageIdx === idx ? 'border-[#F5A623]' : 'border-gray-200'}`}
                                 >
-                                    <img src={buildImageSrc(img)} className="w-full h-full object-cover" alt="" />
+                                    <img src={buildImageSrc(img, 200)} className="w-full h-full object-cover" alt="" />
                                 </button>
                             ))}
                         </div>
@@ -66,13 +87,37 @@ export default function ProductDetails() {
                         <span className="text-green-600 font-medium">В наявності</span>
                     </div>
 
-                    <button
-                        onClick={handleAddToCart}
-                        disabled={isAdding}
-                        className="bg-[#F5A623] hover:bg-[#e6951d] text-white font-bold py-4 px-8 rounded-full transition-colors text-lg shadow-lg active:scale-95 duration-75 disabled:opacity-70"
-                    >
-                        {isAdding ? "Додаємо…" : "Купити"}
-                    </button>
+                    <div className="flex flex-wrap items-center gap-3">
+                        <button
+                            onClick={handleAddToCart}
+                            disabled={isAdding}
+                            className="bg-[#F5A623] hover:bg-[#e6951d] text-white font-bold py-4 px-8 rounded-full transition-colors text-lg shadow-lg active:scale-95 duration-75 disabled:opacity-70"
+                        >
+                            {isAdding ? "Додаємо…" : "Купити"}
+                        </button>
+                        {token ? (
+                            <button
+                                type="button"
+                                onClick={handleToggleFavorite}
+                                className={`inline-flex items-center gap-2 rounded-full border-2 px-6 py-4 font-bold text-lg transition-colors ${
+                                    isInFavorites
+                                        ? "border-red-500 bg-red-50 text-red-600 fill-red-500 hover:bg-red-100"
+                                        : "border-gray-300 bg-white text-gray-700 hover:border-[#F5A623] hover:text-[#F5A623]"
+                                }`}
+                            >
+                                <Heart size={22} strokeWidth={2} />
+                                {isInFavorites ? "В обраному" : "В обране"}
+                            </button>
+                        ) : (
+                            <Link
+                                to="/login"
+                                className="inline-flex items-center gap-2 rounded-full border-2 border-gray-300 bg-white px-6 py-4 font-bold text-lg text-gray-700 hover:border-[#F5A623] hover:text-[#F5A623] transition-colors"
+                            >
+                                <Heart size={22} strokeWidth={2} />
+                                Увійдіть, щоб додати в обране
+                            </Link>
+                        )}
+                    </div>
 
                     <div className="mt-8">
                         <h2 className="text-xl font-semibold mb-3 border-b pb-2">Опис</h2>

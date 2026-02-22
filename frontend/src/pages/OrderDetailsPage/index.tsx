@@ -1,8 +1,7 @@
 import { useParams, Link } from "react-router-dom";
 import { useGetOrderByIdQuery } from "../../features/orders/api/ordersApi";
 import { useMeQuery } from "../../features/account/apiAccount";
-
-const API_BASE = import.meta.env.VITE_API_BASE;
+import { buildProductImageSrc } from "../../features/products/utils/productImageUrl";
 
 const STATUS_LABEL: Record<string, string> = {
     Created: "Створено",
@@ -14,8 +13,7 @@ const STATUS_LABEL: Record<string, string> = {
 
 function buildImageSrc(value?: string | null): string {
     if (!value) return "/icons/ZORYA-LOGO.svg";
-    if (value.startsWith("http")) return value;
-    return `${API_BASE}${value.startsWith("/") ? "" : "/"}${value}`;
+    return buildProductImageSrc(value) ?? "/icons/ZORYA-LOGO.svg";
 }
 
 export default function OrderDetailsPage() {

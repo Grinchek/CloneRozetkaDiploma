@@ -1,5 +1,6 @@
 using CloneRozetka.Application.Cart;
 using CloneRozetka.Application.Cart.DTOs;
+using CloneRozetka.Application.Search;
 using CloneRozetka.Domain.Entities;
 using CloneRozetka.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -127,5 +128,84 @@ public class CartService : ICartService
         var items = await _db.CartItems.Where(c => c.UserId == userId).ToListAsync(ct);
         _db.CartItems.RemoveRange(items);
         await _db.SaveChangesAsync(ct);
+    }
+
+    public async Task<SearchResult<AdminCartListItemDto>> GetAdminCartsPagedAsync(int page, int pageSize, string? dateFilter = null, CancellationToken ct = default)
+    {
+        page = page < 1 ? 1 : page;
+        pageSize = pageSize < 1 ? 10 : pageSize;
+
+        var grouped = from c in _db.CartItems.AsNoTracking()
+                      join p in _db.Products on c.ProductId equals p.Id
+                      where !p.IsDeleted
+                      group new { c, p } by c.UserId into g
+                      select new
+                      {
+                          UserId = g.Key,
+                          TotalQuantity = g.Sum(x => x.c.Quantity),
+                          TotalPrice = g.Sum(x => x.p.Price * x.c.Quantity),
+                          ItemsCount = g.Count(),
+                          LastUpdatedAt = g.Max(x => x.c.UpdatedAt)
+                      };
+
+        var utcNow = DateTime.UtcNow;
+        var filter = (dateFilter ?? "").Trim();
+        if (string.Equals(filter, "today", StringComparison.OrdinalIgnoreCase))
+        {
+            var startOfToday = new DateTime(utcNow.Year, utcNow.Month, utcNow.Day, 0, 0, 0, DateTimeKind.Utc);
+            grouped = grouped.Where(g => g.LastUpdatedAt >= startOfToday && g.LastUpdatedAt < startOfToday.AddDays(1));
+        }
+        else if (string.Equals(filter, "week", StringComparison.OrdinalIgnoreCase))
+        {
+            var weekAgo = utcNow.AddDays(-7);
+            grouped = grouped.Where(g => g.LastUpdatedAt >= weekAgo);
+        }
+        else if (string.Equals(filter, "month", StringComparison.OrdinalIgnoreCase))
+        {
+            var monthAgo = utcNow.AddDays(-30);
+            grouped = grouped.Where(g => g.LastUpdatedAt >= monthAgo);
+        }
+
+        var totalCount = await grouped.CountAsync(ct);
+        var totalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
+
+        var withUsers = from g in grouped
+                        join u in _db.Users on g.UserId equals u.Id
+                        orderby g.LastUpdatedAt descending
+                        select new AdminCartListItemDto
+                        {
+                            UserId = g.UserId,
+                            UserEmail = u.Email,
+                            UserName = u.FullName ?? u.UserName,
+                            TotalQuantity = g.TotalQuantity,
+                            TotalPrice = g.TotalPrice,
+                            ItemsCount = g.ItemsCount,
+                            LastUpdatedAt = g.LastUpdatedAt
+                        };
+
+        var items = await withUsers
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync(ct);
+
+        return new SearchResult<AdminCartListItemDto>
+        {
+            Items = items,
+            Pagination = new PaginationModel
+            {
+                TotalCount = totalCount,
+                TotalPages = totalPages,
+                ItemsPerPage = pageSize,
+                CurrentPage = page
+            }
+        };
+    }
+
+    public async Task<CartDto?> GetAdminCartByUserIdAsync(int userId, CancellationToken ct = default)
+    {
+        var hasAny = await _db.CartItems.AnyAsync(c => c.UserId == userId, ct);
+        if (!hasAny)
+            return null;
+        return await GetCartAsync(userId, ct);
     }
 }

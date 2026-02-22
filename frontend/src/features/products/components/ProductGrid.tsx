@@ -1,6 +1,12 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
+import { Heart } from "lucide-react";
 import { useAddCartItemMutation } from "../../../features/cart/api/cartApi";
+import {
+    useGetFavoriteIdsQuery,
+    useAddFavoriteMutation,
+    useRemoveFavoriteMutation,
+} from "../../../features/favorites/api/favoritesApi";
 import ProductImage from "./ProductImage";
 import "../../../styles/products.css";
 import type { CategoryNode } from "../../categories/utils/buildTree";
@@ -46,7 +52,11 @@ function collectCategoryIds(category: CategoryNode, acc: number[] = []): number[
 }
 
 export default function ProductGrid({ categoryId, categories, hideHeader }: ProductGridProps) {
+    const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
     const [addCartItem] = useAddCartItemMutation();
+    const [addFavorite] = useAddFavoriteMutation();
+    const [removeFavorite] = useRemoveFavoriteMutation();
+    const { data: favoriteIds = [] } = useGetFavoriteIdsQuery(undefined, { skip: !token });
     const [items, setItems] = useState<Product[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -54,6 +64,13 @@ export default function ProductGrid({ categoryId, categories, hideHeader }: Prod
 
     const handleAddToCart = (p: Product) => {
         addCartItem({ productId: p.id, quantity: 1 });
+    };
+
+    const handleToggleFavorite = (e: React.MouseEvent, productId: number) => {
+        e.preventDefault();
+        if (!token) return;
+        if (favoriteIds.includes(productId)) removeFavorite(productId);
+        else addFavorite(productId);
     };
 
     useEffect(() => {
@@ -112,7 +129,7 @@ export default function ProductGrid({ categoryId, categories, hideHeader }: Prod
             {headerFragment}
             <div className="products-grid">
                 {pageItems.map((p) => (
-                        <article key={p.id} className="group product-card bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm transition-all duration-300 hover:shadow-lg flex flex-col">
+                        <article key={p.id} className="group product-card flex h-full flex-col bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm transition-all duration-300 hover:shadow-lg">
                             <Link to={`/product/${p.id}`} className="relative aspect-square overflow-hidden bg-gray-50 flex-shrink-0">
                                 <ProductImage
                                     mainImageUrl={p.mainImageUrl}
@@ -121,6 +138,20 @@ export default function ProductGrid({ categoryId, categories, hideHeader }: Prod
                                     loading="lazy"
                                     fallback={<div className="flex h-full items-center justify-center text-gray-300 text-sm italic">Немає зображення</div>}
                                 />
+                                {token && (
+                                    <button
+                                        type="button"
+                                        onClick={(e) => handleToggleFavorite(e, p.id)}
+                                        className={`absolute top-2 right-2 p-2 rounded-full bg-white/90 shadow-sm transition-colors ${
+                                            favoriteIds.includes(p.id)
+                                                ? "text-red-500 fill-red-500 hover:bg-red-50"
+                                                : "text-gray-500 hover:text-red-500 hover:bg-white"
+                                        }`}
+                                        aria-label={favoriteIds.includes(p.id) ? "Прибрати з обраного" : "В обране"}
+                                    >
+                                        <Heart size={18} strokeWidth={2} />
+                                    </button>
+                                )}
                             </Link>
                             <div className="flex flex-col flex-1 p-4">
                                 <Link

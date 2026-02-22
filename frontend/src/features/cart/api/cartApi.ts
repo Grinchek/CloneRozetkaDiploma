@@ -17,6 +17,22 @@ export interface CartDto {
     totalPrice: number;
 }
 
+/** Admin: one row per user that has at least one cart item */
+export interface AdminCartListItemDto {
+    userId: number;
+    userEmail?: string | null;
+    userName?: string | null;
+    totalQuantity: number;
+    totalPrice: number;
+    itemsCount: number;
+    lastUpdatedAt?: string | null;
+}
+
+export interface AdminCartsSearchResult {
+    items: AdminCartListItemDto[];
+    pagination: { totalCount: number; totalPages: number; itemsPerPage: number; currentPage: number };
+}
+
 export interface AddCartItemRequest {
     productId: number;
     quantity: number;
@@ -38,7 +54,7 @@ const baseQuery = fetchBaseQuery({
 export const cartApi = createApi({
     reducerPath: "cartApi",
     baseQuery,
-    tagTypes: ["Cart"],
+    tagTypes: ["Cart", "AdminCarts"],
     endpoints: (builder) => ({
         getCart: builder.query<CartDto, void>({
             query: () => "/cart",
@@ -64,6 +80,32 @@ export const cartApi = createApi({
             query: () => ({ url: "/cart/clear", method: "DELETE" }),
             invalidatesTags: [{ type: "Cart", id: "CART" }],
         }),
+        // Admin: paged list of user carts; dateFilter: today | week | month | all (by lastUpdatedAt)
+        getAdminCarts: builder.query<
+            AdminCartsSearchResult,
+            { page?: number; pageSize?: number; dateFilter?: "today" | "week" | "month" | "all" }
+        >({
+            query: (params) => ({
+                url: "admin/carts",
+                params: {
+                    page: params?.page ?? 1,
+                    pageSize: params?.pageSize ?? 20,
+                    ...(params?.dateFilter && params.dateFilter !== "all" ? { dateFilter: params.dateFilter } : {}),
+                },
+            }),
+            providesTags: (result) =>
+                result
+                    ? [
+                          ...result.items.map((c) => ({ type: "AdminCarts" as const, id: c.userId })),
+                          { type: "AdminCarts", id: "LIST" },
+                      ]
+                    : [{ type: "AdminCarts", id: "LIST" }],
+        }),
+        // Admin: cart details for a user
+        getAdminCartByUserId: builder.query<CartDto, number>({
+            query: (userId) => `admin/carts/${userId}`,
+            providesTags: (_result, _err, userId) => [{ type: "AdminCarts", id: userId }],
+        }),
     }),
 });
 
@@ -73,4 +115,6 @@ export const {
     useUpdateCartItemQtyMutation,
     useRemoveCartItemMutation,
     useClearCartMutation,
+    useGetAdminCartsQuery,
+    useGetAdminCartByUserIdQuery,
 } = cartApi;

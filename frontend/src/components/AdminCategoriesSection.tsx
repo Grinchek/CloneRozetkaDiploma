@@ -35,6 +35,7 @@ type FlatCategory = {
 
 const initialForm: CategoryFormState = {
     name: "",
+    priority: 0,
     slug: "",
     parentId: "",
     imageUrl: "",
@@ -155,27 +156,29 @@ const AdminCategoriesSection = () => {
         if (submitting) return;
 
         const parentId = form.parentId ? Number(form.parentId) : null;
-        // якщо вибрали файл – можемо надіслати його імʼя як Image (поки без реального upload)
-        const image =
-            form.imageUrl.trim() || (form.imageFile ? form.imageFile.name : "");
-
-        const payload = {
-            name: form.name.trim(),
-            priority: form.priority,
-            slug: form.slug.trim(),
-            parentId,
-            image: image || null,
-        };
+        const name = form.name.trim();
+        const priority = Number(form.priority) || 0;
+        const urlSlug = form.slug.trim();
+        const image = form.imageFile ?? undefined;
 
         try {
             if (mode === "create") {
-                console.log(payload);
-                await createCategory(payload).unwrap();
+                await createCategory({
+                    name,
+                    priority,
+                    urlSlug,
+                    parentId: parentId ?? undefined,
+                    image: image || undefined,
+                }).unwrap();
                 setForm(initialForm);
             } else if (mode === "edit" && selectedCategory) {
                 await updateCategory({
                     id: selectedCategory.id,
-                    ...payload,
+                    name,
+                    priority,
+                    urlSlug,
+                    parentId: parentId ?? undefined,
+                    image: image || undefined,
                 }).unwrap();
             }
         } catch (err) {

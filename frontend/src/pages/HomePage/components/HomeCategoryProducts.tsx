@@ -2,6 +2,11 @@ import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { Heart, ShoppingCart } from "lucide-react";
 import { useAddCartItemMutation } from "../../../features/cart/api/cartApi";
+import {
+    useGetFavoriteIdsQuery,
+    useAddFavoriteMutation,
+    useRemoveFavoriteMutation,
+} from "../../../features/favorites/api/favoritesApi";
 import ProductImage from "../../../features/products/components/ProductImage";
 import type { CategoryNode } from "../../../features/categories/utils/buildTree";
 
@@ -40,7 +45,11 @@ type Props = {
 };
 
 export default function HomeCategoryProducts({ categoryId, categories }: Props) {
+    const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
     const [addCartItem] = useAddCartItemMutation();
+    const [addFavorite] = useAddFavoriteMutation();
+    const [removeFavorite] = useRemoveFavoriteMutation();
+    const { data: favoriteIds = [] } = useGetFavoriteIdsQuery(undefined, { skip: !token });
     const [items, setItems] = useState<Product[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -74,6 +83,13 @@ export default function HomeCategoryProducts({ categoryId, categories }: Props) 
 
     const handleAddToCart = (p: Product) => {
         addCartItem({ productId: p.id, quantity: 1 });
+    };
+
+    const handleToggleFavorite = (e: React.MouseEvent, productId: number) => {
+        e.preventDefault();
+        if (!token) return;
+        if (favoriteIds.includes(productId)) removeFavorite(productId);
+        else addFavorite(productId);
     };
 
     if (!categoryId) {
@@ -115,13 +131,13 @@ export default function HomeCategoryProducts({ categoryId, categories }: Props) 
     return (
         <div id="products-section" className="mx-auto max-w-7xl px-6 py-12 scroll-mt-8">
             <div className="overflow-x-auto overflow-y-visible pb-4">
-                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6 min-w-0">
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6 min-w-0 items-stretch">
                     {filtered.map((p) => (
                         <article
                             key={p.id}
-                            className="group flex flex-col bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-lg transition-all duration-300"
+                            className="group flex h-full flex-col bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-lg transition-all duration-300"
                         >
-                            <Link to={`/product/${p.id}`} className="relative block aspect-square bg-gray-50 flex-shrink-0">
+                            <Link to={`/product/${p.id}`} className="relative block aspect-square w-full bg-gray-50 flex-shrink-0 overflow-hidden">
                                 <ProductImage
                                     mainImageUrl={p.mainImageUrl}
                                     alt={p.name}
@@ -135,8 +151,13 @@ export default function HomeCategoryProducts({ categoryId, categories }: Props) 
                                 />
                                 <button
                                     type="button"
-                                    className="absolute top-2 left-2 p-2 rounded-full bg-white/90 shadow-sm text-gray-500 hover:text-red-500 hover:bg-white transition-colors"
-                                    aria-label="В обране"
+                                    onClick={(e) => handleToggleFavorite(e, p.id)}
+                                    className={`absolute top-2 left-2 p-2 rounded-full bg-white/90 shadow-sm transition-colors ${
+                                        favoriteIds.includes(p.id)
+                                            ? "text-red-500 fill-red-500 hover:bg-red-50"
+                                            : "text-gray-500 hover:text-red-500 hover:bg-white"
+                                    }`}
+                                    aria-label={favoriteIds.includes(p.id) ? "Прибрати з обраного" : "В обране"}
                                 >
                                     <Heart size={18} strokeWidth={2} />
                                 </button>
@@ -153,11 +174,11 @@ export default function HomeCategoryProducts({ categoryId, categories }: Props) 
                                 </button>
                             </Link>
 
-                            <div className="flex flex-col flex-1 p-3 md:p-4">
-                                <span className="inline-block w-fit text-[10px] font-bold uppercase tracking-wide bg-[#F5A623] text-white px-2 py-0.5 rounded mb-2">
+                            <div className="flex min-h-0 flex-1 flex-col p-3 md:p-4">
+                                <span className="inline-block w-fit text-[10px] font-bold uppercase tracking-wide bg-[#F5A623] text-white px-2 py-0.5 rounded mb-2 shrink-0">
                                     БК Доставка
                                 </span>
-                                <div className="flex items-baseline gap-2 mb-1">
+                                <div className="flex items-baseline gap-2 mb-1 shrink-0">
                                     <span className="text-lg font-bold text-[#F5A623]">
                                         {p.price.toLocaleString("uk-UA")} ₴
                                     </span>
@@ -165,13 +186,13 @@ export default function HomeCategoryProducts({ categoryId, categories }: Props) 
                                         {Math.round(p.price * 1.2).toLocaleString("uk-UA")} ₴
                                     </span>
                                 </div>
-                                <div className="flex items-center gap-1 text-gray-500 mb-2">
+                                <div className="flex items-center gap-1 text-gray-500 mb-2 shrink-0">
                                     <span className="text-amber-400">★★★★★</span>
                                     <span className="text-xs">(—)</span>
                                 </div>
                                 <Link
                                     to={`/product/${p.id}`}
-                                    className="text-[13px] font-medium text-gray-800 hover:text-[#F5A623] line-clamp-2 leading-snug mt-auto"
+                                    className="mt-auto min-h-[2.5rem] text-[13px] font-medium text-gray-800 hover:text-[#F5A623] line-clamp-2 leading-snug"
                                 >
                                     {p.name}
                                 </Link>

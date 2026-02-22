@@ -1,4 +1,4 @@
-﻿using CloneRozetka.Application.Categories.DTOs;
+using CloneRozetka.Application.Categories.DTOs;
 using CloneRozetka.Application.Categories.Interfaces;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
@@ -17,10 +17,12 @@ public class CategoriesController(
         Ok(await service.ListAsync());
     [HttpGet("paged")]
     public async Task<ActionResult<PagedResponse<CategoryDto>>> GetPaged(
-    [FromQuery] int page = 1,
-    [FromQuery] int pageSize = 10)
+        [FromQuery] int page = 1,
+        [FromQuery] int pageSize = 10,
+        [FromQuery] string? search = null,
+        [FromQuery] bool? isDeleted = null)
     {
-        return Ok(await service.ListPagedAsync(page, pageSize));
+        return Ok(await service.ListPagedAsync(page, pageSize, search, isDeleted));
     }
 
     [HttpGet("{id:int}")]
@@ -54,6 +56,13 @@ public class CategoriesController(
     public async Task<IActionResult> Delete(int id)
     {
         await service.DeleteAsync(id);
+        return NoContent();
+    }
+
+    [HttpPost("{id:int}/restore")]
+    public async Task<IActionResult> Restore(int id)
+    {
+        await service.RestoreAsync(id);
         return NoContent();
     }
 }
