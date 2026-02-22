@@ -1,15 +1,18 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { useGoogleLogin, type TokenResponse } from '@react-oauth/google';
 import {
     useLoginByGoogleMutation,
     useLoginMutation,
     useRegisterMutation,
 } from '../../../features/account/apiAccount';
+import { cartApi } from '../../../features/cart/api/cartApi';
 import '../../auth/auth.css';
 
 const AuthPage = () => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const [isRegister, setIsRegister] = useState(false);
     const [form, setForm] = useState({
@@ -51,6 +54,7 @@ const AuthPage = () => {
 
             if (result?.token) {
                 localStorage.setItem('token', result.token);
+                dispatch(cartApi.util.invalidateTags(['Cart']));
                 navigate('/', { replace: true });
             }
         } catch (err) {
@@ -70,6 +74,7 @@ const AuthPage = () => {
 
                 if (result?.token) {
                     localStorage.setItem('token', result.token);
+                    dispatch(cartApi.util.invalidateTags(['Cart']));
                 }
 
                 navigate('/', { replace: true });

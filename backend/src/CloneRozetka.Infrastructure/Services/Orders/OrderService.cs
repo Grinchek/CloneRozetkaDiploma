@@ -1,5 +1,6 @@
 using CloneRozetka.Application.Orders;
 using CloneRozetka.Application.Orders.DTOs;
+using CloneRozetka.Application.Search;
 using CloneRozetka.Domain.Entities;
 using CloneRozetka.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -127,6 +128,95 @@ public class OrderService : IOrderService
             .AsNoTracking()
             .Include(o => o.Items)
             .FirstOrDefaultAsync(o => o.Id == orderId && o.UserId == userId, ct);
+        if (order == null)
+            return null;
+
+        return new OrderDetailsDto
+        {
+            Id = order.Id,
+            CreatedAt = order.CreatedAt,
+            Status = order.Status,
+            TotalPrice = order.TotalPrice,
+            RecipientName = order.RecipientName,
+            RecipientPhone = order.RecipientPhone,
+            NpCityName = order.NpCityName,
+            NpWarehouseName = order.NpWarehouseName,
+            Comment = order.Comment,
+            Items = order.Items.Select(i => new OrderItemDto
+            {
+                ProductId = i.ProductId,
+                ProductName = i.ProductName,
+                Price = i.Price,
+                Quantity = i.Quantity,
+                ImageUrl = i.ImageUrl,
+                LineTotal = i.LineTotal
+            }).ToList()
+        };
+    }
+
+    public async Task<SearchResult<OrderListItemDto>> GetAdminOrdersPagedAsync(int page, int pageSize, string? dateFilter = null, CancellationToken ct = default)
+    {
+        page = page < 1 ? 1 : page;
+        pageSize = pageSize < 1 ? 10 : pageSize;
+
+        var query = _db.Orders.AsNoTracking();
+
+        var utcNow = DateTime.UtcNow;
+        var filter = (dateFilter ?? "").Trim();
+        if (string.Equals(filter, "today", StringComparison.OrdinalIgnoreCase))
+        {
+            var startOfToday = new DateTime(utcNow.Year, utcNow.Month, utcNow.Day, 0, 0, 0, DateTimeKind.Utc);
+            query = query.Where(o => o.CreatedAt >= startOfToday && o.CreatedAt < startOfToday.AddDays(1));
+        }
+        else if (string.Equals(filter, "week", StringComparison.OrdinalIgnoreCase))
+        {
+            var weekAgo = utcNow.AddDays(-7);
+            query = query.Where(o => o.CreatedAt >= weekAgo);
+        }
+        else if (string.Equals(filter, "month", StringComparison.OrdinalIgnoreCase))
+        {
+            var monthAgo = utcNow.AddDays(-30);
+            query = query.Where(o => o.CreatedAt >= monthAgo);
+        }
+        // "all" or empty: no date filter
+
+        var totalCount = await query.CountAsync(ct);
+        var totalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
+
+        var items = await query
+            .OrderByDescending(o => o.CreatedAt)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .Select(o => new OrderListItemDto
+            {
+                Id = o.Id,
+                CreatedAt = o.CreatedAt,
+                Status = o.Status,
+                TotalPrice = o.TotalPrice,
+                NpCityName = o.NpCityName,
+                NpWarehouseName = o.NpWarehouseName
+            })
+            .ToListAsync(ct);
+
+        return new SearchResult<OrderListItemDto>
+        {
+            Items = items,
+            Pagination = new PaginationModel
+            {
+                TotalCount = totalCount,
+                TotalPages = totalPages,
+                ItemsPerPage = pageSize,
+                CurrentPage = page
+            }
+        };
+    }
+
+    public async Task<OrderDetailsDto?> GetAdminOrderDetailsAsync(long orderId, CancellationToken ct = default)
+    {
+        var order = await _db.Orders
+            .AsNoTracking()
+            .Include(o => o.Items)
+            .FirstOrDefaultAsync(o => o.Id == orderId, ct);
         if (order == null)
             return null;
 

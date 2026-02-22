@@ -22,6 +22,7 @@ public class ProductService : IProductService
     public async Task<IReadOnlyList<ProductListItemDto>> ListAllAsync(CancellationToken ct = default)
     {
         var query = _products.Query(asNoTracking: true)
+            .Where(p => !p.IsDeleted)
             .OrderBy(p => p.Id)
             .Select(p => new ProductListItemDto
             {
@@ -30,6 +31,7 @@ public class ProductService : IProductService
                 Price = p.Price,
                 Slug = p.Slug,
                 CategoryId = p.CategoryId,
+                IsDeleted = p.IsDeleted,
                 MainImageUrl = _images.Query(true)
                     .Where(i => i.ProductId == p.Id)
                     .OrderBy(i => i.Priority)
@@ -39,18 +41,29 @@ public class ProductService : IProductService
         return await _products.ToListAsync(query, ct);
     }
 
-    public async Task<SearchResult<ProductListItemDto>> ListPagedAsync(int page, int itemsPerPage, CancellationToken ct = default)
+    public async Task<SearchResult<ProductListItemDto>> ListPagedAsync(int page, int itemsPerPage, string? search = null, bool? isDeleted = null, CancellationToken ct = default)
     {
         page = page < 1 ? 1 : page;
         itemsPerPage = itemsPerPage < 1 ? 10 : itemsPerPage;
 
         var query = _products.Query(asNoTracking: true);
 
+        if (isDeleted == true)
+            query = query.Where(p => p.IsDeleted);
+        else if (isDeleted == false)
+            query = query.Where(p => !p.IsDeleted);
+
+        if (!string.IsNullOrWhiteSpace(search))
+        {
+            var term = search.Trim().ToLower();
+            query = query.Where(p =>
+                p.Name.ToLower().Contains(term) ||
+                (p.Slug != null && p.Slug.ToLower().Contains(term)));
+        }
+
         var totalCount = await query.CountAsync(ct);
         var totalPages = (int)Math.Ceiling(totalCount / (double)itemsPerPage);
 
-        // Для MainImageUrl нам треба підзапит по ProductImages.
-        // Зробимо це через join-підзапит у Select (EF згенерує підзапит SQL).
         var itemsQuery =
             query
                 .OrderBy(p => p.Id)
@@ -63,7 +76,7 @@ public class ProductService : IProductService
                     Price = p.Price,
                     Slug = p.Slug,
                     CategoryId = p.CategoryId,
-
+                    IsDeleted = p.IsDeleted,
                     MainImageUrl = _images.Query(true)
                         .Where(i => i.ProductId == p.Id)
                         .OrderBy(i => i.Priority)
@@ -89,7 +102,7 @@ public class ProductService : IProductService
     public async Task<ProductDetailsDto> GetByIdAsync(long id, CancellationToken ct = default)
     {
         var query = _products.Query(asNoTracking: true)
-            .Where(p => p.Id == id)
+            .Where(p => p.Id == id && !p.IsDeleted)
             .Select(p => new ProductDetailsDto
             {
                 Id = p.Id,
@@ -200,14 +213,19 @@ public class ProductService : IProductService
         if (product is null)
             throw new KeyNotFoundException($"Product with id={id} not found");
 
-        // (опційно) видалити файли з диска
-        var imgs = await _images.ListAsync(i => i.ProductId == id, ct);
-        foreach (var img in imgs)
-        {
-            await _imageService.DeleteImageAsync(img.Name);
-            await _images.DeleteAsync(img, ct);
-        }
+        product.IsDeleted = true;
+        await _products.UpdateAsync(product, ct);
+    }
 
-        await _products.DeleteAsync(product, ct);
+    public async Task RestoreAsync(long id, CancellationToken ct = default)
+    {
+        var product = await _products.Query(asNoTracking: false)
+            .FirstOrDefaultAsync(p => p.Id == id, ct);
+
+        if (product is null)
+            throw new KeyNotFoundException($"Product with id={id} not found");
+
+        product.IsDeleted = false;
+        await _products.UpdateAsync(product, ct);
     }
 }

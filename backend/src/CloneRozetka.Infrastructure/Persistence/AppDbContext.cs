@@ -17,6 +17,7 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, int,
     public DbSet<OrderEntity> Orders => Set<OrderEntity>();
     public DbSet<OrderItemEntity> OrderItems => Set<OrderItemEntity>();
     public DbSet<CartItemEntity> CartItems => Set<CartItemEntity>();
+    public DbSet<FavoriteEntity> Favorites => Set<FavoriteEntity>();
 
     protected override void OnModelCreating(ModelBuilder b)
     {
@@ -82,6 +83,21 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, int,
                 .WithMany()
                 .HasForeignKey(x => x.ProductId)
                 .OnDelete(DeleteBehavior.Restrict);
+            e.HasOne<AppUser>()
+                .WithMany()
+                .HasForeignKey(x => x.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        b.Entity<FavoriteEntity>(e =>
+        {
+            e.ToTable("tblFavorites");
+            e.HasKey(x => x.Id);
+            e.HasIndex(x => new { x.UserId, x.ProductId }).IsUnique();
+            e.HasOne(x => x.Product)
+                .WithMany()
+                .HasForeignKey(x => x.ProductId)
+                .OnDelete(DeleteBehavior.Cascade);
             e.HasOne<AppUser>()
                 .WithMany()
                 .HasForeignKey(x => x.UserId)

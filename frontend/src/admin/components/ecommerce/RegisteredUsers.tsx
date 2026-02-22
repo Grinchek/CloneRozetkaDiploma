@@ -1,6 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Table, TableBody, TableCell, TableHeader, TableRow } from "../ui/table";
 import Badge from "../ui/badge/Badge";
+
+const DEBOUNCE_MS = 400;
 
 interface PaginationModel {
     totalCount: number;
@@ -48,6 +50,9 @@ export default function RegisteredUsers() {
     const [error, setError] = useState<string | null>(null);
 
     const [page, setPage] = useState(1);
+    const [searchInput, setSearchInput] = useState("");
+    const [debouncedSearch, setDebouncedSearch] = useState("");
+    const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     // modal
     const [confirmOpen, setConfirmOpen] = useState(false);
@@ -55,23 +60,36 @@ export default function RegisteredUsers() {
 
     const itemsPerPage = 10;
 
-    const loadUsers = async (pageToLoad: number) => {
+    useEffect(() => {
+        if (debounceRef.current) clearTimeout(debounceRef.current);
+        debounceRef.current = setTimeout(() => {
+            setDebouncedSearch(searchInput.trim());
+            setPage(1);
+        }, DEBOUNCE_MS);
+        return () => {
+            if (debounceRef.current) clearTimeout(debounceRef.current);
+        };
+    }, [searchInput]);
+
+    const loadUsers = async (pageToLoad: number, searchTerm: string) => {
         try {
             setLoading(true);
             setError(null);
 
             const token = localStorage.getItem("token");
+            const hasSearch = searchTerm.length > 0;
 
-            const res = await fetch(
-                `${API_URL}/api/User?page=${pageToLoad}&itemsPerPage=${itemsPerPage}`,
-                {
-                    method: "GET",
-                    headers: {
-                        "Content-Type": "application/json",
-                        ...(token ? { Authorization: `Bearer ${token}` } : {}),
-                    },
-                }
-            );
+            const url = hasSearch
+                ? `${API_URL}/api/User/search?Name=${encodeURIComponent(searchTerm)}&Page=${pageToLoad}&ItemPerPAge=${itemsPerPage}`
+                : `${API_URL}/api/User?page=${pageToLoad}&itemsPerPage=${itemsPerPage}`;
+
+            const res = await fetch(url, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+                },
+            });
 
             if (!res.ok) {
                 const text = await res.text();
@@ -194,9 +212,9 @@ export default function RegisteredUsers() {
     };
 
     useEffect(() => {
-        loadUsers(page);
+        loadUsers(page, debouncedSearch);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [page]);
+    }, [page, debouncedSearch]);
 
     const users = data?.items ?? [];
 
@@ -221,20 +239,33 @@ export default function RegisteredUsers() {
                     )}
                 </div>
 
-                <div className="flex items-center gap-3">
+                <div className="flex flex-wrap items-center gap-3">
+                    <input
+                        type="search"
+                        placeholder="Пошук за іменем..."
+                        value={searchInput}
+                        onChange={(e) => setSearchInput(e.target.value)}
+                        className="w-56 rounded-lg border border-gray-300 bg-white px-3 py-2 text-theme-sm dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+                    />
                     <button
                         className="inline-flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-theme-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200"
-                        onClick={() => loadUsers(page)}
+                        onClick={() => loadUsers(page, debouncedSearch)}
                     >
-                        Refresh
+                        Оновити
                     </button>
 
-                    <button
-                        className="inline-flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-theme-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200"
-                        onClick={() => setPage(1)}
-                    >
-                        See all
-                    </button>
+                    {debouncedSearch && (
+                        <button
+                            className="inline-flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-theme-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200"
+                            onClick={() => {
+                                setSearchInput("");
+                                setDebouncedSearch("");
+                                setPage(1);
+                            }}
+                        >
+                            Показати всіх
+                        </button>
+                    )}
                 </div>
             </div>
 

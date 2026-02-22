@@ -15,8 +15,10 @@ namespace CloneRozetka.WebApi.Controllers
         public async Task<ActionResult<SearchResult<ProductListItemDto>>> GetPaged(
             [FromQuery] int page = 1,
             [FromQuery] int pageSize = 10,
+            [FromQuery] string? search = null,
+            [FromQuery] bool? isDeleted = null,
             CancellationToken ct = default)
-            => Ok(await productService.ListPagedAsync(page, pageSize, ct));
+            => Ok(await productService.ListPagedAsync(page, pageSize, search, isDeleted, ct));
 
         [HttpGet("{id:long}")]
         public async Task<ActionResult<ProductDetailsDto>> Get(long id, CancellationToken ct)
@@ -44,6 +46,12 @@ namespace CloneRozetka.WebApi.Controllers
             await productService.DeleteAsync(id, ct);
             return NoContent();
         }
-    }
 
+        [HttpPost("{id:long}/restore")]
+        public async Task<IActionResult> Restore(long id, CancellationToken ct)
+        {
+            await productService.RestoreAsync(id, ct);
+            return NoContent();
+        }
+    }
 }

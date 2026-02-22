@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using CloneRozetka.Application.Abstractions;
 using CloneRozetka.Application.Categories.DTOs;
@@ -31,19 +31,32 @@ public class CategoryService : ICategoryService
             _repo.Query(asNoTracking: true)
                  .Where(x => !x.IsDeleted)
                  .ProjectTo<CategoryDto>(_mapper.ConfigurationProvider));
-    public async Task<PagedResponse<CategoryDto>> ListPagedAsync(int page, int pageSize)
+    public async Task<PagedResponse<CategoryDto>> ListPagedAsync(int page, int pageSize, string? search = null, bool? isDeleted = null)
     {
         page = page < 1 ? 1 : page;
         pageSize = pageSize < 1 ? 10 : pageSize;
 
-        var query = _repo.Query(asNoTracking: true)
-            .Where(x => !x.IsDeleted);
+        var query = _repo.Query(asNoTracking: true);
+
+        if (isDeleted == true)
+            query = query.Where(x => x.IsDeleted);
+        else if (isDeleted == false)
+            query = query.Where(x => !x.IsDeleted);
+        // isDeleted == null: no filter (all)
+
+        if (!string.IsNullOrWhiteSpace(search))
+        {
+            var term = search.Trim().ToLower();
+            query = query.Where(x =>
+                x.Name.ToLower().Contains(term) ||
+                (x.UrlSlug != null && x.UrlSlug.ToLower().Contains(term)));
+        }
 
         var totalCount = await query.CountAsync();
         var totalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
 
         var items = await query
-            .OrderBy(x => x.Name) // якщо є Name; або Id/CreatedAt
+            .OrderBy(x => x.Name)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
             .ProjectTo<CategoryDto>(_mapper.ConfigurationProvider)
@@ -112,6 +125,16 @@ public class CategoryService : ICategoryService
         entity.IsDeleted = true;
         await _repo.UpdateAsync(entity);
     }
+
+    public async Task RestoreAsync(int id)
+    {
+        var entity = await _repo.GetByIdAsync(id)
+                     ?? throw new KeyNotFoundException("Category not found");
+
+        entity.IsDeleted = false;
+        await _repo.UpdateAsync(entity);
+    }
+
     public async Task<SearchResult<CategoryDto>> SearchCategoriesAsync(CategorySearchModel model)
     {
         // базовий запит

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { useGoogleLogin, type TokenResponse } from "@react-oauth/google";
 
 import { EyeCloseIcon, EyeIcon } from "../../icons";
@@ -9,6 +10,7 @@ import Checkbox from "../form/input/Checkbox";
 import Button from "../ui/button/Button";
 
 import { useLoginMutation, useLoginByGoogleMutation } from "../../../features/account/apiAccount";
+import { cartApi } from "../../../features/cart/api/cartApi";
 
 type FormState = {
     userNameOrEmail: string;
@@ -17,6 +19,7 @@ type FormState = {
 
 export default function SignInForm() {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const [showPassword, setShowPassword] = useState(false);
     const [isChecked, setIsChecked] = useState(false);
@@ -56,6 +59,7 @@ export default function SignInForm() {
 
             if (result?.token) {
                 localStorage.setItem("token", result.token);
+                dispatch(cartApi.util.invalidateTags(["Cart"]));
                 navigate("/", { replace: true });
             } else {
                 setError("Не вдалося увійти: сервер не повернув токен.");
@@ -76,6 +80,7 @@ export default function SignInForm() {
 
                 if (result?.token) {
                     localStorage.setItem("token", result.token);
+                    dispatch(cartApi.util.invalidateTags(["Cart"]));
                     navigate("/", { replace: true });
                 } else {
                     setError("Google-вхід: сервер не повернув токен.");

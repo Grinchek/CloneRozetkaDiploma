@@ -5,4 +5,5 @@ export interface CategoryDto {
   urlSlug: string;
   parentId: number | null;
   image: string | null;
+  isDeleted?: boolean;
 }

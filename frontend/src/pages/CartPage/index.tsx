@@ -7,8 +7,8 @@ import {
     useAddCartItemMutation,
     type CartItemDto,
 } from "../../features/cart/api/cartApi";
+import { buildProductImageSrc } from "../../features/products/utils/productImageUrl";
 
-const API_BASE = import.meta.env.VITE_API_BASE;
 const LEGACY_CART_KEY = "cart";
 const MIGRATED_KEY = "cart_migrated";
 
@@ -74,8 +74,7 @@ export default function CartPage() {
 
     const buildImageSrc = (value?: string | null): string => {
         if (!value) return "/icons/ZORYA-LOGO.svg";
-        if (value.startsWith("http")) return value;
-        return `${API_BASE}${value.startsWith("/") ? "" : "/"}${value}`;
+        return buildProductImageSrc(value) ?? "/icons/ZORYA-LOGO.svg";
     };
 
     if (!token) {

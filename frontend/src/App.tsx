@@ -27,9 +27,14 @@ import MainLayout from "./layout/MainLayout.tsx";
 import RegisteredUsers from "./admin/components/ecommerce/RegisteredUsers.tsx";
 import AdminCategories from "./admin/components/ecommerce/AdminCategories.tsx";
 import AdminProducts from "./admin/components/ecommerce/AdminProducts.tsx";
+import AdminOrders from "./admin/components/ecommerce/AdminOrders.tsx";
+import AdminOrderDetails from "./admin/components/ecommerce/AdminOrderDetails.tsx";
+import AdminCarts from "./admin/components/ecommerce/AdminCarts.tsx";
+import AdminCartDetails from "./admin/components/ecommerce/AdminCartDetails.tsx";
 
 import ProductPage from "./pages/ProductPage/index.tsx";
 import CartPage from "./pages/CartPage/index.tsx";
+import FavoritesPage from "./pages/FavoritesPage/index.tsx";
 import CatalogPage from "./pages/CatalogPage/index.tsx";
 import CheckoutPage from "./pages/CheckoutPage/index.tsx";
 import OrdersPage from "./pages/OrdersPage/index.tsx";
@@ -46,6 +51,7 @@ export default function App() {
                     <Route path="profile" element={<ProfilePage />} />
                     <Route path="product/:id" element={<ProductPage />} />
                     <Route path="cart" element={<CartPage />} />
+                    <Route path="favorites" element={<FavoritesPage />} />
                     <Route path="checkout" element={<CheckoutPage />} />
                     <Route path="orders" element={<OrdersPage />} />
                     <Route path="orders/:id" element={<OrderDetailsPage />} />
@@ -59,6 +65,10 @@ export default function App() {
                         <Route path="registered-users" element={<RegisteredUsers />} />
                         <Route path="admin-categories" element={<AdminCategories />} />
                         <Route path="admin-products" element={<AdminProducts />} />
+                        <Route path="orders" element={<AdminOrders />} />
+                        <Route path="orders/:id" element={<AdminOrderDetails />} />
+                        <Route path="carts" element={<AdminCarts />} />
+                        <Route path="carts/:userId" element={<AdminCartDetails />} />
                         <Route path="profile" element={<UserProfiles />} />
                         <Route path="calendar" element={<Calendar />} />
                         <Route path="blank" element={<Blank />} />

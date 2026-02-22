@@ -30,11 +30,12 @@
     font-size: 14px;
 }
 
-/* Сітка товарів */
+/* Сітка товарів — однакова висота карток у рядку */
 .products-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 16px;
+    align-items: stretch;
 }
 
 
