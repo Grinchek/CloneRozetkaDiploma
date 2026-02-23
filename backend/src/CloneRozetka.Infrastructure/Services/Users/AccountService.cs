@@ -1,4 +1,4 @@
-﻿
+
 using AutoMapper;
 using CloneRozetka.Application;
 using CloneRozetka.Application.Abstractions;
@@ -124,6 +124,7 @@ public class AccountService(IJwtTokenService tokenService,
     public async Task<bool> ValidateResetTokenAsync(ValidateResetTokenModel model)
     {
         var user = await userManager.FindByEmailAsync(model.Email);
+        if (user == null) return false;
 
         return await userManager.VerifyUserTokenAsync(
             user,
@@ -138,6 +139,90 @@ public class AccountService(IJwtTokenService tokenService,
 
         if (user != null)
             await userManager.ResetPasswordAsync(user, model.Token, model.NewPassword);
+    }
+
+    public async Task<UserProfileDto?> GetProfileAsync(int userId)
+    {
+        var user = await userManager.FindByIdAsync(userId.ToString());
+        if (user == null) return null;
+
+        var roles = await userManager.GetRolesAsync(user);
+        var mainRole = roles.FirstOrDefault() ?? "User";
+
+        return new UserProfileDto
+        {
+            Email = user.Email,
+            UserName = user.UserName,
+            FullName = user.FullName,
+            PhoneNumber = user.PhoneNumber,
+            AvatarUrl = user.AvatarUrl,
+            IsEmailConfirmed = user.EmailConfirmed,
+            CreatedAt = user.CreatedAt,
+            Role = mainRole
+        };
+    }
+
+    public async Task<UserProfileDto?> UpdateProfileAsync(int userId, UpdateProfileRequest request)
+    {
+        var user = await userManager.FindByIdAsync(userId.ToString());
+        if (user == null) return null;
+
+        if (request.FullName != null)
+            user.FullName = request.FullName.Trim().Length > 0 ? request.FullName.Trim() : null;
+        if (request.PhoneNumber != null)
+            user.PhoneNumber = request.PhoneNumber.Trim().Length > 0 ? request.PhoneNumber.Trim() : null;
+
+        var result = await userManager.UpdateAsync(user);
+        if (!result.Succeeded) return null;
+
+        return await GetProfileAsync(userId);
+    }
+
+    public async Task<(bool Succeeded, IReadOnlyList<string> Errors)> ChangePasswordAsync(int userId, ChangePasswordRequest request)
+    {
+        var user = await userManager.FindByIdAsync(userId.ToString());
+        if (user == null)
+            return (false, new List<string> { "Користувача не знайдено." });
+
+        var result = await userManager.ChangePasswordAsync(user, request.CurrentPassword, request.NewPassword);
+        if (result.Succeeded)
+            return (true, Array.Empty<string>());
+        var errors = result.Errors.Select(e => e.Description).ToList();
+        return (false, errors);
+    }
+
+    public async Task<bool> ConfirmEmailAsync(int userId, string token)
+    {
+        var user = await userManager.FindByIdAsync(userId.ToString());
+        if (user == null) return false;
+
+        var decodedToken = Uri.UnescapeDataString(token);
+        var result = await userManager.ConfirmEmailAsync(user, decodedToken);
+        if (result.Succeeded && !user.IsEmailVarified)
+        {
+            user.IsEmailVarified = true;
+            await userManager.UpdateAsync(user);
+        }
+        return result.Succeeded;
+    }
+
+    public async Task<bool> ResendConfirmationEmailAsync(int userId)
+    {
+        var user = await userManager.FindByIdAsync(userId.ToString());
+        if (user == null || user.Email == null || user.EmailConfirmed) return false;
+
+        var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
+        var clientUrl = configuration["ClientUrl"]?.TrimEnd('/') ?? "http://localhost:5173";
+        var link = $"{clientUrl}/confirm-email?userId={userId}&token={Uri.EscapeDataString(token)}";
+
+        var emailModel = new EmailMessage
+        {
+            To = user.Email,
+            Subject = "Підтвердження email",
+            Body = $"<p>Натисніть посилання для підтвердження email:</p><a href='{link}'>Підтвердити email</a>"
+        };
+
+        return await smtpService.SendEmailAsync(emailModel);
     }
 
     public sealed class GoogleAccountModel

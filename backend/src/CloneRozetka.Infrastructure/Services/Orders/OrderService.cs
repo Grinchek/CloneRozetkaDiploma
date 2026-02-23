@@ -116,6 +116,7 @@ public class OrderService : IOrderService
                 CreatedAt = o.CreatedAt,
                 Status = o.Status,
                 TotalPrice = o.TotalPrice,
+                ItemsCount = o.Items.Count,
                 NpCityName = o.NpCityName,
                 NpWarehouseName = o.NpWarehouseName
             })
@@ -193,6 +194,7 @@ public class OrderService : IOrderService
                 CreatedAt = o.CreatedAt,
                 Status = o.Status,
                 TotalPrice = o.TotalPrice,
+                ItemsCount = o.Items.Count,
                 NpCityName = o.NpCityName,
                 NpWarehouseName = o.NpWarehouseName
             })

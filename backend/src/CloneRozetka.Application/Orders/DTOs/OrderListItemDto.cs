@@ -6,6 +6,7 @@ public class OrderListItemDto
     public DateTime CreatedAt { get; set; }
     public string Status { get; set; } = string.Empty;
     public decimal TotalPrice { get; set; }
+    public int ItemsCount { get; set; }
     public string NpCityName { get; set; } = string.Empty;
     public string NpWarehouseName { get; set; } = string.Empty;
 }

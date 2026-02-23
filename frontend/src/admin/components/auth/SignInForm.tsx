@@ -158,7 +158,7 @@ export default function SignInForm() {
                             </button>
                         </div>
 
-                        <div className="mt-2 text-[11px] text-[#FFD89F] cursor-pointer hover:underline">Не пам’ятаю пароль</div>
+                        <Link to="/forgot-password" className="mt-2 inline-block text-[11px] text-[#FFD89F] hover:underline">Не пам’ятаю пароль</Link>
                     </div>
 
                     {/* Policy checkbox */}
