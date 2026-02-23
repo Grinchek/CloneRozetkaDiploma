@@ -69,7 +69,7 @@ export default function Navbar() {
 
                         <div className="navbar-actions">
                             {token ? (
-                                <Link to={isAdmin ? '/admin' : '/profile'} className="navbar-user">
+                                <Link to={isAdmin ? '/admin' : '/account'} className="navbar-user">
                                     <img src="/icons/navbar-profile.svg" alt="Profile" />
                                 </Link>
                             ) : (

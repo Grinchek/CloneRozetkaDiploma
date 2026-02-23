@@ -30,6 +30,7 @@ builder.Services.AddInfrastructure(
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddValidatorsFromAssemblyContaining<CategoryCreateValidator>();
 builder.Services.AddValidatorsFromAssemblyContaining<CloneRozetka.Application.Orders.Validators.CreateOrderRequestValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<CloneRozetka.Application.Users.Validators.UpdateProfileRequestValidator>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 // Quartz 
 builder.Services.AddQuartz(q =>

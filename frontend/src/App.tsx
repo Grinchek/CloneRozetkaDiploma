@@ -2,7 +2,12 @@ import "./styles.css";
 import { Route, Routes } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import ProfilePage from "./pages/ProfilePage";
+import AccountPage from "./pages/AccountPage";
+import ForgotPasswordPage from "./pages/ForgotPasswordPage";
+import ResetPasswordPage from "./pages/ResetPasswordPage";
+import ConfirmEmailPage from "./pages/ConfirmEmailPage";
 import RequireAdmin from './components/RequireAdmin';
+import RequireAuth from './components/RequireAuth';
 
 
 import AppLayout from "./admin/layout/AppLayout.tsx";
@@ -48,7 +53,13 @@ export default function App() {
                 <Route path="/" element={<MainLayout />}>
                     <Route index element={<HomePage />} />
                     <Route path="login" element={<SignIn />} />
-                    <Route path="profile" element={<ProfilePage />} />
+                    <Route element={<RequireAuth />}>
+                        <Route path="profile" element={<ProfilePage />} />
+                        <Route path="account" element={<AccountPage />} />
+                    </Route>
+                    <Route path="forgot-password" element={<ForgotPasswordPage />} />
+                    <Route path="reset-password" element={<ResetPasswordPage />} />
+                    <Route path="confirm-email" element={<ConfirmEmailPage />} />
                     <Route path="product/:id" element={<ProductPage />} />
                     <Route path="cart" element={<CartPage />} />
                     <Route path="favorites" element={<FavoritesPage />} />

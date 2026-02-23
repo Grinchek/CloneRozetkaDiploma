@@ -1,5 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { apiAccount } from "../features/account/apiAccount.ts";
+import { accountApi } from "../features/account/accountApi.ts";
 import { categoryApi } from '../features/categories/api/categoryApi.ts';
 import { productApi } from "../features/products/api/productApi";
 import { ordersApi } from "../features/orders/api/ordersApi";
@@ -11,6 +12,7 @@ import cartReducer from "./cartSlice";
 export const store = configureStore({
     reducer: {
         [apiAccount.reducerPath]: apiAccount.reducer,
+        [accountApi.reducerPath]: accountApi.reducer,
         [categoryApi.reducerPath]: categoryApi.reducer,
         [productApi.reducerPath]: productApi.reducer,
         [ordersApi.reducerPath]: ordersApi.reducer,
@@ -23,6 +25,7 @@ export const store = configureStore({
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware()
             .concat(apiAccount.middleware)
+            .concat(accountApi.middleware)
             .concat(categoryApi.middleware)
             .concat(productApi.middleware)
             .concat(ordersApi.middleware)
