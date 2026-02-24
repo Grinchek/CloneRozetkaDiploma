@@ -99,6 +99,106 @@
     color: #9ca3af;
 }
 
+.profile-actions {
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid #e5e7eb;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+}
+
+.profile-link {
+    font-size: 14px;
+    color: #4f46e5;
+    text-decoration: none;
+}
+
+.profile-link:hover {
+    text-decoration: underline;
+}
+
+.profile-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+    background: #fff;
+    color: #374151;
+    cursor: pointer;
+}
+
+.profile-btn:hover {
+    background: #f9fafb;
+    border-color: #d1d5db;
+}
+
+.profile-btn--primary {
+    background: #F5A623;
+    border-color: #F5A623;
+    color: #fff;
+}
+
+.profile-btn--primary:hover {
+    background: #D48D1C;
+    border-color: #D48D1C;
+}
+
+.profile-btn--secondary {
+    margin-top: 8px;
+}
+
+.profile-btn--logout {
+    margin-left: auto;
+}
+
+.profile-btn-icon {
+    font-size: 16px;
+}
+
+.badge-role {
+    background: #eef2ff;
+    border-color: #c7d2fe;
+    color: #4338ca;
+}
+
+/* Помилка / незалогінений */
+.profile-page--center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh;
+}
+
+.profile-card--error {
+    text-align: center;
+    max-width: 400px;
+    padding: 32px 24px;
+}
+
+.profile-error-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+}
+
+.profile-error-title {
+    margin: 0 0 8px;
+    font-size: 20px;
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.profile-error-text {
+    margin: 0 0 24px;
+    font-size: 14px;
+    color: #6b7280;
+}
+
 /* Праві блоки */
 .profile-sections {
     display: flex;

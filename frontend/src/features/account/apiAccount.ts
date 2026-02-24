@@ -2,6 +2,15 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 const API_URL = import.meta.env.VITE_API_BASE + '/api/Auth';
 
+/** Response of GET /api/Auth/Me */
+export interface MeResponse {
+    isAuthenticated: boolean;
+    name?: string;
+    email?: string;
+    avatarUrl?: string | null;
+    role: string;
+}
+
 const baseQuery = fetchBaseQuery({
     baseUrl: API_URL,
     prepareHeaders: (headers) => {
@@ -45,21 +54,16 @@ export const apiAccount = createApi({
             query: (body) => ({ url: '/GoogleLogin', method: 'POST', body }),
             invalidatesTags: ['User'],
         }),
-        me: builder.query<
-            {
-                isAuthenticated: boolean;
-                name?: string;
-                email?: string;
-                avatarUrl?: string;
-                role: string;
-                createdAt?: string;
-                isEmailVarified?: boolean;
-                googleId?: string;
-            },
-            void
-        >({
+        /** GET /api/Auth/Me — returns: isAuthenticated, name, email, avatarUrl, role */
+        me: builder.query<MeResponse, void>({
             query: () => ({ url: '/Me', method: 'GET' }),
             providesTags: ['User'],
+        }),
+        forgotPassword: builder.mutation<void, { email: string }>({
+            query: (body) => ({ url: '/ForgotPassword', method: 'POST', body }),
+        }),
+        resetPassword: builder.mutation<void, { email: string; token: string; newPassword: string }>({
+            query: (body) => ({ url: '/ResetPassword', method: 'POST', body }),
         }),
     }),
 });
@@ -69,4 +73,6 @@ export const {
     useRegisterMutation,
     useLoginByGoogleMutation,
     useMeQuery,
+    useForgotPasswordMutation,
+    useResetPasswordMutation,
 } = apiAccount;

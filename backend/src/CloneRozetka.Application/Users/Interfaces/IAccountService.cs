@@ -1,16 +1,17 @@
-﻿using CloneRozetka.Application.Users.DTOs.Account;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using CloneRozetka.Application.Users.DTOs.Account;
 
 namespace CloneRozetka.Application.Users.Interfaces;
 
 public interface IAccountService
 {
-    public Task<string> LoginByGoogle(string token);
-    public Task<bool> ForgotPasswordAsync(ForgotPasswordModel model);
-    public Task<bool> ValidateResetTokenAsync(ValidateResetTokenModel model);
-    public Task ResetPasswordAsync(ResetPasswordModel model);
+    Task<string> LoginByGoogle(string token);
+    Task<bool> ForgotPasswordAsync(ForgotPasswordModel model);
+    Task<bool> ValidateResetTokenAsync(ValidateResetTokenModel model);
+    Task ResetPasswordAsync(ResetPasswordModel model);
+
+    Task<UserProfileDto?> GetProfileAsync(int userId);
+    Task<UserProfileDto?> UpdateProfileAsync(int userId, UpdateProfileRequest request);
+    Task<(bool Succeeded, IReadOnlyList<string> Errors)> ChangePasswordAsync(int userId, ChangePasswordRequest request);
+    Task<bool> ConfirmEmailAsync(int userId, string token);
+    Task<bool> ResendConfirmationEmailAsync(int userId);
 }

@@ -31,6 +31,7 @@ export interface OrderListItem {
     createdAt: string;
     status: string;
     totalPrice: number;
+    itemsCount: number;
     npCityName: string;
     npWarehouseName: string;
 }
