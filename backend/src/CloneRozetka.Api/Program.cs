@@ -10,6 +10,7 @@ using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using Quartz;
+using System.Text.Json.Serialization;
 
 
 // Load .env file
@@ -23,7 +24,9 @@ Directory.CreateDirectory(imagesPath);
 
 // Infrastructure
 builder.Services.AddInfrastructure(
-    opt => opt.UseNpgsql(builder.Configuration.GetConnectionString("Default")),
+    opt => opt.UseNpgsql(
+            builder.Configuration.GetConnectionString("Default"),
+            npgsql => npgsql.MigrationsAssembly("CloneRozetka.Infrastructure")),
     builder.Configuration);
 
 // Application
@@ -66,7 +69,11 @@ builder.Services.Configure<CloneRozetka.Infrastructure.Services.NovaPoshta.NovaP
 builder.Services.AddHttpClient(CloneRozetka.Infrastructure.Services.NovaPoshta.NovaPoshtaService.HttpClientName);
 builder.Services.AddScoped<CloneRozetka.Application.Shipping.NovaPoshta.INovaPoshtaService, CloneRozetka.Infrastructure.Services.NovaPoshta.NovaPoshtaService>();
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHttpClient();

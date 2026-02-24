@@ -126,7 +126,7 @@ export const productApi = createApi({
             providesTags: (_r, _e, id) => [{ type: "Products", id }],
         }),
 
-        createProduct: builder.mutation<void, CreateProductForm>({
+        createProduct: builder.mutation<number, CreateProductForm>({
             query: (body) => ({
                 url: "Products",
                 method: "POST",

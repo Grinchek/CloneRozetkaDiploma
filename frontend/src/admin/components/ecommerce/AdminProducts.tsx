@@ -11,6 +11,14 @@ import {
     type CreateProductForm,
     type UpdateProductForm,
 } from "../../../features/products/api/productApi";
+import {
+    useGetCategoryAttributesQuery,
+    useGetProductAttributesQuery,
+    useSetProductAttributesMutation,
+    type CategoryAttributeItemDto,
+    type ProductAttributeValueUpsertItem,
+    AttributeDataType,
+} from "../../../features/products/api/productAttributesApi";
 import { useGetCategoriesQuery } from "../../../features/categories/api/categoryApi";
 import { buildProductImageCandidates } from "../../../features/products/utils/productImageUrl";
 import { slugify, isSlugValid } from "../../../features/categories/utils/slugify";
@@ -31,6 +39,104 @@ function ProductImage({ imageName }: { imageName: string | null | undefined }) {
             onError={() => setIdx((i) => (i + 1 < candidates.length ? i + 1 : i))}
         />
     );
+}
+
+type AttributeValuePatch = Partial<Omit<ProductAttributeValueUpsertItem, "attributeId">>;
+
+function ProductAttributeField({
+    attr,
+    value,
+    onChange,
+}: {
+    attr: CategoryAttributeItemDto;
+    value: AttributeValuePatch | undefined;
+    onChange: (patch: AttributeValuePatch) => void;
+}) {
+    const label = attr.unit ? `${attr.name} (${attr.unit})` : attr.name;
+    const requiredMark = attr.isRequired ? " *" : "";
+
+    if (attr.dataType === AttributeDataType.String) {
+        return (
+            <div>
+                <label className="mb-1 block text-theme-xs font-medium text-gray-600 dark:text-gray-400">
+                    {label}{requiredMark}
+                </label>
+                <input
+                    type="text"
+                    value={value?.valueString ?? ""}
+                    onChange={(e) => onChange({ valueString: e.target.value || null })}
+                    className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-theme-sm dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+                    placeholder={attr.name}
+                />
+            </div>
+        );
+    }
+    if (attr.dataType === AttributeDataType.Number) {
+        const numVal = value?.valueNumber;
+        return (
+            <div>
+                <label className="mb-1 block text-theme-xs font-medium text-gray-600 dark:text-gray-400">
+                    {label}{requiredMark}
+                </label>
+                <input
+                    type="number"
+                    step="any"
+                    value={numVal !== undefined && numVal !== null ? String(numVal) : ""}
+                    onChange={(e) => {
+                        const v = e.target.value.trim();
+                        onChange({ valueNumber: v === "" ? null : parseFloat(v) });
+                    }}
+                    className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-theme-sm dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+                    placeholder={attr.unit ?? "0"}
+                />
+            </div>
+        );
+    }
+    if (attr.dataType === AttributeDataType.Bool) {
+        const checked = value?.valueBool ?? false;
+        return (
+            <div className="flex items-center gap-2">
+                <input
+                    type="checkbox"
+                    id={`attr-${attr.attributeId}`}
+                    checked={!!checked}
+                    onChange={(e) => onChange({ valueBool: e.target.checked })}
+                    className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800"
+                />
+                <label
+                    htmlFor={`attr-${attr.attributeId}`}
+                    className="text-theme-sm font-medium text-gray-600 dark:text-gray-400"
+                >
+                    {label}{requiredMark}
+                </label>
+            </div>
+        );
+    }
+    if (attr.dataType === AttributeDataType.Enum) {
+        return (
+            <div>
+                <label className="mb-1 block text-theme-xs font-medium text-gray-600 dark:text-gray-400">
+                    {label}{requiredMark}
+                </label>
+                <select
+                    value={value?.optionId != null ? String(value.optionId) : ""}
+                    onChange={(e) => {
+                        const v = e.target.value;
+                        onChange({ optionId: v === "" ? null : Number(v) });
+                    }}
+                    className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-theme-sm dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+                >
+                    <option value="">— Select —</option>
+                    {attr.options.map((opt) => (
+                        <option key={opt.id} value={opt.id}>
+                            {opt.value}
+                        </option>
+                    ))}
+                </select>
+            </div>
+        );
+    }
+    return null;
 }
 
 type ProductFormModalProps = {
@@ -55,6 +161,7 @@ function ProductFormModal({
     const { data: categories = [] } = useGetCategoriesQuery(undefined, { skip: !open });
     const [createProduct, { isLoading: isCreating }] = useCreateProductMutation();
     const [updateProduct, { isLoading: isUpdating }] = useUpdateProductMutation();
+    const [setProductAttributes, { isLoading: isSettingAttributes }] = useSetProductAttributesMutation();
 
     const [name, setName] = useState("");
     const [slug, setSlug] = useState("");
@@ -62,10 +169,24 @@ function ProductFormModal({
     const [description, setDescription] = useState("");
     const [categoryId, setCategoryId] = useState<number | "">("");
     const [imageFiles, setImageFiles] = useState<File[]>([]);
+    const [attributeValues, setAttributeValues] = useState<
+        Record<number, Partial<Omit<ProductAttributeValueUpsertItem, "attributeId">>>
+    >({});
     const [submitError, setSubmitError] = useState<string | null>(null);
     const [slugError, setSlugError] = useState<string | null>(null);
+    const initedAttributesRef = useRef(false);
+    const lastSyncedEditIdRef = useRef<number | null>(null);
 
-    const submitting = isCreating || isUpdating;
+    const effectiveCategoryId = categoryId !== "" ? categoryId : (editProduct?.categoryId ?? 0);
+    const { data: categoryAttributes = [] } = useGetCategoryAttributesQuery(
+        effectiveCategoryId as number,
+        { skip: !open || effectiveCategoryId <= 0 }
+    );
+    const { data: productAttributes = [] } = useGetProductAttributesQuery(editId ?? 0, {
+        skip: !open || mode !== "edit" || editId == null,
+    });
+
+    const submitting = isCreating || isUpdating || isSettingAttributes;
 
     const resetForm = useCallback(() => {
         setName("");
@@ -74,28 +195,63 @@ function ProductFormModal({
         setDescription("");
         setCategoryId("");
         setImageFiles([]);
+        setAttributeValues({});
         setSubmitError(null);
         setSlugError(null);
     }, []);
 
     useEffect(() => {
         if (!open) {
+            initedAttributesRef.current = false;
+            lastSyncedEditIdRef.current = null;
             resetForm();
             return;
         }
-        if (mode === "edit" && editProduct) {
-            setName(editProduct.name);
-            setSlug(editProduct.slug);
-            setPrice(String(editProduct.price));
-            setDescription(editProduct.description ?? "");
-            setCategoryId(editProduct.categoryId);
-            setImageFiles([]);
-            setSubmitError(null);
-            setSlugError(null);
+        if (mode === "edit" && editProduct && editId != null) {
+            if (lastSyncedEditIdRef.current !== editId) {
+                lastSyncedEditIdRef.current = editId;
+                setName(editProduct.name);
+                setSlug(editProduct.slug);
+                setPrice(String(editProduct.price));
+                setDescription(editProduct.description ?? "");
+                setCategoryId(editProduct.categoryId);
+                setImageFiles([]);
+                setSubmitError(null);
+                setSlugError(null);
+            }
         } else if (mode === "create") {
             resetForm();
         }
     }, [open, mode, editId, editProduct, resetForm]);
+
+    // Sync attribute values from product when editing (once per open)
+    const productAttributesKey = editId != null && productAttributes.length >= 0 ? `${editId}-${productAttributes.length}` : "";
+    useEffect(() => {
+        if (!open) return;
+        if (mode === "create") {
+            setAttributeValues({});
+            return;
+        }
+        if (
+            mode === "edit" &&
+            editId != null &&
+            categoryAttributes.length > 0 &&
+            productAttributes.length >= 0 &&
+            !initedAttributesRef.current
+        ) {
+            initedAttributesRef.current = true;
+            const next: Record<number, Partial<Omit<ProductAttributeValueUpsertItem, "attributeId">>> = {};
+            for (const pav of productAttributes) {
+                next[pav.attributeId] = {
+                    valueString: pav.valueString ?? undefined,
+                    valueNumber: pav.valueNumber ?? undefined,
+                    valueBool: pav.valueBool ?? undefined,
+                    optionId: pav.optionId ?? undefined,
+                };
+            }
+            setAttributeValues(next);
+        }
+    }, [open, mode, editId, categoryAttributes.length, productAttributesKey]);
 
     const handleGenerateSlug = () => {
         setSlugError(null);
@@ -138,7 +294,17 @@ function ProductFormModal({
                 images: imageFiles.length ? imageFiles : undefined,
             };
             try {
-                await createProduct(body).unwrap();
+                const newId = await createProduct(body).unwrap();
+                if (categoryAttributes.length > 0 && newId != null) {
+                    const values = categoryAttributes.map((a) => ({
+                        attributeId: a.attributeId,
+                        valueString: attributeValues[a.attributeId]?.valueString ?? null,
+                        valueNumber: attributeValues[a.attributeId]?.valueNumber ?? null,
+                        valueBool: attributeValues[a.attributeId]?.valueBool ?? null,
+                        optionId: attributeValues[a.attributeId]?.optionId ?? null,
+                    }));
+                    await setProductAttributes({ productId: newId, body: { values } }).unwrap();
+                }
                 onSuccess();
                 onClose();
             } catch (err: unknown) {
@@ -160,6 +326,16 @@ function ProductFormModal({
             };
             try {
                 await updateProduct({ id: editId, body }).unwrap();
+                if (categoryAttributes.length > 0) {
+                    const values = categoryAttributes.map((a) => ({
+                        attributeId: a.attributeId,
+                        valueString: attributeValues[a.attributeId]?.valueString ?? null,
+                        valueNumber: attributeValues[a.attributeId]?.valueNumber ?? null,
+                        valueBool: attributeValues[a.attributeId]?.valueBool ?? null,
+                        optionId: attributeValues[a.attributeId]?.optionId ?? null,
+                    }));
+                    await setProductAttributes({ productId: editId, body: { values } }).unwrap();
+                }
                 onSuccess();
                 onClose();
             } catch (err: unknown) {
@@ -276,11 +452,11 @@ function ProductFormModal({
                             </label>
                             <select
                                 value={categoryId === "" ? "" : categoryId}
-                                onChange={(e) =>
-                                    setCategoryId(
-                                        e.target.value === "" ? "" : Number(e.target.value)
-                                    )
-                                }
+                                onChange={(e) => {
+                                    const v = e.target.value === "" ? "" : Number(e.target.value);
+                                    setCategoryId(v);
+                                    setAttributeValues({});
+                                }}
                                 required
                                 className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-theme-sm dark:border-gray-700 dark:bg-gray-800 dark:text-white"
                             >
@@ -291,6 +467,30 @@ function ProductFormModal({
                                     </option>
                                 ))}
                             </select>
+                        </div>
+                        <div className="space-y-3 rounded-lg border border-gray-200 bg-gray-50/50 p-3 dark:border-gray-700 dark:bg-gray-800/30">
+                            <h4 className="text-theme-sm font-medium text-gray-700 dark:text-gray-300">
+                                Атрибути товару
+                            </h4>
+                            {categoryAttributes.length > 0 ? (
+                                categoryAttributes.map((attr) => (
+                                    <ProductAttributeField
+                                        key={attr.attributeId}
+                                        attr={attr}
+                                        value={attributeValues[attr.attributeId]}
+                                        onChange={(patch) =>
+                                            setAttributeValues((prev) => ({
+                                                ...prev,
+                                                [attr.attributeId]: { ...prev[attr.attributeId], ...patch },
+                                            }))
+                                        }
+                                    />
+                                ))
+                            ) : (
+                                <p className="text-theme-xs text-gray-500 dark:text-gray-400">
+                                    Для цієї категорії атрибути не налаштовані. Додайте їх у розділі «Категорії» → виберіть категорію → «Привʼязки атрибутів».
+                                </p>
+                            )}
                         </div>
                         <div>
                             <label className="mb-1 block text-theme-xs font-medium text-gray-600 dark:text-gray-400">

@@ -36,6 +36,7 @@ import AdminOrders from "./admin/components/ecommerce/AdminOrders.tsx";
 import AdminOrderDetails from "./admin/components/ecommerce/AdminOrderDetails.tsx";
 import AdminCarts from "./admin/components/ecommerce/AdminCarts.tsx";
 import AdminCartDetails from "./admin/components/ecommerce/AdminCartDetails.tsx";
+import AdminAttributes from "./admin/components/ecommerce/AdminAttributes.tsx";
 
 import ProductPage from "./pages/ProductPage/index.tsx";
 import CartPage from "./pages/CartPage/index.tsx";
@@ -76,6 +77,7 @@ export default function App() {
                         <Route path="registered-users" element={<RegisteredUsers />} />
                         <Route path="admin-categories" element={<AdminCategories />} />
                         <Route path="admin-products" element={<AdminProducts />} />
+                        <Route path="attributes" element={<AdminAttributes />} />
                         <Route path="orders" element={<AdminOrders />} />
                         <Route path="orders/:id" element={<AdminOrderDetails />} />
                         <Route path="carts" element={<AdminCarts />} />

@@ -1,5 +1,7 @@
 using CloneRozetka.Application.Categories.DTOs;
 using CloneRozetka.Application.Categories.Interfaces;
+using CloneRozetka.Application.ProductAttributes;
+using CloneRozetka.Application.ProductAttributes.DTOs;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,6 +11,7 @@ namespace CloneRozetka.Api.Controllers;
 [Route("api/categories")]
 public class CategoriesController(
     ICategoryService service,
+    ICategoryAttributesService categoryAttributesService,
     IValidator<CategoryCreateRequest> vCreate,
     IValidator<CategoryUpdateRequest> vUpdate) : ControllerBase
 {
@@ -30,6 +33,20 @@ public class CategoriesController(
     {
         var item = await service.GetAsync(id);
         return item is null ? NotFound() : Ok(item);
+    }
+
+    [HttpGet("{id:int}/attributes")]
+    public async Task<ActionResult<IReadOnlyList<CategoryAttributeItemDto>>> GetAttributes(int id, CancellationToken ct = default)
+    {
+        try
+        {
+            var list = await categoryAttributesService.GetAttributesForCategoryAsync(id, ct);
+            return Ok(list);
+        }
+        catch (KeyNotFoundException)
+        {
+            return NotFound();
+        }
     }
 
     [HttpPost]

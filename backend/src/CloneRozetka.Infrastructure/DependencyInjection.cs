@@ -2,8 +2,10 @@ using CloneRozetka.Application.Abstractions;
 using CloneRozetka.Application.Cart;
 using CloneRozetka.Application.Favorites;
 using CloneRozetka.Application.Orders;
+using CloneRozetka.Application.ProductAttributes;
 using CloneRozetka.Application.Users.Interfaces;
 using CloneRozetka.Infrastructure.Persistence;
+using CloneRozetka.Infrastructure.Services.ProductAttributes;
 using CloneRozetka.Infrastructure.Services.Cart;
 using CloneRozetka.Infrastructure.Services.Favorites;
 using CloneRozetka.Infrastructure.Services.Orders;
@@ -113,6 +115,9 @@ public static class DependencyInjection
         services.AddScoped<IOrderService, OrderService>();
         services.AddScoped<ICartService, CartService>();
         services.AddScoped<IFavoritesService, FavoritesService>();
+        services.AddScoped<ICategoryAttributesService, CategoryAttributesService>();
+        services.AddScoped<IProductAttributesService, ProductAttributesService>();
+        services.AddScoped<IAdminAttributesService, AdminAttributesService>();
 
         return services;
     }

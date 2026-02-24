@@ -3,6 +3,7 @@ import { apiAccount } from "../features/account/apiAccount.ts";
 import { accountApi } from "../features/account/accountApi.ts";
 import { categoryApi } from '../features/categories/api/categoryApi.ts';
 import { productApi } from "../features/products/api/productApi";
+import { productAttributesApi } from "../features/products/api/productAttributesApi";
 import { ordersApi } from "../features/orders/api/ordersApi";
 import { shippingApi } from "../features/shipping/api/shippingApi";
 import { cartApi } from "../features/cart/api/cartApi";
@@ -15,6 +16,7 @@ export const store = configureStore({
         [accountApi.reducerPath]: accountApi.reducer,
         [categoryApi.reducerPath]: categoryApi.reducer,
         [productApi.reducerPath]: productApi.reducer,
+        [productAttributesApi.reducerPath]: productAttributesApi.reducer,
         [ordersApi.reducerPath]: ordersApi.reducer,
         [shippingApi.reducerPath]: shippingApi.reducer,
         [cartApi.reducerPath]: cartApi.reducer,
@@ -28,6 +30,7 @@ export const store = configureStore({
             .concat(accountApi.middleware)
             .concat(categoryApi.middleware)
             .concat(productApi.middleware)
+            .concat(productAttributesApi.middleware)
             .concat(ordersApi.middleware)
             .concat(shippingApi.middleware)
             .concat(cartApi.middleware)
