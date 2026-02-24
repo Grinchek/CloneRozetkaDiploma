@@ -24,11 +24,13 @@ const navItems: NavItem[] = [
   {
     icon: <GridIcon />,
     name: "Dashboard",
-    subItems: [    { name: "Registered users", path: "/admin/registered-users", pro: false },
-    { name: "Categories", path: "/admin/admin-categories", pro: false },
-    { name: "Products", path: "/admin/admin-products", pro: false },
-    { name: "Orders", path: "/admin/orders", pro: false },
-    { name: "Carts", path: "/admin/carts", pro: false },
+    subItems: [
+      { name: "Registered users", path: "/admin/registered-users", pro: false },
+      { name: "Categories", path: "/admin/admin-categories", pro: false },
+      { name: "Products", path: "/admin/admin-products", pro: false },
+      { name: "Attributes", path: "/admin/attributes", pro: false },
+      { name: "Orders", path: "/admin/orders", pro: false },
+      { name: "Carts", path: "/admin/carts", pro: false },
     ],
   },
   {

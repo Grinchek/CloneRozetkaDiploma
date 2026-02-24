@@ -12,6 +12,12 @@ import {
     type CreateCategoryForm,
     type UpdateCategoryForm,
 } from "../../../features/categories/api/categoryApi";
+import {
+    useGetAdminCategoryAttributeBindingsQuery,
+    useSetAdminCategoryAttributeBindingsMutation,
+    useGetAdminAttributesListQuery,
+    type AdminCategoryAttributeBindingUpdateItem,
+} from "../../../features/products/api/productAttributesApi";
 import { buildCategoryIconCandidates } from "../../../features/categories/utils/categoryImageUrl";
 import { slugify, isSlugValid } from "../../../features/categories/utils/slugify";
 
@@ -44,18 +50,31 @@ function CategoryFormModal({ open, mode, editId, onClose, onSuccess }: FormModal
         { skip: !open || mode !== "edit" || editId == null }
     );
     const { data: allCategories = [] } = useGetCategoriesQuery(undefined, { skip: !open });
+    const { data: bindingsResponse } = useGetAdminCategoryAttributeBindingsQuery(editId ?? 0, {
+        skip: !open || mode !== "edit" || editId == null,
+    });
+    const directBindings = bindingsResponse?.direct ?? [];
+    const inheritedBindings = bindingsResponse?.inherited ?? [];
+    const { data: adminAttributesData } = useGetAdminAttributesListQuery(
+        { page: 1, pageSize: 200 },
+        { skip: !open || mode !== "edit" }
+    );
     const [createCategory, { isLoading: isCreating }] = useCreateCategoryMutation();
     const [updateCategory, { isLoading: isUpdating }] = useUpdateCategoryMutation();
+    const [setAdminCategoryAttributeBindings, { isLoading: isSavingBindings }] =
+        useSetAdminCategoryAttributeBindingsMutation();
 
     const [name, setName] = useState("");
     const [priority, setPriority] = useState(0);
     const [urlSlug, setUrlSlug] = useState("");
     const [parentId, setParentId] = useState<number | "">("");
     const [imageFile, setImageFile] = useState<File | null>(null);
+    const [bindings, setBindings] = useState<AdminCategoryAttributeBindingUpdateItem[]>([]);
     const [submitError, setSubmitError] = useState<string | null>(null);
     const [slugError, setSlugError] = useState<string | null>(null);
+    const bindingsSyncedRef = useRef(false);
 
-    const submitting = isCreating || isUpdating;
+    const submitting = isCreating || isUpdating || isSavingBindings;
 
     const resetForm = useCallback(() => {
         setName("");
@@ -63,12 +82,15 @@ function CategoryFormModal({ open, mode, editId, onClose, onSuccess }: FormModal
         setUrlSlug("");
         setParentId("");
         setImageFile(null);
+        setBindings([]);
         setSubmitError(null);
         setSlugError(null);
+        bindingsSyncedRef.current = false;
     }, []);
 
     useEffect(() => {
         if (!open) {
+            bindingsSyncedRef.current = false;
             resetForm();
             return;
         }
@@ -84,6 +106,45 @@ function CategoryFormModal({ open, mode, editId, onClose, onSuccess }: FormModal
             resetForm();
         }
     }, [open, mode, editId, editCategory, resetForm]);
+
+    useEffect(() => {
+        if (!open || mode !== "edit" || editId == null) return;
+        if (!bindingsSyncedRef.current && bindingsResponse != null) {
+            bindingsSyncedRef.current = true;
+            setBindings(
+                directBindings.map((b) => ({
+                    attributeId: b.attributeId,
+                    isRequired: b.isRequired,
+                    sortOrder: b.sortOrder,
+                    isFilterable: b.isFilterable,
+                }))
+            );
+        }
+    }, [open, mode, editId, bindingsResponse, directBindings]);
+
+    const allAttributes = adminAttributesData?.items ?? [];
+    const boundIds = new Set(bindings.map((b) => b.attributeId));
+    const availableToAdd = allAttributes.filter((a) => !boundIds.has(a.id));
+
+    const addBinding = (attributeId: number) => {
+        setBindings((prev) => [
+            ...prev,
+            { attributeId, isRequired: false, sortOrder: prev.length, isFilterable: false },
+        ]);
+    };
+    const removeBinding = (index: number) => {
+        setBindings((prev) => prev.filter((_, i) => i !== index));
+    };
+    const updateBinding = (index: number, patch: Partial<AdminCategoryAttributeBindingUpdateItem>) => {
+        setBindings((prev) =>
+            prev.map((b, i) => (i === index ? { ...b, ...patch } : b))
+        );
+    };
+    const getAttributeName = (attributeId: number) =>
+        allAttributes.find((a) => a.id === attributeId)?.name ??
+        directBindings.find((b) => b.attributeId === attributeId)?.attributeName ??
+        inheritedBindings.find((b) => b.attributeId === attributeId)?.attributeName ??
+        String(attributeId);
 
     const handleGenerateSlug = () => {
         setSlugError(null);
@@ -131,6 +192,10 @@ function CategoryFormModal({ open, mode, editId, onClose, onSuccess }: FormModal
             };
             try {
                 await updateCategory(body).unwrap();
+                await setAdminCategoryAttributeBindings({
+                    categoryId: editId,
+                    body: { bindings },
+                }).unwrap();
                 onSuccess();
                 onClose();
             } catch (err: any) {
@@ -245,6 +310,119 @@ function CategoryFormModal({ open, mode, editId, onClose, onSuccess }: FormModal
                                 </p>
                             )}
                         </div>
+                        {mode === "edit" && editId != null && (
+                            <div className="space-y-4 rounded-lg border border-gray-200 bg-gray-50/50 p-3 dark:border-gray-700 dark:bg-gray-800/30">
+                                {inheritedBindings.length > 0 && (
+                                    <div className="space-y-2">
+                                        <h4 className="text-theme-sm font-medium text-gray-700 dark:text-gray-300">
+                                            Успадковані з батьківських категорій
+                                        </h4>
+                                        <p className="text-theme-xs text-gray-500 dark:text-gray-400">
+                                            Ці атрибути успадковані з батьківської ієрархії; їх можна змінити лише в тій категорії, де вони задані.
+                                        </p>
+                                        <ul className="space-y-1.5">
+                                            {inheritedBindings.map((b, index) => (
+                                                <li
+                                                    key={`inherited-${b.fromCategoryId}-${b.attributeId}-${index}`}
+                                                    className="flex flex-wrap items-center gap-2 rounded border border-gray-200 bg-white/80 py-1.5 px-2 text-theme-xs dark:border-gray-700 dark:bg-gray-800/80"
+                                                >
+                                                    <span className="font-medium text-gray-700 dark:text-gray-200">
+                                                        {b.attributeName}
+                                                    </span>
+                                                    <span className="text-gray-500 dark:text-gray-400">
+                                                        ← з категорії: {b.fromCategoryName}
+                                                    </span>
+                                                    {b.isRequired && (
+                                                        <span className="rounded bg-amber-100 px-1.5 py-0.5 text-amber-800 dark:bg-amber-900/40 dark:text-amber-200">
+                                                            обовʼязк.
+                                                        </span>
+                                                    )}
+                                                    {b.isFilterable && (
+                                                        <span className="text-gray-500 dark:text-gray-400">фільтр</span>
+                                                    )}
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                )}
+                                <div className="space-y-3">
+                                    <h4 className="text-theme-sm font-medium text-gray-700 dark:text-gray-300">
+                                        Привʼязки цієї категорії
+                                    </h4>
+                                    <p className="text-theme-xs text-gray-500 dark:text-gray-400">
+                                        Ці атрибути будуть доступні для товарів цієї категорії. Збережіть категорію, щоб зберегти зміни.
+                                    </p>
+                                    {bindings.map((b, index) => (
+                                        <div
+                                            key={`${b.attributeId}-${index}`}
+                                            className="flex flex-wrap items-center gap-2 rounded border border-gray-200 bg-white p-2 dark:border-gray-700 dark:bg-gray-800"
+                                        >
+                                            <span className="text-theme-sm font-medium text-gray-700 dark:text-gray-200 min-w-[120px]">
+                                                {getAttributeName(b.attributeId)}
+                                            </span>
+                                            <label className="flex items-center gap-1 text-theme-xs">
+                                                <input
+                                                    type="checkbox"
+                                                    checked={b.isRequired}
+                                                    onChange={(e) => updateBinding(index, { isRequired: e.target.checked })}
+                                                    className="h-3.5 w-3.5 rounded border-gray-300 text-blue-600 dark:border-gray-600"
+                                                />
+                                                Обовʼязк.
+                                            </label>
+                                            <label className="flex items-center gap-1 text-theme-xs">
+                                                <input
+                                                    type="checkbox"
+                                                    checked={b.isFilterable}
+                                                    onChange={(e) => updateBinding(index, { isFilterable: e.target.checked })}
+                                                    className="h-3.5 w-3.5 rounded border-gray-300 text-blue-600 dark:border-gray-600"
+                                                />
+                                                Фільтр
+                                            </label>
+                                            <input
+                                                type="number"
+                                                min={0}
+                                                value={b.sortOrder}
+                                                onChange={(e) => updateBinding(index, { sortOrder: Number(e.target.value) || 0 })}
+                                                className="w-14 rounded border border-gray-300 px-2 py-1 text-theme-xs dark:border-gray-600 dark:bg-gray-800 dark:text-white"
+                                                title="Порядок"
+                                            />
+                                            <button
+                                                type="button"
+                                                onClick={() => removeBinding(index)}
+                                                className="ml-auto rounded border border-red-200 px-2 py-1 text-theme-xs text-red-600 hover:bg-red-50 dark:border-red-800 dark:text-red-400 dark:hover:bg-red-900/20"
+                                            >
+                                                Видалити
+                                            </button>
+                                        </div>
+                                    ))}
+                                    {availableToAdd.length > 0 && (
+                                        <div className="flex items-center gap-2">
+                                            <select
+                                                className="rounded-lg border border-gray-300 bg-white px-3 py-2 text-theme-sm dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+                                                value=""
+                                                onChange={(e) => {
+                                                    const v = e.target.value;
+                                                    if (v) addBinding(Number(v));
+                                                    e.target.value = "";
+                                                }}
+                                            >
+                                                <option value="">+ Додати атрибут</option>
+                                                {availableToAdd.map((a) => (
+                                                    <option key={a.id} value={a.id}>
+                                                        {a.name}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                        </div>
+                                    )}
+                                    {bindings.length === 0 && availableToAdd.length === 0 && allAttributes.length === 0 && (
+                                        <p className="text-theme-xs text-gray-500 dark:text-gray-400">
+                                            Спочатку створіть атрибути в розділі «Атрибути» (довідник).
+                                        </p>
+                                    )}
+                                </div>
+                            </div>
+                        )}
                         {submitError && (
                             <div className="rounded-lg bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 text-theme-sm px-3 py-2">
                                 {submitError}

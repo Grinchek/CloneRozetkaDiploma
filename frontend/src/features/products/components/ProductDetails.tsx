@@ -1,6 +1,6 @@
 import { useParams, Link } from "react-router-dom";
 import { useGetProductByIdQuery } from "../api/productApi";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Heart } from "lucide-react";
 import { useAddCartItemMutation } from "../../../features/cart/api/cartApi";
 import {
@@ -8,8 +8,31 @@ import {
     useAddFavoriteMutation,
     useRemoveFavoriteMutation,
 } from "../../../features/favorites/api/favoritesApi";
+import {
+    useGetProductAttributesQuery,
+    useGetCategoryAttributesQuery,
+    type CategoryAttributeItemDto,
+    type ProductAttributeValueDto,
+} from "../api/productAttributesApi";
 
 const API_BASE = import.meta.env.VITE_API_BASE;
+
+function formatAttributeDisplayValue(
+    pav: ProductAttributeValueDto,
+    attr: CategoryAttributeItemDto | undefined
+): string {
+    if (pav.valueString != null && pav.valueString !== "") return pav.valueString;
+    if (pav.valueNumber != null) {
+        const unit = attr?.unit ? ` ${attr.unit}` : "";
+        return `${pav.valueNumber}${unit}`;
+    }
+    if (pav.valueBool != null) return pav.valueBool ? "Так" : "Ні";
+    if (pav.optionId != null && attr?.options?.length) {
+        const opt = attr.options.find((o) => o.id === pav.optionId);
+        return opt?.value ?? String(pav.optionId);
+    }
+    return "—";
+}
 
 /** Сервер зберігає зображення з префіксом розміру (200_xxx.webp, 800_xxx.webp). */
 function buildImageSrc(value?: string | null, size: number = 800): string {
@@ -25,6 +48,24 @@ export default function ProductDetails() {
     const { id } = useParams<{ id: string }>();
     const productId = Number(id);
     const { data: product, isLoading, error } = useGetProductByIdQuery(productId);
+    const { data: productAttributes = [] } = useGetProductAttributesQuery(productId, {
+        skip: !product || productId <= 0,
+    });
+    const { data: categoryAttributes = [] } = useGetCategoryAttributesQuery(product?.categoryId ?? 0, {
+        skip: !product || (product?.categoryId ?? 0) <= 0,
+    });
+    const attributeDisplayList = useMemo(() => {
+        const byId = new Map(categoryAttributes.map((a) => [a.attributeId, a]));
+        return productAttributes
+            .map((pav) => {
+                const attr = byId.get(pav.attributeId);
+                const name = attr?.name ?? `Атрибут ${pav.attributeId}`;
+                const value = formatAttributeDisplayValue(pav, attr);
+                const sortOrder = attr?.sortOrder ?? 999;
+                return { attributeId: pav.attributeId, name, value, sortOrder };
+            })
+            .sort((a, b) => a.sortOrder - b.sortOrder);
+    }, [productAttributes, categoryAttributes]);
     const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
     const [mainImageIdx, setMainImageIdx] = useState(0);
     const [addToCart, { isLoading: isAdding }] = useAddCartItemMutation();
@@ -118,6 +159,23 @@ export default function ProductDetails() {
                             </Link>
                         )}
                     </div>
+
+                    {attributeDisplayList.length > 0 && (
+                        <div className="mt-8">
+                            <h2 className="text-xl font-semibold mb-3 border-b pb-2">Характеристики</h2>
+                            <dl className="space-y-2">
+                                {attributeDisplayList.map((item) => (
+                                    <div
+                                        key={item.attributeId}
+                                        className="flex justify-between gap-4 py-2 border-b border-gray-100 last:border-0"
+                                    >
+                                        <dt className="text-gray-600 font-medium shrink-0">{item.name}</dt>
+                                        <dd className="text-[#1a1a1a] text-right">{item.value}</dd>
+                                    </div>
+                                ))}
+                            </dl>
+                        </div>
+                    )}
 
                     <div className="mt-8">
                         <h2 className="text-xl font-semibold mb-3 border-b pb-2">Опис</h2>

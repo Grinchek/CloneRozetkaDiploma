@@ -1,0 +1,172 @@
+[
+  {
+    "categorySlug": "electronics",
+    "attributes": [
+      { "name": "Виробник", "slug": "manufacturer", "dataType": "String" },
+      { "name": "Країна виробництва", "slug": "country", "dataType": "String" },
+      { "name": "Гарантія", "slug": "warranty-years", "dataType": "Number", "unit": "років" },
+      { "name": "Колір", "slug": "color", "dataType": "String" },
+      { "name": "Модель", "slug": "model", "dataType": "String" }
+    ]
+  },
+  {
+    "categorySlug": "appliances",
+    "attributes": [
+      { "name": "Виробник", "slug": "manufacturer", "dataType": "String" },
+      { "name": "Клас енергоефективності", "slug": "energy-class", "dataType": "String" },
+      { "name": "Гарантія", "slug": "warranty-years", "dataType": "Number", "unit": "років" },
+      { "name": "Країна виробництва", "slug": "country", "dataType": "String" },
+      { "name": "Колір", "slug": "color", "dataType": "String" }
+    ]
+  },
+  {
+    "categorySlug": "computers-laptops",
+    "attributes": [
+      { "name": "Виробник", "slug": "manufacturer", "dataType": "String" },
+      { "name": "Діагональ екрана", "slug": "screen-size", "dataType": "Number", "unit": "дюймів" },
+      { "name": "Об'єм ОЗП", "slug": "ram-gb", "dataType": "Number", "unit": "ГБ" },
+      { "name": "Об'єм накопичувача", "slug": "storage-gb", "dataType": "Number", "unit": "ГБ" },
+      { "name": "Колір", "slug": "color", "dataType": "String" }
+    ]
+  },
+  {
+    "categorySlug": "phones-accessories",
+    "attributes": [
+      { "name": "Виробник", "slug": "manufacturer", "dataType": "String" },
+      { "name": "Колір", "slug": "color", "dataType": "String" },
+      { "name": "Країна виробництва", "slug": "country", "dataType": "String" },
+      { "name": "Матеріал", "slug": "material", "dataType": "String" },
+      { "name": "Сумісність", "slug": "compatibility", "dataType": "String" }
+    ]
+  },
+  {
+    "categorySlug": "tv-audio-video",
+    "attributes": [
+      { "name": "Виробник", "slug": "manufacturer", "dataType": "String" },
+      { "name": "Діагональ екрана", "slug": "screen-size", "dataType": "Number", "unit": "дюймів" },
+      { "name": "Роздільна здатність", "slug": "resolution", "dataType": "String" },
+      { "name": "Потужність", "slug": "power-watts", "dataType": "Number", "unit": "Вт" },
+      { "name": "Колір", "slug": "color", "dataType": "String" }
+    ]
+  },
+  {
+    "categorySlug": "gaming",
+    "attributes": [
+      { "name": "Виробник", "slug": "manufacturer", "dataType": "String" },
+      { "name": "Платформа", "slug": "platform", "dataType": "String" },
+      { "name": "Жанр", "slug": "genre", "dataType": "String" },
+      { "name": "Вікова категорія", "slug": "age-rating", "dataType": "String" },
+      { "name": "Колір", "slug": "color", "dataType": "String" }
+    ]
+  },
+  {
+    "categorySlug": "home-garden",
+    "attributes": [
+      { "name": "Виробник", "slug": "manufacturer", "dataType": "String" },
+      { "name": "Матеріал", "slug": "material", "dataType": "String" },
+      { "name": "Колір", "slug": "color", "dataType": "String" },
+      { "name": "Розмір", "slug": "size", "dataType": "String" },
+      { "name": "Країна виробництва", "slug": "country", "dataType": "String" }
+    ]
+  },
+  {
+    "categorySlug": "tools-diy",
+    "attributes": [
+      { "name": "Виробник", "slug": "manufacturer", "dataType": "String" },
+      { "name": "Потужність", "slug": "power-watts", "dataType": "Number", "unit": "Вт" },
+      { "name": "Тип харчування", "slug": "power-type", "dataType": "String" },
+      { "name": "Країна виробництва", "slug": "country", "dataType": "String" },
+      { "name": "Гарантія", "slug": "warranty-years", "dataType": "Number", "unit": "років" }
+    ]
+  },
+  {
+    "categorySlug": "auto-products",
+    "attributes": [
+      { "name": "Виробник", "slug": "manufacturer", "dataType": "String" },
+      { "name": "Типорозмір / сумісність", "slug": "compatibility", "dataType": "String" },
+      { "name": "Сезонність", "slug": "season", "dataType": "String" },
+      { "name": "Країна виробництва", "slug": "country", "dataType": "String" },
+      { "name": "Об'єм", "slug": "volume", "dataType": "String" }
+    ]
+  },
+  {
+    "categorySlug": "sport-hobby",
+    "attributes": [
+      { "name": "Виробник", "slug": "manufacturer", "dataType": "String" },
+      { "name": "Розмір", "slug": "size", "dataType": "String" },
+      { "name": "Матеріал", "slug": "material", "dataType": "String" },
+      { "name": "Колір", "slug": "color", "dataType": "String" },
+      { "name": "Вікова категорія", "slug": "age-rating", "dataType": "String" }
+    ]
+  },
+  {
+    "categorySlug": "fashion",
+    "attributes": [
+      { "name": "Бренд", "slug": "manufacturer", "dataType": "String" },
+      { "name": "Розмір", "slug": "size", "dataType": "String" },
+      { "name": "Колір", "slug": "color", "dataType": "String" },
+      { "name": "Склад", "slug": "material", "dataType": "String" },
+      { "name": "Країна виробництва", "slug": "country", "dataType": "String" }
+    ]
+  },
+  {
+    "categorySlug": "kids",
+    "attributes": [
+      { "name": "Виробник", "slug": "manufacturer", "dataType": "String" },
+      { "name": "Вік", "slug": "age-rating", "dataType": "String" },
+      { "name": "Матеріал", "slug": "material", "dataType": "String" },
+      { "name": "Колір", "slug": "color", "dataType": "String" },
+      { "name": "Країна виробництва", "slug": "country", "dataType": "String" }
+    ]
+  },
+  {
+    "categorySlug": "beauty-health",
+    "attributes": [
+      { "name": "Бренд", "slug": "manufacturer", "dataType": "String" },
+      { "name": "Тип шкіри", "slug": "skin-type", "dataType": "String" },
+      { "name": "Об'єм", "slug": "volume", "dataType": "String" },
+      { "name": "Країна виробництва", "slug": "country", "dataType": "String" },
+      { "name": "Термін придатності", "slug": "shelf-life", "dataType": "String" }
+    ]
+  },
+  {
+    "categorySlug": "pets",
+    "attributes": [
+      { "name": "Виробник", "slug": "manufacturer", "dataType": "String" },
+      { "name": "Вік тварини", "slug": "age-rating", "dataType": "String" },
+      { "name": "Вага / розмір", "slug": "size", "dataType": "String" },
+      { "name": "Склад", "slug": "material", "dataType": "String" },
+      { "name": "Країна виробництва", "slug": "country", "dataType": "String" }
+    ]
+  },
+  {
+    "categorySlug": "office-stationery",
+    "attributes": [
+      { "name": "Виробник", "slug": "manufacturer", "dataType": "String" },
+      { "name": "Колір", "slug": "color", "dataType": "String" },
+      { "name": "Формат", "slug": "size", "dataType": "String" },
+      { "name": "Матеріал", "slug": "material", "dataType": "String" },
+      { "name": "Країна виробництва", "slug": "country", "dataType": "String" }
+    ]
+  },
+  {
+    "categorySlug": "building-repair",
+    "attributes": [
+      { "name": "Виробник", "slug": "manufacturer", "dataType": "String" },
+      { "name": "Розмір / товщина", "slug": "size", "dataType": "String" },
+      { "name": "Матеріал", "slug": "material", "dataType": "String" },
+      { "name": "Країна виробництва", "slug": "country", "dataType": "String" },
+      { "name": "Гарантія", "slug": "warranty-years", "dataType": "Number", "unit": "років" }
+    ]
+  },
+  {
+    "categorySlug": "food-drinks",
+    "attributes": [
+      { "name": "Виробник", "slug": "manufacturer", "dataType": "String" },
+      { "name": "Країна походження", "slug": "country", "dataType": "String" },
+      { "name": "Вага / об'єм", "slug": "volume", "dataType": "String" },
+      { "name": "Термін придатності", "slug": "shelf-life", "dataType": "String" },
+      { "name": "Склад", "slug": "material", "dataType": "String" }
+    ]
+  }
+]

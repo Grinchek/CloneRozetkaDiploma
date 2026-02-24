@@ -1,7 +1,8 @@
-﻿using CloneRozetka.Application.Abstractions;
+using CloneRozetka.Application.Abstractions;
 using CloneRozetka.Infrastructure.Identity;
 using CloneRozetka.Infrastructure.Persistence;
 using CloneRozetka.Infrastructure.Persistence.Seed;
+using CloneRozetka.Infrastructure.Persistence.Seed.Attributes;
 using CloneRozetka.Infrastructure.Persistence.Seed.Products;
 using CloneRozetka.Infrastructure.Persistence.Seed.Users;
 using Microsoft.AspNetCore.Identity;
@@ -37,5 +38,8 @@ public class DbSeederService(IServiceProvider serviceProvider) : IDbSeederServic
         await ProductSeeder.SeedAsync(db, productPath);
 
         await ProductImageSeeder.SeedAsync(db, imageService);
+
+        var attributesPath = Path.Combine(Directory.GetCurrentDirectory(), "Files", "SeederFiles", "attributes.json");
+        await AttributeSeeder.SeedAsync(db, attributesPath);
     }
 }
