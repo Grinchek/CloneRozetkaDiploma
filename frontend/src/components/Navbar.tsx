@@ -2,6 +2,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useMeQuery } from '../features/account/apiAccount';
 import { useGetCartQuery } from '../features/cart/api/cartApi';
 import { useGetFavoritesQuery } from '../features/favorites/api/favoritesApi';
+import { useGetCompareIdsQuery } from '../features/compare/api/compareApi';
 
 const topLinks = ["Акції", "Тренди", "Для бізнесу", "Допомога"];
 const categories = [
@@ -20,8 +21,10 @@ export default function Navbar() {
     const isAdmin = me?.role === 'Admin';
     const { data: cart } = useGetCartQuery(undefined, { skip: !token });
     const { data: favorites = [] } = useGetFavoritesQuery(undefined, { skip: !token });
+    const { data: compareIds = [] } = useGetCompareIdsQuery(undefined, { skip: !token });
     const cartCount = cart?.totalQuantity ?? 0;
     const favoritesCount = favorites.length;
+    const compareCount = compareIds.length;
 
     return (
         <header className="w-full">
@@ -57,7 +60,14 @@ export default function Navbar() {
 
                     <div className="flex items-center gap-5 text-[#F5A623] text-xl">
                         <span><img src="/icons/navbar-location-line.svg" alt="Location" /></span>
-                        <span><img src="/icons/navbar-ri_scales.svg" alt="Compare" /></span>
+                        <Link to="/compare" className="relative" title="Порівняння">
+                            <img src="/icons/navbar-ri_scales.svg" alt="Порівняння" />
+                            {compareCount > 0 && (
+                                <span className="absolute -top-2 -right-2 bg-[#F5A623] text-[#404236] text-[10px] font-bold px-1.5 py-0.5 rounded-full border-2 border-[#404236] min-w-[18px] text-center">
+                                    {compareCount > 4 ? "4" : compareCount}
+                                </span>
+                            )}
+                        </Link>
                         <Link to="/favorites" className="relative" title="Улюблене">
                             <img src="/icons/navbar-ion_eye-off.svg" alt="Улюблене" />
                             {favoritesCount > 0 && (

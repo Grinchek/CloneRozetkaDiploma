@@ -41,6 +41,7 @@ import AdminAttributes from "./admin/components/ecommerce/AdminAttributes.tsx";
 import ProductPage from "./pages/ProductPage/index.tsx";
 import CartPage from "./pages/CartPage/index.tsx";
 import FavoritesPage from "./pages/FavoritesPage/index.tsx";
+import ComparePage from "./pages/ComparePage/index.tsx";
 import CatalogPage from "./pages/CatalogPage/index.tsx";
 import CheckoutPage from "./pages/CheckoutPage/index.tsx";
 import OrdersPage from "./pages/OrdersPage/index.tsx";
@@ -64,6 +65,7 @@ export default function App() {
                     <Route path="product/:id" element={<ProductPage />} />
                     <Route path="cart" element={<CartPage />} />
                     <Route path="favorites" element={<FavoritesPage />} />
+                    <Route path="compare" element={<ComparePage />} />
                     <Route path="checkout" element={<CheckoutPage />} />
                     <Route path="orders" element={<OrdersPage />} />
                     <Route path="orders/:id" element={<OrderDetailsPage />} />
