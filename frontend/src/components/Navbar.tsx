@@ -28,89 +28,88 @@ export default function Navbar() {
     const compareCount = compareIds.length;
 
     return (
-        <header className="w-full">
-            <div className="bg-[#404236] text-[#FFD89F]">
-                <div className="mx-auto flex h-10 max-w-7xl items-center justify-center gap-8 px-6 text-sm">
+        <header className="site-header">
+            {/* Верхня смуга: Акції, Тренди, тощо */}
+            <div className="site-header__top">
+                <nav className="site-header__top-nav">
                     {topLinks.map((l) => (
-                        <span key={l} className="cursor-pointer hover:opacity-80">{l}</span>
+                        <span key={l} className="site-header__top-link">{l}</span>
                     ))}
-                </div>
+                </nav>
             </div>
 
-            <div className="bg-[#404236]">
-                <div className="mx-auto flex h-16 max-w-7xl items-center gap-6 px-6">
-                    <div className="text-2xl font-bold text-[#F5A623]">
-                        <Link to="/">
-                            <img src="/icons/ZORYA-LOGO.svg" alt="ZORYA" />
-                        </Link>
-                    </div>
+            {/* Основний ряд: лого, пошук, іконки */}
+            <div className="site-header__main">
+                <div className="site-header__main-inner">
+                    <Link to="/" className="site-header__logo" aria-label="ZORYA — на головну">
+                        <img src="/icons/ZORYA-LOGO.svg" alt="ZORYA" />
+                    </Link>
 
-                    <button>
-                        <img src="/icons/navbar-burger.svg" alt="Menu" />
+                    <button type="button" className="site-header__burger" aria-label="Меню">
+                        <img src="/icons/navbar-burger.svg" alt="" />
                     </button>
 
-                    <div className="relative flex-1">
+                    <div className="site-header__search-wrap">
                         <input
+                            type="search"
                             placeholder="Пошук"
-                            className="h-10 w-full rounded-full bg-[#4E4B3D] px-5 pr-12 text-sm text-white placeholder:text-[#FFD89F]/60 outline-none"
+                            className="site-header__search"
+                            aria-label="Пошук"
                         />
-                        <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#F5A623]">
-                            <img src="/icons/navbar-search.svg" alt="Search" />
+                        <span className="site-header__search-icon" aria-hidden>
+                            <img src="/icons/navbar-search.svg" alt="" />
                         </span>
                     </div>
 
-                    <div className="flex items-center gap-5 text-[#F5A623] text-xl">
+                    <div className="site-header__actions">
                         <CitySelector />
-                        <Link to="/compare" className="relative" title="Порівняння">
+                        <Link to="/compare" className="site-header__icon-btn" title="Порівняння">
                             <img src="/icons/navbar-ri_scales.svg" alt="Порівняння" />
                             {compareCount > 0 && (
-                                <span className="absolute -top-2 -right-2 bg-[#F5A623] text-[#404236] text-[10px] font-bold px-1.5 py-0.5 rounded-full border-2 border-[#404236] min-w-[18px] text-center">
+                                <span className="site-header__badge">
                                     {compareCount > 4 ? "4" : compareCount}
                                 </span>
                             )}
                         </Link>
-                        <Link to="/favorites" className="relative" title="Улюблене">
+                        <Link to="/favorites" className="site-header__icon-btn" title="Улюблене">
                             <img src="/icons/navbar-ion_eye-off.svg" alt="Улюблене" />
                             {favoritesCount > 0 && (
-                                <span className="absolute -top-2 -right-2 bg-[#F5A623] text-[#404236] text-[10px] font-bold px-1.5 py-0.5 rounded-full border-2 border-[#404236] min-w-[18px] text-center">
+                                <span className="site-header__badge">
                                     {favoritesCount > 99 ? "99+" : favoritesCount}
                                 </span>
                             )}
                         </Link>
-
-                        <div className="navbar-actions">
-                            {token ? (
-                                <Link to={isAdmin ? '/admin' : '/account'} className="navbar-user">
-                                    <img src="/icons/navbar-profile.svg" alt="Profile" />
-                                </Link>
-                            ) : (
-                                <button
-                                    className="navbar-btn"
-                                    onClick={() => navigate('/login', { replace: true })}
-                                >
-                                    <img src="/icons/navbar-profile.svg" alt="Login" />
-                                </button>
-                            )}
-                        </div>
-
-                        <Link to="/cart" className="relative">
-                            <img src="/icons/navbar-cart.svg" alt="Cart" />
+                        {token ? (
+                            <Link to={isAdmin ? '/admin' : '/account'} className="site-header__icon-btn" title="Профіль">
+                                <img src="/icons/navbar-profile.svg" alt="Профіль" />
+                            </Link>
+                        ) : (
+                            <button
+                                type="button"
+                                className="site-header__icon-btn"
+                                onClick={() => navigate('/login', { replace: true })}
+                                title="Увійти"
+                            >
+                                <img src="/icons/navbar-profile.svg" alt="Увійти" />
+                            </button>
+                        )}
+                        <Link to="/cart" className="site-header__icon-btn site-header__icon-btn--cart" title="Кошик">
+                            <img src="/icons/navbar-cart.svg" alt="Кошик" />
                             {cartCount > 0 && (
-                                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full border-2 border-[#404236]">
-                                    {cartCount}
-                                </span>
+                                <span className="site-header__badge site-header__badge--cart">{cartCount}</span>
                             )}
                         </Link>
                     </div>
                 </div>
             </div>
 
-            <div className="bg-[#4E4B3D]">
-                <div className="mx-auto flex h-12 max-w-7xl items-center justify-center gap-10 px-6 text-sm text-[#F1F1F1]">
+            {/* Нижня смуга: категорії */}
+            <div className="site-header__bottom">
+                <nav className="site-header__categories">
                     {categories.map((c) => (
-                        <span key={c} className="cursor-pointer hover:text-[#F5A623]">{c}</span>
+                        <span key={c} className="site-header__category">{c}</span>
                     ))}
-                </div>
+                </nav>
             </div>
         </header>
     );
