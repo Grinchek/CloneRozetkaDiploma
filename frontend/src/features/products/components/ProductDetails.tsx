@@ -9,6 +9,11 @@ import {
     useRemoveFavoriteMutation,
 } from "../../../features/favorites/api/favoritesApi";
 import {
+    useGetCompareIdsQuery,
+    useAddToCompareMutation,
+    useRemoveFromCompareMutation,
+} from "../../../features/compare/api/compareApi";
+import {
     useGetProductAttributesQuery,
     useGetCategoryAttributesQuery,
     type CategoryAttributeItemDto,
@@ -72,7 +77,12 @@ export default function ProductDetails() {
     const [addFavorite] = useAddFavoriteMutation();
     const [removeFavorite] = useRemoveFavoriteMutation();
     const { data: favoriteIds = [] } = useGetFavoriteIdsQuery(undefined, { skip: !token });
+    const { data: compareIds = [] } = useGetCompareIdsQuery(undefined, { skip: !token });
+    const [addToCompare, { isLoading: isAddingCompare }] = useAddToCompareMutation();
+    const [removeFromCompare] = useRemoveFromCompareMutation();
+    const [compareMessage, setCompareMessage] = useState<string | null>(null);
     const isInFavorites = productId > 0 && favoriteIds.includes(productId);
+    const isInCompare = productId > 0 && compareIds.includes(productId);
 
     const handleAddToCart = () => {
         if (!product) return;
@@ -83,6 +93,25 @@ export default function ProductDetails() {
         if (!token) return;
         if (isInFavorites) removeFavorite(productId);
         else addFavorite(productId);
+    };
+
+    const handleToggleCompare = () => {
+        if (!token) return;
+        setCompareMessage(null);
+        if (isInCompare) {
+            removeFromCompare(productId);
+        } else {
+            addToCompare(productId)
+                .unwrap()
+                .then(() => {
+                    setCompareMessage("Додано до порівняння");
+                    setTimeout(() => setCompareMessage(null), 3000);
+                })
+                .catch(() => {
+                    setCompareMessage("Максимум 4 товари в порівнянні");
+                    setTimeout(() => setCompareMessage(null), 3000);
+                });
+        }
     };
 
     if (isLoading) return <div className="p-8 text-center">Завантаження...</div>;
@@ -157,6 +186,25 @@ export default function ProductDetails() {
                                 <Heart size={22} strokeWidth={2} />
                                 Увійдіть, щоб додати в обране
                             </Link>
+                        )}
+                        {token && (
+                            <>
+                                <button
+                                    type="button"
+                                    onClick={handleToggleCompare}
+                                    disabled={isAddingCompare}
+                                    className={`inline-flex items-center gap-2 rounded-full border-2 px-6 py-4 font-bold text-lg transition-colors ${
+                                        isInCompare
+                                            ? "border-[#F5A623] bg-[#F5A623]/10 text-[#F5A623] hover:bg-[#F5A623]/20"
+                                            : "border-gray-300 bg-white text-gray-700 hover:border-[#F5A623] hover:text-[#F5A623] disabled:opacity-70"
+                                    }`}
+                                >
+                                    {isInCompare ? "В порівнянні" : "Додати до порівняння"}
+                                </button>
+                                {compareMessage && (
+                                    <span className="text-sm text-[#404236] animate-pulse">{compareMessage}</span>
+                                )}
+                            </>
                         )}
                     </div>
 

@@ -22,6 +22,7 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, int,
     public DbSet<CategoryAttributeEntity> CategoryAttributes => Set<CategoryAttributeEntity>();
     public DbSet<AttributeOptionEntity> AttributeOptions => Set<AttributeOptionEntity>();
     public DbSet<ProductAttributeValueEntity> ProductAttributeValues => Set<ProductAttributeValueEntity>();
+    public DbSet<CompareItemEntity> CompareItems => Set<CompareItemEntity>();
 
     protected override void OnModelCreating(ModelBuilder b)
     {
@@ -157,6 +158,21 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, int,
                 .WithMany()
                 .HasForeignKey(x => x.OptionId)
                 .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        b.Entity<CompareItemEntity>(e =>
+        {
+            e.ToTable("tblCompareItems");
+            e.HasKey(x => x.Id);
+            e.HasIndex(x => new { x.UserId, x.ProductId }).IsUnique();
+            e.HasOne(x => x.Product)
+                .WithMany()
+                .HasForeignKey(x => x.ProductId)
+                .OnDelete(DeleteBehavior.Cascade);
+            e.HasOne<AppUser>()
+                .WithMany()
+                .HasForeignKey(x => x.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
         });
     }
 }

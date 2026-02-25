@@ -1,12 +1,16 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { Heart } from "lucide-react";
+import { Heart, Scale } from "lucide-react";
 import { useAddCartItemMutation } from "../../../features/cart/api/cartApi";
 import {
     useGetFavoriteIdsQuery,
     useAddFavoriteMutation,
     useRemoveFavoriteMutation,
 } from "../../../features/favorites/api/favoritesApi";
+import {
+    useGetCompareIdsQuery,
+    useAddToCompareMutation,
+} from "../../../features/compare/api/compareApi";
 import ProductImage from "./ProductImage";
 import "../../../styles/products.css";
 import type { CategoryNode } from "../../categories/utils/buildTree";
@@ -57,6 +61,8 @@ export default function ProductGrid({ categoryId, categories, hideHeader }: Prod
     const [addFavorite] = useAddFavoriteMutation();
     const [removeFavorite] = useRemoveFavoriteMutation();
     const { data: favoriteIds = [] } = useGetFavoriteIdsQuery(undefined, { skip: !token });
+    const { data: compareIds = [] } = useGetCompareIdsQuery(undefined, { skip: !token });
+    const [addToCompare] = useAddToCompareMutation();
     const [items, setItems] = useState<Product[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -71,6 +77,13 @@ export default function ProductGrid({ categoryId, categories, hideHeader }: Prod
         if (!token) return;
         if (favoriteIds.includes(productId)) removeFavorite(productId);
         else addFavorite(productId);
+    };
+
+    const handleAddToCompare = (e: React.MouseEvent, productId: number) => {
+        e.preventDefault();
+        if (!token) return;
+        if (compareIds.includes(productId)) return;
+        addToCompare(productId);
     };
 
     useEffect(() => {
@@ -138,20 +151,37 @@ export default function ProductGrid({ categoryId, categories, hideHeader }: Prod
                                     loading="lazy"
                                     fallback={<div className="flex h-full items-center justify-center text-gray-300 text-sm italic">Немає зображення</div>}
                                 />
-                                {token && (
-                                    <button
-                                        type="button"
-                                        onClick={(e) => handleToggleFavorite(e, p.id)}
-                                        className={`absolute top-2 right-2 p-2 rounded-full bg-white/90 shadow-sm transition-colors ${
-                                            favoriteIds.includes(p.id)
-                                                ? "text-red-500 fill-red-500 hover:bg-red-50"
-                                                : "text-gray-500 hover:text-red-500 hover:bg-white"
-                                        }`}
-                                        aria-label={favoriteIds.includes(p.id) ? "Прибрати з обраного" : "В обране"}
-                                    >
-                                        <Heart size={18} strokeWidth={2} />
-                                    </button>
-                                )}
+                                <div className="absolute top-2 right-2 flex flex-col gap-1">
+                                    {token && (
+                                        <>
+                                            <button
+                                                type="button"
+                                                onClick={(e) => handleToggleFavorite(e, p.id)}
+                                                className={`p-2 rounded-full bg-white/90 shadow-sm transition-colors ${
+                                                    favoriteIds.includes(p.id)
+                                                        ? "text-red-500 fill-red-500 hover:bg-red-50"
+                                                        : "text-gray-500 hover:text-red-500 hover:bg-white"
+                                                }`}
+                                                aria-label={favoriteIds.includes(p.id) ? "Прибрати з обраного" : "В обране"}
+                                            >
+                                                <Heart size={18} strokeWidth={2} />
+                                            </button>
+                                            <button
+                                                type="button"
+                                                onClick={(e) => handleAddToCompare(e, p.id)}
+                                                disabled={compareIds.includes(p.id) || compareIds.length >= 4}
+                                                className={`p-2 rounded-full bg-white/90 shadow-sm transition-colors ${
+                                                    compareIds.includes(p.id)
+                                                        ? "text-[#F5A623] hover:bg-[#F5A623]/10"
+                                                        : "text-gray-500 hover:text-[#F5A623] hover:bg-white disabled:opacity-50"
+                                                }`}
+                                                aria-label={compareIds.includes(p.id) ? "В порівнянні" : "Додати до порівняння"}
+                                            >
+                                                <Scale size={18} strokeWidth={2} />
+                                            </button>
+                                        </>
+                                    )}
+                                </div>
                             </Link>
                             <div className="flex flex-col flex-1 p-4">
                                 <Link
