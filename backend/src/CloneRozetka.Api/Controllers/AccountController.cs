@@ -110,8 +110,10 @@ public class AccountController : ControllerBase
 
     [HttpGet("confirm-email")]
     [AllowAnonymous]
-    public async Task<IActionResult> ConfirmEmail([FromQuery] int userId, [FromQuery] string token)
+    public async Task<IActionResult> ConfirmEmail([FromQuery] int userId, [FromQuery] string? token)
     {
+        if (userId <= 0)
+            return BadRequest(new { error = "Некоректне посилання. Запитайте новий лист для підтвердження email." });
         if (string.IsNullOrWhiteSpace(token))
             return BadRequest(new { error = "Token обов'язковий." });
 
@@ -121,16 +123,18 @@ public class AccountController : ControllerBase
         return Ok(new { message = "Email підтверджено." });
     }
 
-    [HttpPost("resend-confirmation")]
+    [HttpPost]
+    [Route("resend-confirmation")]
+    [Route("resend_confirmation")]
     [Authorize]
     public async Task<IActionResult> ResendConfirmation()
     {
         var userId = GetUserId();
         if (userId == null) return Unauthorized();
 
-        var ok = await _accountService.ResendConfirmationEmailAsync(userId.Value);
-        if (!ok)
-            return BadRequest(new { error = "Email вже підтверджено або не вдалося надіслати лист." });
+        var (success, errorMessage) = await _accountService.TryResendConfirmationEmailAsync(userId.Value);
+        if (!success)
+            return BadRequest(new { error = errorMessage ?? "Не вдалося надіслати лист." });
         return Ok(new { message = "Лист надіслано." });
     }
 }

@@ -18,11 +18,26 @@ import type { CategoryNode } from "../../categories/utils/buildTree";
 const API_BASE = import.meta.env.VITE_API_BASE;
 const PAGE_SIZE = 16;
 
+export type SortOrder = "default" | "price_asc" | "price_desc" | "name";
+export type DisplayMode = "grid" | "list";
+
 export type ProductGridProps = {
     categoryId?: number | null;
     categories?: CategoryNode[];
     /** При true не показує заголовок "Товари" (для блоку на головній) */
     hideHeader?: boolean;
+    /** Пошук по назві товару */
+    searchQuery?: string;
+    /** Мінімальна ціна (включно) */
+    priceMin?: number;
+    /** Максимальна ціна (включно) */
+    priceMax?: number;
+    /** Порядок сортування */
+    sortOrder?: SortOrder;
+    /** Режим відображення: сітка або список */
+    displayMode?: DisplayMode;
+    /** Колбек з кількістю відфільтрованих товарів (для каталогу) */
+    onFilteredCountChange?: (count: number) => void;
 };
 
 type Product = {
@@ -55,7 +70,17 @@ function collectCategoryIds(category: CategoryNode, acc: number[] = []): number[
     return acc;
 }
 
-export default function ProductGrid({ categoryId, categories, hideHeader }: ProductGridProps) {
+export default function ProductGrid({
+    categoryId,
+    categories,
+    hideHeader,
+    searchQuery = "",
+    priceMin,
+    priceMax,
+    sortOrder = "default",
+    displayMode = "grid",
+    onFilteredCountChange,
+}: ProductGridProps) {
     const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
     const [addCartItem] = useAddCartItemMutation();
     const [addFavorite] = useAddFavoriteMutation();
@@ -106,16 +131,34 @@ export default function ProductGrid({ categoryId, categories, hideHeader }: Prod
 
     useEffect(() => {
         setPage(1);
-    }, [categoryId]);
+    }, [categoryId, searchQuery, priceMin, priceMax, sortOrder]);
 
     const filtered = useMemo(() => {
-        if (!categoryId) return items;
-        if (!categories || categories.length === 0) return items.filter((p) => p.categoryId === categoryId);
-        const root = findCategoryNode(categories, categoryId);
-        if (!root) return items.filter((p) => p.categoryId === categoryId);
-        const allowedIds = collectCategoryIds(root);
-        return items.filter((p) => allowedIds.includes(p.categoryId));
-    }, [items, categoryId, categories]);
+        let list = items;
+        if (categoryId != null) {
+            if (!categories || categories.length === 0) list = list.filter((p) => p.categoryId === categoryId);
+            else {
+                const root = findCategoryNode(categories, categoryId);
+                if (!root) list = list.filter((p) => p.categoryId === categoryId);
+                else {
+                    const allowedIds = collectCategoryIds(root);
+                    list = list.filter((p) => allowedIds.includes(p.categoryId));
+                }
+            }
+        }
+        const q = searchQuery?.trim().toLowerCase();
+        if (q) list = list.filter((p) => p.name.toLowerCase().includes(q));
+        if (priceMin != null && !Number.isNaN(priceMin)) list = list.filter((p) => p.price >= priceMin);
+        if (priceMax != null && !Number.isNaN(priceMax)) list = list.filter((p) => p.price <= priceMax);
+        if (sortOrder === "price_asc") list = [...list].sort((a, b) => a.price - b.price);
+        else if (sortOrder === "price_desc") list = [...list].sort((a, b) => b.price - a.price);
+        else if (sortOrder === "name") list = [...list].sort((a, b) => a.name.localeCompare(b.name, "uk"));
+        return list;
+    }, [items, categoryId, categories, searchQuery, priceMin, priceMax, sortOrder]);
+
+    useEffect(() => {
+        onFilteredCountChange?.(filtered.length);
+    }, [filtered.length, onFilteredCountChange]);
 
     const totalPages = useMemo(() => (filtered.length === 0 ? 1 : Math.ceil(filtered.length / PAGE_SIZE)), [filtered.length]);
     const safePage = Math.min(Math.max(page, 1), totalPages);
@@ -133,77 +176,92 @@ export default function ProductGrid({ categoryId, categories, hideHeader }: Prod
         <div className="products-header">Товари</div>
     );
 
+    const hasActiveFilters = Boolean(searchQuery?.trim() || (priceMin != null && !Number.isNaN(priceMin)) || (priceMax != null && !Number.isNaN(priceMax)));
+    const emptyMessage = hasActiveFilters
+        ? "Нічого не знайдено. Змініть пошук або фільтри."
+        : "Для цієї категорії товарів поки немає";
+
     if (loading) return <section className="products">{headerFragment}<div className="products-muted">Завантаження товарів…</div></section>;
     if (error) return <section className="products">{headerFragment}<div className="products-error">Помилка: {error}</div></section>;
-    if (filtered.length === 0) return <section className="products">{headerFragment}<div className="products-muted">Для цієї категорії товарів поки немає</div></section>;
+    if (filtered.length === 0) return <section className="products">{headerFragment}<div className="products-muted">{emptyMessage}</div></section>;
+
+    const isList = displayMode === "list";
+    const gridClass = isList ? "products-grid products-grid--list" : "products-grid";
 
     return (
         <section className="products">
             {headerFragment}
-            <div className="products-grid">
+            <div className={gridClass}>
                 {pageItems.map((p) => (
-                        <article key={p.id} className="group product-card flex h-full flex-col bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm transition-all duration-300 hover:shadow-lg">
-                            <Link to={`/product/${p.id}`} className="relative aspect-square overflow-hidden bg-gray-50 flex-shrink-0">
-                                <ProductImage
-                                    mainImageUrl={p.mainImageUrl}
-                                    alt={p.name}
-                                    className="h-full w-full object-contain"
-                                    loading="lazy"
-                                    fallback={<div className="flex h-full items-center justify-center text-gray-300 text-sm italic">Немає зображення</div>}
-                                />
-                                <div className="absolute top-2 right-2 flex flex-col gap-1">
-                                    {token && (
-                                        <>
-                                            <button
-                                                type="button"
-                                                onClick={(e) => handleToggleFavorite(e, p.id)}
-                                                className={`p-2 rounded-full bg-white/90 shadow-sm transition-colors ${
-                                                    favoriteIds.includes(p.id)
-                                                        ? "text-red-500 fill-red-500 hover:bg-red-50"
-                                                        : "text-gray-500 hover:text-red-500 hover:bg-white"
-                                                }`}
-                                                aria-label={favoriteIds.includes(p.id) ? "Прибрати з обраного" : "В обране"}
-                                            >
-                                                <Heart size={18} strokeWidth={2} />
-                                            </button>
-                                            <button
-                                                type="button"
-                                                onClick={(e) => handleAddToCompare(e, p.id)}
-                                                disabled={compareIds.includes(p.id) || compareIds.length >= 4}
-                                                className={`p-2 rounded-full bg-white/90 shadow-sm transition-colors ${
-                                                    compareIds.includes(p.id)
-                                                        ? "text-[#F5A623] hover:bg-[#F5A623]/10"
-                                                        : "text-gray-500 hover:text-[#F5A623] hover:bg-white disabled:opacity-50"
-                                                }`}
-                                                aria-label={compareIds.includes(p.id) ? "В порівнянні" : "Додати до порівняння"}
-                                            >
-                                                <Scale size={18} strokeWidth={2} />
-                                            </button>
-                                        </>
-                                    )}
-                                </div>
-                            </Link>
-                            <div className="flex flex-col flex-1 p-4">
-                                <Link
-                                    to={`/product/${p.id}`}
-                                    className="text-[14px] font-medium text-gray-800 hover:text-[#F5A623] transition-colors line-clamp-2 leading-tight mb-2"
-                                >
-                                    {p.name}
-                                </Link>
-                                <div className="mt-auto flex items-center justify-between gap-2 flex-wrap">
-                                    <span className="text-lg font-bold text-[#404236]">
-                                        {p.price.toLocaleString("uk-UA")} ₴
-                                    </span>
-                                    <button
-                                        type="button"
-                                        onClick={() => handleAddToCart(p)}
-                                        className="rounded-xl bg-[#404236] text-white px-4 py-2 text-sm font-medium hover:bg-[#F5A623] transition-colors shrink-0"
-                                    >
-                                        Купити
-                                    </button>
-                                </div>
+                    <article
+                        key={p.id}
+                        className={
+                            isList
+                                ? "group product-card product-card--list flex flex-row w-full bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm transition-all duration-300 hover:shadow-lg"
+                                : "group product-card flex h-full flex-col bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm transition-all duration-300 hover:shadow-lg"
+                        }
+                    >
+                        <Link to={`/product/${p.id}`} className={isList ? "relative w-40 shrink-0 aspect-square overflow-hidden bg-gray-50" : "relative aspect-square overflow-hidden bg-gray-50 flex-shrink-0"}>
+                            <ProductImage
+                                mainImageUrl={p.mainImageUrl}
+                                alt={p.name}
+                                className="h-full w-full object-contain"
+                                loading="lazy"
+                                fallback={<div className="flex h-full items-center justify-center text-gray-300 text-sm italic">Немає зображення</div>}
+                            />
+                            <div className="absolute top-2 right-2 flex flex-col gap-1">
+                                {token && (
+                                    <>
+                                        <button
+                                            type="button"
+                                            onClick={(e) => handleToggleFavorite(e, p.id)}
+                                            className={`p-2 rounded-full bg-white/90 shadow-sm transition-colors ${
+                                                favoriteIds.includes(p.id)
+                                                    ? "text-red-500 fill-red-500 hover:bg-red-50"
+                                                    : "text-gray-500 hover:text-red-500 hover:bg-white"
+                                            }`}
+                                            aria-label={favoriteIds.includes(p.id) ? "Прибрати з обраного" : "В обране"}
+                                        >
+                                            <Heart size={18} strokeWidth={2} />
+                                        </button>
+                                        <button
+                                            type="button"
+                                            onClick={(e) => handleAddToCompare(e, p.id)}
+                                            disabled={compareIds.includes(p.id) || compareIds.length >= 4}
+                                            className={`p-2 rounded-full bg-white/90 shadow-sm transition-colors ${
+                                                compareIds.includes(p.id)
+                                                    ? "text-[#F5A623] hover:bg-[#F5A623]/10"
+                                                    : "text-gray-500 hover:text-[#F5A623] hover:bg-white disabled:opacity-50"
+                                            }`}
+                                            aria-label={compareIds.includes(p.id) ? "В порівнянні" : "Додати до порівняння"}
+                                        >
+                                            <Scale size={18} strokeWidth={2} />
+                                        </button>
+                                    </>
+                                )}
                             </div>
-                        </article>
+                        </Link>
+                        <div className={isList ? "flex flex-col flex-1 p-4 justify-center min-w-0" : "flex flex-col flex-1 p-4"}>
+                            <Link
+                                to={`/product/${p.id}`}
+                                className="text-[14px] font-medium text-gray-800 hover:text-[#F5A623] transition-colors line-clamp-2 leading-tight mb-2"
+                            >
+                                {p.name}
+                            </Link>
+                            <div className={isList ? "flex items-center justify-between gap-4 flex-wrap" : "mt-auto flex items-center justify-between gap-2 flex-wrap"}>
+                                <span className="text-lg font-bold text-[#404236]">
+                                    {p.price.toLocaleString("uk-UA")} ₴
+                                </span>
+                                <button
+                                    type="button"
+                                    onClick={() => handleAddToCart(p)}
+                                    className="rounded-xl bg-[#404236] text-white px-4 py-2 text-sm font-medium hover:bg-[#F5A623] transition-colors shrink-0"
+                                >
+                                    Купити
+                                </button>
+                            </div>
+                        </div>
+                    </article>
                 ))}
             </div>
             <div className="products-pagination">

@@ -196,7 +196,18 @@ public class AccountService(IJwtTokenService tokenService,
         var user = await userManager.FindByIdAsync(userId.ToString());
         if (user == null) return false;
 
-        var decodedToken = Uri.UnescapeDataString(token);
+        // Деякі клієнти пошти або query string передають пробіл замість + у токені
+        token = token.Replace(' ', '+');
+        // Подвійне (або потрійне) кодування посилання в листі — декодуємо до стабільного вигляду
+        string decodedToken;
+        var prev = "";
+        decodedToken = token;
+        while (decodedToken != prev)
+        {
+            prev = decodedToken;
+            decodedToken = Uri.UnescapeDataString(decodedToken);
+        }
+
         var result = await userManager.ConfirmEmailAsync(user, decodedToken);
         if (result.Succeeded && !user.IsEmailVarified)
         {
@@ -208,8 +219,16 @@ public class AccountService(IJwtTokenService tokenService,
 
     public async Task<bool> ResendConfirmationEmailAsync(int userId)
     {
+        var (success, _) = await TryResendConfirmationEmailAsync(userId);
+        return success;
+    }
+
+    public async Task<(bool Success, string? ErrorMessage)> TryResendConfirmationEmailAsync(int userId)
+    {
         var user = await userManager.FindByIdAsync(userId.ToString());
-        if (user == null || user.Email == null || user.EmailConfirmed) return false;
+        if (user == null) return (false, "Користувача не знайдено.");
+        if (string.IsNullOrEmpty(user.Email)) return (false, "Email не вказано.");
+        if (user.EmailConfirmed) return (false, "Email вже підтверджено.");
 
         var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
         var clientUrl = configuration["ClientUrl"]?.TrimEnd('/') ?? "http://localhost:5173";
@@ -222,7 +241,9 @@ public class AccountService(IJwtTokenService tokenService,
             Body = $"<p>Натисніть посилання для підтвердження email:</p><a href='{link}'>Підтвердити email</a>"
         };
 
-        return await smtpService.SendEmailAsync(emailModel);
+        var sent = await smtpService.SendEmailAsync(emailModel);
+        if (!sent) return (false, "Не вдалося надіслати лист. Перевірте налаштування SMTP або спробуйте пізніше.");
+        return (true, null);
     }
 
     public sealed class GoogleAccountModel
