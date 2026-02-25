@@ -8,6 +8,7 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 import { Provider } from "react-redux";
 import { store } from "./store";
 import { ThemeProvider } from "./admin/context/ThemeContext.tsx";
+import { CityProvider } from "./context/CityContext.tsx";
 import { AppWrapper } from "./admin/components/common/PageMeta.tsx";
 
 const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
@@ -15,14 +16,16 @@ const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
     <ThemeProvider>
-        <AppWrapper>
-            <Provider store={store}>
-                <GoogleOAuthProvider clientId={clientId}>
-                    <BrowserRouter>
-                        <App />
-                    </BrowserRouter>
-                </GoogleOAuthProvider>
-            </Provider>
-        </AppWrapper>
+        <CityProvider>
+            <AppWrapper>
+                <Provider store={store}>
+                    <GoogleOAuthProvider clientId={clientId}>
+                        <BrowserRouter>
+                            <App />
+                        </BrowserRouter>
+                    </GoogleOAuthProvider>
+                </Provider>
+            </AppWrapper>
+        </CityProvider>
     </ThemeProvider>,
 );

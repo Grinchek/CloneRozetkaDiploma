@@ -3,6 +3,7 @@ import { useMeQuery } from '../features/account/apiAccount';
 import { useGetCartQuery } from '../features/cart/api/cartApi';
 import { useGetFavoritesQuery } from '../features/favorites/api/favoritesApi';
 import { useGetCompareIdsQuery } from '../features/compare/api/compareApi';
+import CitySelector from './CitySelector';
 
 const topLinks = ["Акції", "Тренди", "Для бізнесу", "Допомога"];
 const categories = [
@@ -59,7 +60,7 @@ export default function Navbar() {
                     </div>
 
                     <div className="flex items-center gap-5 text-[#F5A623] text-xl">
-                        <span><img src="/icons/navbar-location-line.svg" alt="Location" /></span>
+                        <CitySelector />
                         <Link to="/compare" className="relative" title="Порівняння">
                             <img src="/icons/navbar-ri_scales.svg" alt="Порівняння" />
                             {compareCount > 0 && (
