@@ -28,3 +28,12 @@
         grid-template-columns: repeat(4, 1fr);
     }
 }
+
+/* Режим відображення списком */
+.catalog-page .products-grid--list {
+    grid-template-columns: 1fr;
+}
+
+.catalog-page .products-grid--list .product-card--list {
+    max-width: 100%;
+}
