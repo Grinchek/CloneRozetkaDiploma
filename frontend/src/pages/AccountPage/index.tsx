@@ -32,7 +32,7 @@ export default function AccountPage() {
     const [updateProfile, { isLoading: updating }] = useUpdateProfileMutation();
     const [uploadAvatar, { isLoading: uploadingAvatar }] = useUploadAvatarMutation();
     const [changePassword, { isLoading: changingPassword, error: changePasswordError }] = useChangePasswordMutation();
-    const [resendConfirmation, { isLoading: resending, isSuccess: resendSuccess }] = useResendConfirmationMutation();
+    const [resendConfirmation, { isLoading: resending, isSuccess: resendSuccess, error: resendError }] = useResendConfirmationMutation();
 
     const { data: orders = [] } = useGetMyOrdersQuery(undefined, { skip: !token || tab !== 'orders' });
 
@@ -301,6 +301,11 @@ export default function AccountPage() {
                             {!profile?.isEmailConfirmed && (
                                 <>
                                     <p className="muted">Натисніть, щоб надіслати лист із посиланням для підтвердження.</p>
+                                    {(resendError && 'data' in resendError && (resendError.data as { error?: string })?.error) && (
+                                        <p className="profile-error" style={{ color: 'var(--color-error, #c00)', marginBottom: '0.5rem' }}>
+                                            {(resendError.data as { error?: string }).error}
+                                        </p>
+                                    )}
                                     <button
                                         type="button"
                                         className="profile-btn profile-btn--primary"

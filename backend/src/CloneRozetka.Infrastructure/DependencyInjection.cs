@@ -50,6 +50,9 @@ public static class DependencyInjection
         // -----------------------------
         // 3. Identity Core
         // -----------------------------
+        services.Configure<DataProtectionTokenProviderOptions>(o =>
+            o.TokenLifespan = TimeSpan.FromDays(3));
+
         services
             .AddIdentityCore<AppUser>(opt =>
             {

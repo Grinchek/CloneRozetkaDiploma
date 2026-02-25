@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-const API_BASE = import.meta.env.VITE_API_BASE + '/api';
+const rawBase = (import.meta.env.VITE_API_BASE ?? '').toString().trim().replace(/\/+$/, '');
+const API_BASE = rawBase ? `${rawBase}/api` : '/api';
 
 /** GET /api/account/me */
 export interface UserProfileDto {
