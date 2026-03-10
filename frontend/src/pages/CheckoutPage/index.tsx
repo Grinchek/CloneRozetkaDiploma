@@ -10,6 +10,7 @@ import CheckoutProducts from "./CheckoutProducts";
 import ContactInfoSection from "./ContactInfoSection";
 import DeliverySection from "./DeliverySection";
 import OrderSummary from "./OrderSummary";
+import PaymentSection from "./PaymentSection";
 
 import "./CheckoutPage.css";
 
@@ -24,9 +25,11 @@ function useDebounce<T>(value: T, delay: number): T {
     return debouncedValue;
 }
 
+type CheckoutStep = "details" | "payment";
+
 export default function CheckoutPage() {
     const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
-    const { data: cart, isLoading: cartLoading } = useGetCartQuery(undefined, { skip: !token });
+    const { data: cart, isLoading: cartLoading, refetch: refetchCart } = useGetCartQuery(undefined, { skip: !token });
     const navigate = useNavigate();
     const [createOrder, { isLoading: isSubmitting }] = useCreateOrderMutation();
     const [fetchCities, { data: cities = [], isFetching: citiesLoading }] = useLazyGetNpCitiesQuery();
@@ -45,6 +48,12 @@ export default function CheckoutPage() {
     const [cityDropdownOpen, setCityDropdownOpen] = useState(false);
     const [warehouseDropdownOpen, setWarehouseDropdownOpen] = useState(false);
     const [errors, setErrors] = useState<Record<string, string>>({});
+    const [step, setStep] = useState<CheckoutStep>("details");
+
+    const [cardNumber, setCardNumber] = useState("");
+    const [cardExpiry, setCardExpiry] = useState("");
+    const [cardCvv, setCardCvv] = useState("");
+    const [paymentErrors, setPaymentErrors] = useState<Record<string, string>>({});
 
     const debouncedCityQuery = useDebounce(cityQuery, DEBOUNCE_MS);
 
@@ -76,10 +85,41 @@ export default function CheckoutPage() {
         return Object.keys(e).length === 0;
     }, [recipientName, recipientPhone, selectedCity, selectedWarehouse]);
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
+    const validatePayment = useCallback((): boolean => {
+        const e: Record<string, string> = {};
+        const digits = cardNumber.replace(/\s+/g, "");
+        if (digits.length !== 16 || !/^\d{16}$/.test(digits)) {
+            e.cardNumber = "Введіть коректний номер картки (16 цифр)";
+        }
+
+        if (!/^\d{2}\/\d{2}$/.test(cardExpiry)) {
+            e.expiry = "Введіть термін у форматі MM/YY";
+        } else {
+            const [mmStr, yyStr] = cardExpiry.split("/");
+            const month = Number(mmStr);
+            const year = Number(yyStr);
+            if (month < 1 || month > 12) {
+                e.expiry = "Невірний місяць";
+            } else {
+                const now = new Date();
+                const currentYear = now.getFullYear() % 100;
+                const currentMonth = now.getMonth() + 1;
+                if (year < currentYear || (year === currentYear && month < currentMonth)) {
+                    e.expiry = "Картка прострочена";
+                }
+            }
+        }
+
+        if (!/^\d{3}$/.test(cardCvv)) {
+            e.cvv = "CVV має містити 3 цифри";
+        }
+
+        setPaymentErrors(e);
+        return Object.keys(e).length === 0;
+    }, [cardNumber, cardExpiry, cardCvv]);
+
+    const handleCreateOrder = async () => {
         if (!isAuth || items.length === 0) return;
-        if (!validate()) return;
         if (!selectedCity || !selectedWarehouse) return;
 
         try {
@@ -92,6 +132,7 @@ export default function CheckoutPage() {
                 npWarehouseName: selectedWarehouse.name,
                 comment: comment.trim() || undefined,
             }).unwrap();
+            await refetchCart();
             navigate(`/orders/${res.orderId}`, { replace: true });
         } catch (err: unknown) {
             const msg = err && typeof err === "object" && "data" in err
@@ -99,6 +140,18 @@ export default function CheckoutPage() {
                 : "Не вдалося створити замовлення";
             setErrors({ submit: msg ?? "Помилка" });
         }
+    };
+
+    const handlePrimaryAction = async () => {
+        if (!isAuth || items.length === 0) return;
+        if (step === "details") {
+            if (!validate() || !selectedCity || !selectedWarehouse) return;
+            setStep("payment");
+            return;
+        }
+
+        if (!validatePayment()) return;
+        await handleCreateOrder();
     };
 
     if (!isAuth && me !== undefined) {
@@ -133,7 +186,11 @@ export default function CheckoutPage() {
         <div className="checkout">
             <h1 className="checkout__title">Оформлення замовлення</h1>
 
-            <form id="checkout-form" onSubmit={handleSubmit} className="checkout__grid">
+            <form
+                id="checkout-form"
+                onSubmit={(e) => e.preventDefault()}
+                className="checkout__grid"
+            >
                 <div className="checkout__main">
                     <CheckoutProducts items={items} />
 
@@ -171,6 +228,19 @@ export default function CheckoutPage() {
                         comment={comment}
                         setComment={setComment}
                     />
+
+                    {step === "payment" && (
+                        <PaymentSection
+                            cardNumber={cardNumber}
+                            expiry={cardExpiry}
+                            cvv={cardCvv}
+                            onCardNumberChange={setCardNumber}
+                            onExpiryChange={setCardExpiry}
+                            onCvvChange={setCardCvv}
+                            errors={paymentErrors}
+                            onBack={() => setStep("details")}
+                        />
+                    )}
                 </div>
 
                 <OrderSummary
@@ -178,6 +248,8 @@ export default function CheckoutPage() {
                     totalPrice={totalPrice}
                     isSubmitting={isSubmitting}
                     submitError={errors.submit}
+                    primaryLabel={step === "details" ? "Перейти до оплати" : "Замовлення підтверджую"}
+                    onPrimaryAction={handlePrimaryAction}
                 />
             </form>
         </div>

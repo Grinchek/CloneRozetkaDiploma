@@ -71,16 +71,17 @@ export default function RegisteredUsers() {
         };
     }, [searchInput]);
 
-    const loadUsers = async (pageToLoad: number, searchTerm: string) => {
+    const loadUsers = async (pageToLoad: number, searchTerm: string = "") => {
         try {
             setLoading(true);
             setError(null);
 
             const token = localStorage.getItem("token");
-            const hasSearch = searchTerm.length > 0;
+            const term = searchTerm ?? "";
+            const hasSearch = term.length > 0;
 
             const url = hasSearch
-                ? `${API_URL}/api/User/search?Name=${encodeURIComponent(searchTerm)}&Page=${pageToLoad}&ItemPerPAge=${itemsPerPage}`
+                ? `${API_URL}/api/User/search?Name=${encodeURIComponent(term)}&Page=${pageToLoad}&ItemPerPAge=${itemsPerPage}`
                 : `${API_URL}/api/User?page=${pageToLoad}&itemsPerPage=${itemsPerPage}`;
 
             const res = await fetch(url, {
@@ -200,7 +201,7 @@ export default function RegisteredUsers() {
             }
 
             // ✅ після toggle — оновлюємо список (щоб оновився isLocked/lockoutEnd)
-            await loadUsers(page);
+            await loadUsers(page, debouncedSearch);
 
             setConfirmOpen(false);
             setSelectedUser(null);

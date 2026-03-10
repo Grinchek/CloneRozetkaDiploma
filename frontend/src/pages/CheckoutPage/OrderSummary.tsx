@@ -3,6 +3,8 @@ interface OrderSummaryProps {
     totalPrice: number;
     isSubmitting: boolean;
     submitError: string | undefined;
+    primaryLabel: string;
+    onPrimaryAction: () => void;
 }
 
 export default function OrderSummary({
@@ -10,6 +12,8 @@ export default function OrderSummary({
     totalPrice,
     isSubmitting,
     submitError,
+    primaryLabel,
+    onPrimaryAction,
 }: OrderSummaryProps) {
     const formattedTotal = totalPrice.toLocaleString("uk-UA");
     const itemsLabel =
@@ -40,11 +44,12 @@ export default function OrderSummary({
                 <p className="checkout-summary__error">{submitError}</p>
             )}
             <button
-                type="submit"
+                type="button"
                 disabled={isSubmitting}
                 className="checkout-summary__submit"
+                onClick={onPrimaryAction}
             >
-                {isSubmitting ? "Створення..." : "Замовлення підтверджую"}
+                {isSubmitting ? "Створення..." : primaryLabel}
             </button>
             <p className="checkout-summary__legal">
                 Натискаючи кнопку, ви погоджуєтесь з умовами обробки даних та
